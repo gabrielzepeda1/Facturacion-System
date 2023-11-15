@@ -40,7 +40,9 @@ Public Class database
     ''' <returns>DATASET</returns>
     ''' <remarks></remarks>
     Public Function GetDataSet(ByVal Query As String) As DataSet
+
         Dim cnn As String = conn.conn
+
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
 
         Try

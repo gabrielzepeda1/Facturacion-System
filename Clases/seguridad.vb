@@ -1,12 +1,18 @@
-﻿Imports System.Security
+﻿Imports System.Data.OleDb
+Imports System.Security
 Imports System.Security.Principal
 Imports System.Net
 Imports System.Net.Dns
 Imports System.Management
+Imports Serilog
 
 Public Class seguridad
 #Region "PROPIEDADES DE LA CLASE"
     Dim _conn As String = String.Empty
+
+    Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
+
+
     Public Property conn_Procedimientos() As String
         Get
             _conn = "Data Source=localhost;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
@@ -22,6 +28,8 @@ Public Class seguridad
     Public Property conn() As String
         Get
             _conn = "Provider=SQLOLEDB.1;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
+
+            '_conn = "Data Source=PC-GABRIEL\SQLENT;Initial Catalog=Facturacion;Persist Security Info=True;User ID=sa;Password=ga123"
 
             '_conn = "Provider=SQLOLEDB.1;Server=WINDOWS-TC0TRCD\SQLEXPRESS;Database=DBGEIN;UID=gein;PWD=7s=3mxC$am?PFB%d%x"
 
@@ -88,10 +96,12 @@ Public Class seguridad
             _key = value
         End Set
     End Property
+
+
 #End Region
 
     ''' <summary>
-    ''' RETORNA UN MENSAJE DE INFORMACIÓN, ALERTA, EXTIO O ERROR
+    ''' RETORNA UN MENSAJE DE INFORMACIÓN, ALERTA, EXITO O ERROR
     ''' </summary>
     ''' <param name="Mensaje">TEXTO QUE SE MOSTRARA EN EL MENSAJE</param>
     ''' <param name="Tipo">TIPO DE MENSAJE A MOSTRAR. PUEDE SER: [info, exito, alerta, error]</param>
@@ -117,38 +127,44 @@ Public Class seguridad
         End Select
     End Function
 
-#Region "OPTENER DATOS DE LA MAQUINA CLIENTE"
-    ''' <summary>
-    ''' DIRECCIÓN IP DE LA MAQUINA CLIENTE QUE ESTA UTILIZANDO EL SISTEMA
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    Public Sub LogMessage(ByVal Mensaje As String, ByVal Tipo As String)
+        Select Case Tipo
+            Case "info"
+                Log.Information(Mensaje)
+            Case "exito"
+                Log.Information(Mensaje)
+            Case "alerta"
+                Log.Warning(Mensaje)
+            Case "error"
+                Log.Error(Mensaje)
+            Case Else
+                Log.Information(Mensaje)
+
+        End Select
+    End Sub
+
+#Region "OBTENER DATOS DE LA MAQUINA CLIENTE"
+
+    'Obtener la direccion IP del PC del usuario. 
     Public Function IPHost() As String
-        'Dim ip As Net.Dns
+
         Dim nombrePC As String
         Dim entradasIP As Net.IPHostEntry
-        'nombrePC = ip.GetHostName
-        'entradasIP = ip.GetHostByName(nombrePC)
+
         nombrePC = Dns.GetHostName
-        entradasIP = Dns.GetHostByName(nombrePC)
+        entradasIP = Dns.GetHostEntry(nombrePC)
+
         Dim direccion_Ip As String = entradasIP.AddressList(0).ToString
+
         Return direccion_Ip
     End Function
 
-    ''' <summary>
-    ''' NOMBRE DE LA MAQUINA CLIENTE QUE ESTA UTILIZANDO EL SISTEMA
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ' Nombre del PC del usuario logueado
     Public Function NameHost() As String
         Return Dns.GetHostName
     End Function
 
-    ''' <summary>
-    ''' USUARIO ACTUAL DE LA MAQUINA CLIENTE QUE ESTA UTILIZANDO EL SISTEMA
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ' USUARIO ACTUAL DE LA MAQUINA CLIENTE QUE ESTA UTILIZANDO EL SISTEMA
     Public Function UserHost() As String
         Return WindowsIdentity.GetCurrent().Name
     End Function
@@ -156,45 +172,35 @@ Public Class seguridad
 
 #Region "INICION DE SESIÓN"
     ''' <summary>
-    ''' ENVIA UNA SOLICITUD AL SERVIDOR PARA VERIFICAR SI EL USUARIO Y EL PASSWORD ESTAN REGISTRADOS
+    ''' Verifica en el servidor si el Usuario y Password estan registrados
     ''' </summary>
     ''' <param name="Usuario">NOMBRE DE USUARIO</param>
     ''' <param name="Password">CONTRASEñA DE USUARIO</param>
-    ''' <returns>BOLIANO</returns>
-    ''' <remarks></remarks>
-    Public Function IniciarSesion(ByVal Usuario As String, _
-                                  ByVal Password As String) As Boolean
-
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn)
+    Public Function IniciarSesion(Usuario As String, Password As String) As Boolean
         Try
-            If dbCon.State = ConnectionState.Closed Then
+
+            Using dbCon As New OleDbConnection(conn)
                 dbCon.Open()
-            End If
 
-            Dim sql As String = String.Empty
-            sql = "EXEC sp_sys_login @cuenta = '" & Usuario & "', @password = '" & Password & "'"
+                Dim cmd As New OleDbCommand("sp_sys_login", dbCon)
+                cmd.Parameters.AddWithValue("@Usuario", Usuario)
+                cmd.Parameters.AddWithValue("@Password", Password)
+                cmd.CommandType = CommandType.StoredProcedure
 
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            Dim dr As System.Data.OleDb.OleDbDataReader
-            dr = cmd.ExecuteReader
+                Dim dr As OleDbDataReader = cmd.ExecuteReader()
 
-            If dr.Read() Then
-                Return True
-            Else
-                Return False
-            End If
+                If dr.Read() Then
+                    Return True
+                End If
+            End Using
 
-            dr.Close()
+
 
         Catch ex As Exception
             MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Sistema de Corrales de Engorde ")
-            Return False
-
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
+            LogError(ex)
         End Try
+        Return False
     End Function
 
     ''' <summary>
@@ -205,37 +211,95 @@ Public Class seguridad
     ''' <param name="Nombre_Host">NOMBRE DE HOST</param>
     ''' <returns>OleDbDataReader</returns>
     ''' <remarks></remarks>
-    Public Function ControlarSesion(Usuario As String, _
-                                    IpConexion As String, _
-                                    Nombre_Host As String) As System.Data.OleDb.OleDbDataReader
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn)
-        Dim dr As System.Data.OleDb.OleDbDataReader
+    Public Function CerrarSesion(codigoSesion As Integer, codigoUsuario As Integer) As Boolean
+
+        Try
+            Using dbCon As New OleDbConnection(conn)
+                dbCon.Open()
+
+                Dim cmd As New OleDbCommand("sp_sys_cerrar_sesion", dbCon)
+                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
+                cmd.Parameters.AddWithValue("@cod_usuario", codigoUsuario)
+                cmd.CommandType = CommandType.StoredProcedure
+
+                ' Add an output parameter to capture the success indicator (BIT)
+                Dim successParam As New OleDbParameter("@success", OleDbType.Boolean)
+                successParam.Direction = ParameterDirection.Output
+                cmd.Parameters.Add(successParam)
+
+                ' Execute the stored procedure (no result set expected)
+                cmd.ExecuteNonQuery()
+
+                ' Retrieve the success indicator from the output parameter
+                Dim success As Boolean = CBool(cmd.Parameters("@success").Value)
+                Return success
+
+            End Using
+
+        Catch ex As Exception
+            LogMessage(ex.Message, "error")
+        End Try
+
+    End Function
+    Public Function ControlarSesion(Usuario As String,
+                                    IpConexion As String,
+                                    Nombre_Host As String) As Dictionary(Of String, Object)
+        Dim sessionData As New Dictionary(Of String, Object)
+        Dim dbCon As New OleDbConnection(conn)
 
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
             End If
 
-            Dim sql As String = "SET DATEFORMAT DMY " + vbCrLf & _
-                                "EXEC sp_sys_Abrir_Sesion " & _
-                                "@Usuario = '" & Usuario & "'," & _
-                                "@IpConexion = '" & IpConexion & "'," & _
+            Dim sql As String = "SET DATEFORMAT DMY " + vbCrLf &
+                                "EXEC sp_sys_Abrir_Sesion " &
+                                "@Username = '" & Usuario & "'," &
+                                "@IpConexion = '" & IpConexion & "'," &
                                 "@Nombre_Host = '" & Nombre_Host & "' "
 
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
+            Dim cmd As New OleDbCommand(sql, dbCon)
 
-            dr = cmd.ExecuteReader
+            Dim dr As OleDbDataReader = cmd.ExecuteReader()
 
-            Return dr
+            If dr.Read() Then
+
+                sessionData("CodigoSesion") = dr.Item("CodigoSesion")
+                sessionData("CodigoUser") = dr.Item("CodigoUser")
+                sessionData("Username") = dr.Item("Username")
+                sessionData("Password") = dr.Item("Password")
+                sessionData("CodigoPais") = dr.Item("CodigoPais")
+                sessionData("Pais") = dr.Item("Pais")
+                sessionData("CodigoEmpresa") = dr.Item("CodigoEmpresa")
+                sessionData("Empresa") = dr.Item("Empresa")
+                sessionData("CodigoPuesto") = dr.Item("CodigoPuesto")
+                sessionData("Puesto") = dr.Item("Puesto")
+                sessionData("Mensaje") = dr.Item("MENSAJE")
+
+
+
+            Else
+                sessionData("Mensaje") = dr.Item("MENSAJE")
+            End If
+
+            Return sessionData
 
             dr.Close()
-
         Catch ex As Exception
-            MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+            '            MsgBox("Error en clase de seguridad: " & ex.Message,
+            'MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+
+            LogMessage(ex.Message, "error")
             Return Nothing
 
         End Try
     End Function
+
+    Private Sub LogError(ex As Exception)
+
+    End Sub
+
+
 #End Region
 End Class
