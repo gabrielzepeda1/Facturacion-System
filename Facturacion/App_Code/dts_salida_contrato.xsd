@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dts_salida_contrato" targetNamespace="http://tempuri.org/dts_salida_contrato.xsd" xmlns:mstns="http://tempuri.org/dts_salida_contrato.xsd" xmlns="http://tempuri.org/dts_salida_contrato.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dts_salida_contrato" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dts_salida_contrato" msprop:Generator_UserDSName="dts_salida_contrato">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="sp_view_salida_contrato" msprop:Generator_TableClassName="sp_view_salida_contratoDataTable" msprop:Generator_TableVarName="tablesp_view_salida_contrato" msprop:Generator_TablePropName="sp_view_salida_contrato" msprop:Generator_RowDeletingName="sp_view_salida_contratoRowDeleting" msprop:Generator_RowChangingName="sp_view_salida_contratoRowChanging" msprop:Generator_RowEvHandlerName="sp_view_salida_contratoRowChangeEventHandler" msprop:Generator_RowDeletedName="sp_view_salida_contratoRowDeleted" msprop:Generator_UserTableName="sp_view_salida_contrato" msprop:Generator_RowChangedName="sp_view_salida_contratoRowChanged" msprop:Generator_RowEvArgName="sp_view_salida_contratoRowChangeEvent" msprop:Generator_RowClassName="sp_view_salida_contratoRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Codigo" msprop:Generator_ColumnVarNameInTable="columnCodigo" msprop:Generator_ColumnPropNameInRow="Codigo" msprop:Generator_ColumnPropNameInTable="CodigoColumn" msprop:Generator_UserColumnName="Codigo" type="xs:int" />
+              <xs:element name="Salida" msprop:Generator_ColumnVarNameInTable="columnSalida" msprop:Generator_ColumnPropNameInRow="Salida" msprop:Generator_ColumnPropNameInTable="SalidaColumn" msprop:Generator_UserColumnName="Salida" type="xs:string" minOccurs="0" />
+              <xs:element name="Contrato" msprop:Generator_ColumnVarNameInTable="columnContrato" msprop:Generator_ColumnPropNameInRow="Contrato" msprop:Generator_ColumnPropNameInTable="ContratoColumn" msprop:Generator_UserColumnName="Contrato" type="xs:string" minOccurs="0" />
+              <xs:element name="Cliente" msprop:Generator_ColumnVarNameInTable="columnCliente" msprop:Generator_ColumnPropNameInRow="Cliente" msprop:Generator_ColumnPropNameInTable="ClienteColumn" msprop:Generator_UserColumnName="Cliente" type="xs:string" minOccurs="0" />
+              <xs:element name="Fecha" msprop:Generator_ColumnVarNameInTable="columnFecha" msprop:Generator_ColumnPropNameInRow="Fecha" msprop:Generator_ColumnPropNameInTable="FechaColumn" msprop:Generator_UserColumnName="Fecha" type="xs:string" minOccurs="0" />
+              <xs:element name="Observacion" msprop:Generator_ColumnVarNameInTable="columnObservacion" msprop:Generator_ColumnPropNameInRow="Observacion" msprop:Generator_ColumnPropNameInTable="ObservacionColumn" msprop:Generator_UserColumnName="Observacion" type="xs:string" minOccurs="0" />
+              <xs:element name="Entrega" msprop:Generator_ColumnVarNameInTable="columnEntrega" msprop:Generator_ColumnPropNameInRow="Entrega" msprop:Generator_ColumnPropNameInTable="EntregaColumn" msprop:Generator_UserColumnName="Entrega" type="xs:string" minOccurs="0" />
+              <xs:element name="Recibe" msprop:Generator_ColumnVarNameInTable="columnRecibe" msprop:Generator_ColumnPropNameInRow="Recibe" msprop:Generator_ColumnPropNameInTable="RecibeColumn" msprop:Generator_UserColumnName="Recibe" type="xs:string" minOccurs="0" />
+              <xs:element name="Tecnico" msprop:Generator_ColumnVarNameInTable="columnTecnico" msprop:Generator_ColumnPropNameInRow="Tecnico" msprop:Generator_ColumnPropNameInTable="TecnicoColumn" msprop:Generator_UserColumnName="Tecnico" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="sp_view_salida_contrato_detalle" msprop:Generator_TableClassName="sp_view_salida_contrato_detalleDataTable" msprop:Generator_TableVarName="tablesp_view_salida_contrato_detalle" msprop:Generator_TablePropName="sp_view_salida_contrato_detalle" msprop:Generator_RowDeletingName="sp_view_salida_contrato_detalleRowDeleting" msprop:Generator_RowChangingName="sp_view_salida_contrato_detalleRowChanging" msprop:Generator_RowEvHandlerName="sp_view_salida_contrato_detalleRowChangeEventHandler" msprop:Generator_RowDeletedName="sp_view_salida_contrato_detalleRowDeleted" msprop:Generator_UserTableName="sp_view_salida_contrato_detalle" msprop:Generator_RowChangedName="sp_view_salida_contrato_detalleRowChanged" msprop:Generator_RowEvArgName="sp_view_salida_contrato_detalleRowChangeEvent" msprop:Generator_RowClassName="sp_view_salida_contrato_detalleRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Codigo" msprop:Generator_ColumnVarNameInTable="columnCodigo" msprop:Generator_ColumnPropNameInRow="Codigo" msprop:Generator_ColumnPropNameInTable="CodigoColumn" msprop:Generator_UserColumnName="Codigo" type="xs:int" minOccurs="0" />
+              <xs:element name="Descripcion" msprop:Generator_ColumnVarNameInTable="columnDescripcion" msprop:Generator_ColumnPropNameInRow="Descripcion" msprop:Generator_ColumnPropNameInTable="DescripcionColumn" msprop:Generator_UserColumnName="Descripcion" type="xs:string" minOccurs="0" />
+              <xs:element name="Tipo" msprop:Generator_ColumnVarNameInTable="columnTipo" msprop:Generator_ColumnPropNameInRow="Tipo" msprop:Generator_ColumnPropNameInTable="TipoColumn" msprop:Generator_UserColumnName="Tipo" type="xs:string" minOccurs="0" />
+              <xs:element name="Marca" msprop:Generator_ColumnVarNameInTable="columnMarca" msprop:Generator_ColumnPropNameInRow="Marca" msprop:Generator_ColumnPropNameInTable="MarcaColumn" msprop:Generator_UserColumnName="Marca" type="xs:string" minOccurs="0" />
+              <xs:element name="Modelo" msprop:Generator_ColumnVarNameInTable="columnModelo" msprop:Generator_ColumnPropNameInRow="Modelo" msprop:Generator_ColumnPropNameInTable="ModeloColumn" msprop:Generator_UserColumnName="Modelo" type="xs:string" minOccurs="0" />
+              <xs:element name="serie" msprop:Generator_ColumnVarNameInTable="columnserie" msprop:Generator_ColumnPropNameInRow="serie" msprop:Generator_ColumnPropNameInTable="serieColumn" msprop:Generator_UserColumnName="serie" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="sp_view_salida_contratoKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:sp_view_salida_contrato" />
+      <xs:field xpath="mstns:Codigo" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="sp_view_salida_contrato_sp_view_salida_contrato_detalle" msdata:parent="sp_view_salida_contrato" msdata:child="sp_view_salida_contrato_detalle" msdata:parentkey="Codigo" msdata:childkey="Codigo" msprop:Generator_UserChildTable="sp_view_salida_contrato_detalle" msprop:Generator_ChildPropName="Getsp_view_salida_contrato_detalleRows" msprop:Generator_UserRelationName="sp_view_salida_contrato_sp_view_salida_contrato_detalle" msprop:Generator_ParentPropName="sp_view_salida_contratoRow" msprop:Generator_RelationVarName="relationsp_view_salida_contrato_sp_view_salida_contrato_detalle" msprop:Generator_UserParentTable="sp_view_salida_contrato" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

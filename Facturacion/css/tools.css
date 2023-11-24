@@ -1,0 +1,196 @@
+﻿/* CHEKBOX */
+div.userChekBox
+{
+    margin-bottom:5px;
+    overflow:hidden;    
+}
+
+div.userChekBox 
+{
+    min-width:150px;
+    position:relative;
+    clear:both;
+}
+
+div.userChekBox input[type=submit]
+{
+    float:left;
+    margin:0 3px 0 0;
+    cursor:default;
+    border:0px;
+    background-color:transparent;
+    width:16px;
+    height:16px;
+    max-width:16px;
+    max-height:16px;
+    min-width:16px;
+    min-height:16px;
+}
+
+div.userChekBox input[type=submit].false{background-image:URL(../Img/chekBox/false.png);}
+div.userChekBox input[type=submit].true{background-image:URL(../Img/chekBox/true.png);}
+div.userChekBox input[type=submit].null{background-image:URL(../Img/chekBox/null.png);}
+
+div.userChekBox a
+{
+    color:#333 !important;
+    font-size:10pt !important;
+    font-weight:bold;
+    text-decoration:none;
+    background-color:transparent !important;
+    background-image:none !important;
+    border:none;
+    padding:0px !important;
+    margin:0px !important;
+    float:left;
+}
+
+/* CALENDARIO */
+.yui .ajax__calendar_container 
+{
+    background-color:#f2f2f2;
+    border:solid 1px #808080;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    cursor:default;
+    width:205px;
+    font-size:11px;
+    text-align:center;
+    padding:0px;
+}
+
+.yui .ajax__calendar_body 
+{
+    height:139px;
+    width:205px;
+    position:relative;
+    overflow:hidden;
+}
+
+.yui .ajax__calendar_days, .yui .ajax__calendar_months, .yui .ajax__calendar_years 
+{
+    top:0px; 
+    left:0px;
+    height:139px;
+    width:195px;    
+    padding:5px;
+    position:absolute;
+    text-align:center;
+}
+
+.yui .ajax__calendar_days table
+{
+    border-spacing:0;
+    border-collapse:collapse;
+    font:100% sans-serif;
+    text-align:center;    
+}
+
+.yui .ajax__calendar_header 
+{
+    background:url(../img/yui/sprite.png) repeat-x 0 0; 
+    height:22px;
+    width:100%;
+    font-size:10pt;
+    font-weight:bold;
+    text-align:center;
+    padding-top:3px;
+}
+
+.yui .ajax__calendar_prev 
+{
+    margin-top:2px;
+    margin-left:4px;
+    height:15px;
+    width:25px;
+    cursor:pointer;
+    float:left;
+    background:url(../img/yui/sprite.png) 0px -450px no-repeat;
+}
+
+.yui .ajax__calendar_next 
+{
+    margin-top:2px;
+    margin-right:4px;
+    height:15px;
+    width:25px;    
+    cursor:pointer;
+    float:right;
+    background:url(../img/yui/sprite.png) 0px -500px no-repeat;
+}
+
+.yui .ajax__calendar_title 
+{
+    cursor:pointer;
+    font-weight:bold;
+    text-align:center;
+}
+
+.yui .ajax__calendar_footer, .yui .ajax__calendar_today 
+{
+    color: #0099CC;
+}
+
+.yui .ajax__calendar_dayname 
+{
+    padding-left:3px;
+    padding-right:3px;
+    margin-bottom:5px;
+    margin-left:2px;
+    margin-right:2px;
+    text-align:center;
+    font-weight:700;
+    font-size:10pt;
+    color:#000;
+    border-bottom:solid 1px #a6a6a6;
+}
+
+.yui .ajax__calendar_day, .yui .ajax__calendar_month, .yui .ajax__calendar_year
+{
+    padding:0px;
+    color:#000;
+    text-align:center;  
+    padding:0pt 2px;
+}
+
+.yui .ajax__calendar_hover .ajax__calendar_day, .yui .ajax__calendar_hover .ajax__calendar_month, .yui .ajax__calendar_hover .ajax__calendar_year, .yui .ajax__calendar_hover .ajax__calendar_title
+{
+    color:#0066cc;
+}
+
+.yui .ajax__calendar_other .ajax__calendar_day, .yui .ajax__calendar_other .ajax__calendar_year
+{
+    color:#a6a6a6;   
+}
+
+.yui .ajax__calendar_active .ajax__calendar_day
+{
+    color:#0066cc;   
+}
+
+/* OPCIONES */
+/*.multi-option{width:10% !important; text-align:right;}*/
+
+.multi-option label
+{
+    display:inline-block !important; 
+
+    font-weight:normal !important;
+    color:#333; 
+    font-size:10pt; 
+    margin:5px 0px;
+    font-weight:bold;
+}
+
+.multi-option input[type="radio"]
+, .multi-option input[type="checkbox"]
+{
+    display:inline-block !important; 
+    /*margin:0px 7px;*/
+}
+.radioButtom 
+{
+    display:inline; 
+    /*margin:0px 7px;*/
+}
+
+.Report-Document{display:inline-block; margin:0px auto;}

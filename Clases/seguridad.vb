@@ -10,12 +10,12 @@ Public Class seguridad
 #Region "PROPIEDADES DE LA CLASE"
     Dim _conn As String = String.Empty
 
-    Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
+    Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
 
 
     Public Property conn_Procedimientos() As String
         Get
-            _conn = "Data Source=localhost;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
+            _conn = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
 
             '_conn = "Provider=SQLOLEDB.1;Server=WINDOWS-TC0TRCD\SQLEXPRESS;Database=DBGEIN;UID=gein;PWD=7s=3mxC$am?PFB%d%x"
 
@@ -27,7 +27,7 @@ Public Class seguridad
     End Property
     Public Property conn() As String
         Get
-            _conn = "Provider=SQLOLEDB.1;Server=PC-GABRIEL\SQLENT;Database=Facturacion;UID=sa;PWD=ga123"
+            _conn = "Provider=SQLOLEDB.1;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
 
             '_conn = "Data Source=PC-GABRIEL\SQLENT;Initial Catalog=Facturacion;Persist Security Info=True;User ID=sa;Password=ga123"
 

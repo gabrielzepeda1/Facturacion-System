@@ -1,0 +1,267 @@
+﻿
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+/*Estilos generales*/
+
+h1 { 
+    font-size: 24px !important;
+}
+
+body {
+    background-color: #fefefe  !important; 
+
+}
+
+.btn {
+   /* max-width: 350px;*/
+    transition: 0.3s ease !important;
+}
+
+    .btn:hover, .btn:focus{
+        transform: scale(1.125) !important;
+    }
+
+/*NAVBAR*/
+
+/*IMG LOGO*/
+
+.img-logo { 
+    transition: transform 0.3s ease; 
+}
+
+.img-logo:hover  { 
+    transform: scale(1.15); 
+    cursor: pointer; 
+}
+
+/*INFINITE SCROLL BTN USER*/
+
+.affiliations-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow-x:clip;
+    overflow-y: visible;
+}
+    
+.affiliation {
+    display: flex;
+    width: inherit;
+    height: 100%;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    animation: first 30s linear infinite;
+}
+
+    .affiliation > * { 
+        color: white;
+    }
+
+.carrousel-thumb {
+    height: 250px;
+    width: 250px;
+    margin: 0 30px;
+}
+
+.first {
+    animation: first 20s linear infinite;
+}
+
+.second {
+    animation: second 20s linear infinite;
+}
+
+@media screen and (min-width: 500px) {
+    .carrousel-thumb {
+        height: 100px;
+        width: 100px;
+        margin: 0 10px;
+    }
+}
+
+
+@keyframes first {
+    from {
+        left: 0%;
+    }
+
+    to {
+        left: -100%;
+    }
+}
+
+@keyframes second {
+    from {
+        left: 100%;
+    }
+
+    to {
+        left: 0%;
+    }
+}
+
+/*A TAG*/
+
+.a-default { 
+    text-decoration: none !important; 
+    color: #000f !important;
+    transition: 0.2s ease !important;
+    
+  
+}
+
+    .a-default:hover {
+        background-color: #fefefe;
+        color: darkblue !important;
+        font-weight: bold !important;
+        border-radius:5px;
+        transform: scale(1.05) !important;
+        box-shadow: 0 0 0 0.05rem;
+        transition: box-shadow ease-in 0.2s !important;
+        
+    }
+        
+
+.col-4 label { 
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+/*DROPDOWN ANIMACIONES*/
+
+
+.dropdown-toggle {
+    transition: 0.3s ease !important;
+  
+}
+
+    .dropdown-toggle:hover,
+    .dropdown-toggle:focus {
+        transform: scale(1.125) !important;
+    }
+
+.dropdown-menu { 
+    max-height: 500px; 
+    overflow-y: auto
+}
+
+
+@media (min-width: 200px) {
+    .animate {
+        animation-duration: 0.3s;
+        -webkit-animation-duration: 0.3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes slideIn {
+    0% {
+        -webkit-transform: transform;
+        -webkit-opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateY(0);
+        -webkit-opacity: 1;
+    }
+
+    0% {
+        -webkit-transform: translateY(1rem);
+        -webkit-opacity: 0;
+    }
+}
+
+.slideIn {
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+}
+
+/*CAROUSEL*/
+.carousel-item {
+    width: 100% !important;
+    overflow-x: hidden !important;
+    transition: transform 0.3s ease !important;
+}
+
+
+/*ACCORDION */
+
+.accordion-button[aria-expanded="true"] {
+    font-weight: bold;
+    background-color: #86b7fe !important;
+    border-radius: 5px; 
+}
+
+.accordion-button {
+    font-weight: bold;
+    background-color: whitesmoke !important;
+    border: 1px solid black inset !important;
+}
+
+    .accordion-button:hover {
+        background-color: #86b7fe !important;
+        transition: background-color ease-in 0.3s !important;
+        font-weight: bold;
+        border-radius: 5px;
+        z-index: 3;
+        box-shadow: 0 0 0 0.05rem;
+        cursor: pointer;
+    }
+
+.accordion-collapse {
+    transition: height 0.3s ease !important;
+    overflow: hidden !important;
+}
+.accordion-collapse[aria-expanded="true"] > .accordion-body {
+   /* background-color: #fefefe !important;
+    box-shadow: 0 0 0 0.05rem;
+    transition: box-shadow ease-in 0.3s !important;*/
+    /*border-radius: 5px;*/ 
+}
+
+
+/*Tables (GRID) */
+
+table th a { 
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+    text-align: center !important;
+}
+
+table th { 
+    color: #FFFFFF !important;
+    text-align: center !important;
+}
+
+
+
+
+ /* Media Queries */
+
+ @media screen and  (max-width: 700px) { 
+
+
+ }

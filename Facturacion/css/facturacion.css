@@ -1,0 +1,456 @@
+﻿
+
+/* MAIN CSS */
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    /*max-width:1600px;*/
+}
+
+h2, h3, h4 {
+    text-align: left;
+    width: fit-content;
+    height: auto;
+    box-sizing: border-box;
+}
+
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea,
+.radio,
+.text{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+/* 
+input[type="text"] { 
+    box-sizing: border-box;
+    display: block;
+    height: 28px;
+    user-select: none;
+    cursor: pointer;
+    -webkit-user-select: none; */
+/* } */
+
+
+
+.radio-container {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr; */
+    display: flex;
+    column-gap: 5px;
+    margin-bottom: 0px;
+    
+}
+
+.radio {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    column-gap: 4px;
+}
+
+    .radio > label,
+    .radio > input {
+        align-items: center;
+        justify-content: center;
+    }
+
+.form-container-5 {
+    display: grid;
+    grid-template-columns: 150px 150px;
+    grid-column-gap: 10px;
+    grid-row-gap: 5px;
+    justify-items: end;
+    margin-bottom: 10px;
+}
+
+
+.main-container {
+    width: 96%;
+    /*max-width: 1600px;*/
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* TABLES */
+
+.tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 200px; /* gives an initial height of 200px to the table */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+    .tableFixHead thead .th-producto {
+        position: sticky; /* make the table heads sticky */
+        top: 0px; /* table head will be placed from the top of the table and sticks to it */
+    }
+
+.tabla-producto {
+    border-collapse: separate;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+td {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+}
+
+th {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-size: 16px;
+    width: 185px;
+}
+
+.tabla-totales {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 400px;
+    margin-top: 10px;
+}
+
+    .tabla-totales thead tr th {
+        background-color: #9fbcec;
+        border: 2px solid gray;
+        /* border-bottom: 2px solid gray; */
+    }
+
+.th-producto {
+    border: 2px solid #ccc;
+    border-collapse: collapse;
+}
+
+  
+
+/* GRID */
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20px;
+}
+
+.grid-container-2 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 1fr, 0.5fr;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+}
+
+.grid-container-3 {
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    grid-column-gap: 2px; 
+    margin: 10px 0;
+}
+
+    .grid-container-3 > div {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+        .grid-container-3 > div > label {
+            display: flex;
+            justify-content: center;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #15141A;
+            margin-bottom: 10px;
+        }
+
+
+
+
+
+
+/* POPUP */
+
+.popups-container { 
+    display: flex;
+    column-gap: 10px; 
+}
+
+
+
+.popupDineroEntregado {
+   /* position: fixed;
+    top: 50%;
+    left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 80%;
+    /*display: none;*/
+}
+
+#dineroEntregado { 
+    display: flex; 
+    justify-content: start;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px; 
+    column-gap: 5px; 
+}
+
+/*.popupDineroEntregado { 
+    transform: translate(-50%, -50%);
+} */
+
+.popup-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.popup-header .popup-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    
+}
+.popup-header .btn-closePopup {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.popup-body {
+    padding: 10px 15px;
+}
+
+
+#overlay { 
+    position: fixed; 
+    /*opacity: 0;*/ 
+    top:0; 
+    left:0; 
+    right:0;
+    bottom:0; 
+    background-color: rgba(0,0,0,.5); 
+    /*pointer-events: none;*/
+}
+
+/*#overlay.active { 
+    pointer-events: all; 
+    opacity: 1; 
+*/
+
+/* BUTTONS */
+
+.btn-submit, .btn-reset {
+    background-color: #01934a;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 150px;
+    font-weight: bold;
+    border: 0.5px solid black;
+    align-self: end;
+}
+
+.BtnAdiciFormaPago, .btnEditar {
+    border: solid 0.5px black;
+    cursor: pointer;
+    border-radius: 3px;
+    width: fit-content;
+    padding: 7px 14px;
+    margin: 5px;
+    background-color: #01934a;
+    font-weight: bold;
+    font-size: 10pt;
+    text-decoration: none;
+    /* display: inline-block; */
+    text-align: center;
+    color: white;
+}
+
+.btnEliminar {
+    border: solid 0.5px black;
+    cursor: pointer;
+    border-radius: 3px;
+    width: auto;
+    padding: 7px 14px;
+    margin: 0px;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 10pt;
+    text-decoration: none;
+    /* display: inline-block; */
+    text-align: center;
+    background-color: #DF0101;
+}
+
+.btn-reset {
+    background-color: #c34c4c;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+.btn-reset:hover {
+    background-color: #c62a2a;
+}
+
+
+.btnDineroEntregado, .btn-dc {
+    background-color: rgb(33, 125, 237);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+    margin: 5px ;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+#BtnGuardar { 
+   
+
+}
+
+
+
+/* POPUP Datos Complementarios*/
+
+.popupDatos {
+    position: fixed;
+   /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 1000px;
+    max-width: 80%;
+    /*display: block;*/
+}
+
+.dc-title { 
+    display: flex; 
+    justify-content:space-between; 
+    align-items: center; 
+    border-bottom: 1px solid black;
+    margin-bottom: 2px; 
+}
+.dc-title h2 { 
+    font-size: 1.25em;
+    font-weight: bold; 
+    
+}
+
+.dc-grid-container { 
+    display:grid; 
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(1,1fr); 
+    grid-auto-rows: 1fr; 
+    grid-column-gap: 5px; 
+    grid-row-gap: 5px; 
+    margin: 5px; 
+          
+    
+
+}
+
+#dc-flex-container { 
+    display:flex;
+   flex-wrap: wrap;
+}
+
+#dc-flex-container > div { 
+    width: 393.33px;
+}
+
+
+
+
+
+
+.modalBackground { 
+    background-color: gray; 
+    filter:opacity(=70); 
+    opacity: 0.7;
+}
+
+#dineroEntregado { 
+    display: flex;
+    flex-direction: row;
+}
+
+.textDineroEntregado { 
+    max-width: 200px;
+}
+
+#form-container-6 { 
+    display: flex;
+    justify-content: space-between;
+}
+
+#btnContainer { 
+    display: flex;
+    justify-content: center;
+     
+}
+
+#btnContainer > * { 
+    margin: 5px; 
+}

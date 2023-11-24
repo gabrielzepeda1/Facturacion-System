@@ -1,0 +1,169 @@
+﻿<%@ Page Title="Roles de Usuario | Facturación" Language="VB" EnableEventValidation="false" MasterPageFile="~/master/principal.master" AutoEventWireup="false" CodeFile="roles - Copy.aspx.vb" Inherits="herramientas_roles" %>
+
+<asp:Content ID="C1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+
+<asp:Content ID="C2" ContentPlaceHolderID="cpTitulo" Runat="Server">
+    <h1>Roles de Usuario</h1>
+</asp:Content>
+
+<asp:Content ID="C3" ContentPlaceHolderID="cpUbicacion" Runat="Server">
+    <a href="../Default.aspx">Escritorio</a>
+    <label>&gt;</label>
+    <a href="roles.aspx">Roles de Usuario</a>
+</asp:Content>
+
+<asp:Content ID="C4" ContentPlaceHolderID="CP1" Runat="Server">
+    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+
+    <div id="main-form">
+        <div id="main-form-content">
+
+            <div id="main-form-content-field">
+                <div id="Control">
+                    <a id="btnNew" class="new"><i class="fas fa-plus-circle"></i><label>Nuevo</label></a>
+                    <asp:LinkButton ID="btnDelete" runat="server" CssClass="delete" OnClientClick="return delete_validation();"><i class="far fa-times-circle"></i><label>Eliminar</label></asp:LinkButton>
+                </div>
+
+                <div class="form-no-popup">
+
+                    <asp:UpdatePanel ID="upMensaje" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="trvMenu" EventName="SelectedNodeChanged"/>
+                            <asp:AsyncPostBackTrigger ControlID="trvPermisos" EventName="SelectedNodeChanged"/>
+                            <asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click"/>
+                            <asp:AsyncPostBackTrigger ControlID="btnDelete" EventName="Click"/>
+                        </Triggers>
+                    </asp:UpdatePanel>
+
+                </div> <!-- FORMULARIO WEB -->
+
+                <asp:UpdatePanel ID="upTable" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+
+                        <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
+
+                        <div class="table-content">
+                            <asp:HiddenField ID="hdfCodigo" runat="server" />
+                        </div>
+                            
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click"/>
+                        <asp:AsyncPostBackTrigger ControlID="btnDelete" EventName="Click"/>
+                    </Triggers>
+                </asp:UpdatePanel>
+
+                <div class="form-no-popup" style="padding-top:22px;">
+                    <div class="show-menu-acces-left">
+                        <h3>Opciones Disponibles</h3>
+                        <asp:TreeView ID="trvMenu" runat="server" ImageSet="Simple" NodeIndent="10">
+                            <ParentNodeStyle Font-Bold="False" />
+                            <HoverNodeStyle Font-Underline="True" ForeColor="#DD5555" />
+                            <SelectedNodeStyle Font-Underline="True" ForeColor="#DD5555" HorizontalPadding="0px" VerticalPadding="0px" />
+                            <NodeStyle Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" HorizontalPadding="0px" NodeSpacing="0px" VerticalPadding="0px" />
+                        </asp:TreeView>
+                    </div>
+
+                    <div class="show-menu-acces-right">
+                        <h3>Opciones Agregadas</h3>
+
+                        <asp:UpdatePanel ID="upMenuPermisos" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+
+                                <asp:TreeView ID="trvPermisos" runat="server" ImageSet="Simple" NodeIndent="10">
+                                    <ParentNodeStyle Font-Bold="False" />
+                                    <HoverNodeStyle Font-Underline="True" ForeColor="#DD5555" />
+                                    <SelectedNodeStyle Font-Underline="True" ForeColor="#DD5555" HorizontalPadding="0px" VerticalPadding="0px" />
+                                    <NodeStyle Font-Names="Verdana" Font-Size="8pt" ForeColor="Black" HorizontalPadding="0px" NodeSpacing="0px" VerticalPadding="0px" />
+                                </asp:TreeView>
+
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="trvMenu" EventName="SelectedNodeChanged"/>
+                                <asp:AsyncPostBackTrigger ControlID="trvPermisos" EventName="SelectedNodeChanged"/>
+                                <asp:AsyncPostBackTrigger ControlID="GridViewOne" EventName="SelectedIndexChanged" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+                
+                <div class="clear"></div>
+            </div><!-- #main-form-content-field -->
+
+
+
+        </div><!-- =========== #main-form-content ====================================================================== -->
+    </div><!-- =========== #main-form ====================================================================== -->
+
+    <div class="popup-form white-popup-block mfp-hide">
+        <div class="bstt-form">
+            <i class="fas fa-times-circle Close"></i>
+
+            <h2 id="popuptittle">Nuevo Rol de Usuario</h2>
+
+            <asp:TextBox ID="txtRol" runat="server" AutoCompleteType="None"></asp:TextBox>
+
+            <div class="form-btn">
+                <asp:Button ID="btnGuardar" runat="server" Text="Guardar" />
+            </div>
+        </div>
+    </div>
+
+    <asp:UpdateProgress ID="uprGrid" runat="server">
+        <ProgressTemplate>
+            <div class="loader">
+                <div>
+                    <img alt="Cargando" src="../img/load.gif"/>
+                    <p>Cargando...</p>
+                </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+</asp:Content>
+
+<asp:Content ID="C5" ContentPlaceHolderID="cpScripts" Runat="Server">
+    <script>
+
+        $(document).ready(function () {
+
+            //$('.datagird').basictable();
+
+            $("#btnNew").click(function () {
+
+                $("#<%=hdfCodigo.ClientID%>").val("");
+                $("#<%=txtRol.ClientID%>").val("");
+                $("#<%=txtRol.ClientID%>").prev().removeClass('visible');
+                $("#<%=txtRol.ClientID%>").prop('disabled', false);
+
+                $("#popuptittle").text('Nuevo Rol de Usuario');
+
+                open_popup();
+
+            });
+
+            $(".Close").click(function () {
+                $('.popup-form').bPopup().close();
+            });
+
+        });
+
+        function open_popup() {
+            $('.popup-form').bPopup({
+                appendTo: 'form',
+                speed: 650,
+                transition: 'slideIn',
+                transitionClose: 'slideBack'
+            });
+        }
+
+        function responsive_table()
+        {
+            //$('.datagird').basictable();
+        }
+    </script>
+</asp:Content>
+

@@ -1,0 +1,129 @@
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports CrystalDecisions.Shared
+Imports System.Data
+Imports System.Drawing.Printing
+Imports System.Globalization
+Imports System.Threading
+
+Partial Class reportes_reportview
+    Inherits System.Web.UI.Page
+    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim DataBase As New FACTURACION_CLASS.database
+
+#Region "PROPIEDADES DEL FORMULARIO"
+    Dim _Tipo_Reporte As String = String.Empty
+    Public Property Tipo_Reporte() As String
+        Get
+            Return _Tipo_Reporte
+        End Get
+        Set(ByVal value As String)
+            _Tipo_Reporte = value
+        End Set
+    End Property
+
+    Public Property Codigo() As String
+        Get
+            Return ViewState("Codigo")
+        End Get
+        Set(ByVal value As String)
+            ViewState("Codigo") = value
+        End Set
+    End Property
+#End Region
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not Page.IsPostBack Then
+
+            Load_Variables()
+
+            Load_ReportView()
+
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' DETERMINA EL TIPO DE REPORTE A MOSTRAR
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub Load_Variables()
+        If Not Trim(Request.QueryString("ty")) = String.Empty Then
+            Tipo_Reporte = Trim(Request.QueryString("ty"))
+        End If
+
+        If Not Trim(Request.QueryString("numero")) = String.Empty Then
+            Codigo = Trim(Request.QueryString("numero"))
+        End If
+    End Sub
+
+    Private Sub Load_ReportView()
+        Try
+
+            Select Case Tipo_Reporte
+                Case "SCONTRATO"
+                    LOAD_CONTRATO_SALIDA()
+
+            End Select
+
+        Catch ex As Exception
+            Me.ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar cargar el ReportView en el Formulario. " & ex.Message, "error")
+        End Try
+    End Sub
+
+    Private Sub LOAD_CONTRATO_SALIDA()
+        '' 1. CREAR UN DATASET EN VISUAL STUDIO CON LAS TABLAS A UTILIZAR
+        '' 2. CREAR UN REPORTE CON SAP-CRYSTAL UTILIZANDO COMO ORIGEN DE DATO EL DATASET
+        '' 3. UTILIZAR EL SIGUIENTE CODIGO
+
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+
+        Try
+            If dbCon.State = ConnectionState.Closed Then
+                dbCon.Open()
+            End If
+
+            Dim SqlMaestro As String = String.Empty
+            Dim sqlDetalle As String = String.Empty
+
+            SqlMaestro = " SET DATEFORMAT DMY " & _
+                         " EXEC sp_view_salida_contrato " & _
+                         " @cod_salida = " & Codigo & " "
+
+            sqlDetalle = " SET DATEFORMAT DMY " & _
+                         " EXEC sp_view_salida_contrato_detalle " & _
+                         " @cod_salida = " & Codigo & " "
+
+            '' Instanciar el Dataset usado como origen de datos
+            'Dim ds_vs As dts_salida_contrato = New dts_salida_contrato
+
+            ' '' creamos los data adapters
+            'Dim daMaestro As System.Data.OleDb.OleDbDataAdapter = New System.Data.OleDb.OleDbDataAdapter(SqlMaestro, dbCon)
+            'Dim daDetalle As System.Data.OleDb.OleDbDataAdapter = New System.Data.OleDb.OleDbDataAdapter(sqlDetalle, dbCon)
+
+            ' '' empezamos a poblar las tablas del Data Set Tipado
+            'daMaestro.Fill(ds_vs, "sp_view_salida_contrato")
+            'daDetalle.Fill(ds_vs, "sp_view_salida_contrato_detalle")
+
+            'Dim CrReport As New CrystalDecisions.CrystalReports.Engine.ReportDocument
+            '' Asigno el reporte
+            'CrReport = New CrystalDecisions.CrystalReports.Engine.ReportDocument()
+            'CrReport.Load(Server.MapPath("../reportes/salida_contrato.rpt"))
+            'CrReport.SetDataSource(ds_vs)
+
+            'Me.rptReporte.ParameterFieldInfo.Clear()
+            'Me.rptReporte.ReportSource = CrReport
+
+            'CrReport.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath("../reportes/contratos-" & Codigo & ".pdf"))
+            'Response.Redirect("../reportes/contratos-" & Codigo & ".pdf")
+
+        Catch ex As Exception
+            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+
+        Finally
+            If dbCon.State = ConnectionState.Open Then
+                dbCon.Close()
+            End If
+
+        End Try
+    End Sub
+
+End Class

@@ -1,0 +1,242 @@
+﻿Imports System.Data
+
+Partial Class Mater_principal
+    Inherits System.Web.UI.MasterPage
+    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim Database As New FACTURACION_CLASS.database
+
+    Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
+    Public MyUserName As String = String.Empty
+
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        If Not Page.IsPostBack Then
+
+            ' VERIFICA SI HA SELECCIONADO EL PUESTO =========================================================================
+            If Session("Pais") = String.Empty Or Session("Empresa") = String.Empty Or Session("Puesto") = String.Empty Or _
+            Session("cod_pais") = String.Empty Or Session("cod_empresa") = String.Empty Or Session("cod_puesto") = String.Empty Then
+
+                Response.Redirect(ResolveClientUrl("../Utilitarios/PaisEmpresaPuesto.aspx"))
+
+            End If
+            ' VERIFICA SI HA SELECCIONADO EL PUESTO =========================================================================
+
+            Dim Pagina As String = GetPageName()
+
+            If Not Pagina = String.Empty Then
+                If Not Pagina = "Default.aspx" Then
+                    GetPermisos()
+                End If
+            End If
+
+            MyUserName = Request.Cookies("CKSMFACTURA")("Nombre_Usuario") + "-" + Request.Cookies("CKSMFACTURA")("desPais") + "-" + Request.Cookies("CKSMFACTURA")("desPuesto")
+
+            GetMenuEncabezado()
+
+            Refresh_Session_Time()
+
+        End If
+
+    End Sub
+
+    Private Sub Refresh_Session_Time()
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+
+        Try
+
+            If dbCon.State = ConnectionState.Closed Then
+                dbCon.Open()
+            End If
+
+            Dim sql As String = String.Empty
+            sql = "EXEC sp_sys_sesion_activa " & _
+                  "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
+                  "@cod_sesion = null," & _
+                  "@estado = 'ACTUALIZAR'"
+
+            Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
+            cmd.ExecuteNonQuery()
+
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
+
+        Finally
+            If dbCon.State = ConnectionState.Open Then
+                dbCon.Close()
+            End If
+
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' VERIFICA SI EL USUARIO TIENE PERMISO DE ENTRAR A LA PAGINA ACTUAL. 
+    ''' EL SISTEMA CREA OPCIONES EN EL MENU PARA CADA USUARIO SIN EMBARGO SI EL USUARIO ESCRIBE MANUALMENTE LA DIRECCIÓN URL ESTE ENTRARA A LA PAGINA.
+    ''' ESTE PROCEDIMIENTO VERIFICA SI EL USUARIO ESTA EN UNA PAGINA A LA QUE TIENE PERMISO EN EL MENÚ, DE NO TENER PERMISO LO REDIRECCIONA A LA 
+    ''' PAGINA DEL PERFIL.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub GetPermisos()
+        Try
+            Dim Pagina As String = String.Empty
+
+            Dim Posicion As Integer = InStr(GetPageName(), "?")
+
+            If Posicion > 0 Then
+                Pagina = GetPageName().Remove(Posicion - 1)
+            Else
+                Pagina = GetPageName()
+            End If
+
+            Dim SQL As String = String.Empty
+            Dim TienePermiso As Boolean = False
+
+            If Not Request.Cookies("CKSMFACTURA") Is Nothing Then
+                SQL = "EXEC sp_val_PermisoUsuario " & _
+                      "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
+                      "@Pagina = '" & Pagina & "' "
+
+                TienePermiso = Database.GetBoleano(SQL, "TRUE")
+
+                If TienePermiso = False Then
+                    Response.Redirect(ResolveClientUrl("../Default.aspx"))
+                End If
+            End If
+
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar validar los permisos del usuario en la pagina maestra. " & ex.Message)
+
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' ONTIENE EL NOMBRE DE LA PAGINA WEB ACTUAL JUNTO CON SUS VARIABLES Y CODIGOS EN LA URL
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPageName() As String
+        Dim arrPath() As String = HttpContext.Current.Request.RawUrl.Split("/")
+        'Return arrPath(arrPath.GetUpperBound(0)).ToLower
+
+        Return arrPath(arrPath.GetUpperBound(0))
+    End Function
+
+
+#Region "CREAR EL MENU DE FORMA DINAMICA"
+    Private Sub GetMenuEncabezado()
+        Try
+
+            Dim SQL As String = String.Empty
+            SQL = " EXEC sp_menu_accesos " & _
+                  "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
+                  "@cod_padre = NULL"
+
+            Dim ds As DataSet
+            ds = Database.GetDataSet(SQL)
+
+            Dim HTML As String = String.Empty
+
+            HTML = "<ul>"
+            HTML &= "<li><a href=""" & ResolveClientUrl("../Default.aspx") & """>Inicio</a></li>"
+
+            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
+
+                If ds.Tables(0).Rows(i).Item("cod_padre").ToString.Trim = String.Empty Then
+                    HTML &= "<li><a>" & ds.Tables(0).Rows(i).Item("etiqueta").ToString.Trim & "</a>"
+
+                    HTML &= GetMenuDetalle(ds.Tables(0).Rows(i).Item("cod_menu").ToString.Trim, ds)
+
+                    HTML &= "</li>"
+                End If
+
+            Next i
+
+            HTML &= "</ul>"
+
+            Me.ltMenu.Text = HTML
+
+            ds.Dispose()
+
+        Catch ex As Exception
+            Me.ltMenu.Text = "<ul><li>" & ex.Message & "</li></ul>"
+        End Try
+    End Sub
+
+    Function GetMenuDetalle(COD_PADRE As String, ds As DataSet) As String
+        Dim HTML As String = String.Empty
+
+        Try
+            Dim ruta As String = String.Empty
+            Dim clase As String = String.Empty
+            Dim label As String = String.Empty
+
+            HTML = "<ul>"
+            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
+                If ds.Tables(0).Rows(i).Item("cod_padre").ToString.Trim = COD_PADRE Then
+
+                    ruta = ds.Tables(0).Rows(i).Item("ruta").ToString.Trim
+                    clase = ds.Tables(0).Rows(i).Item("Icono").ToString.Trim
+                    label = ds.Tables(0).Rows(i).Item("etiqueta").ToString.Trim
+
+                    HTML &= "<li><a href=""" & ResolveClientUrl(ruta) & """><i class=""" & clase & """></i> " & label & "</a></li>"
+
+                End If
+            Next i
+            HTML &= "</ul>"
+
+        Catch ex As Exception
+            HTML = "<ul><li>Error al crear el detalle: " & ex.Message & "</li></ul>"
+
+        End Try
+
+        Return HTML
+    End Function
+#End Region
+
+#Region "CERRAR SESIÓN"
+    Protected Sub btnCerrar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCerrar.Click
+        OnCloseSession()
+    End Sub
+
+    Private Sub OnCloseSession()
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+
+        Try
+
+            If dbCon.State = ConnectionState.Closed Then
+                dbCon.Open()
+            End If
+
+            Dim sql As String = String.Empty
+            sql = "EXEC sp_sys_sesion_activa " & _
+                  "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
+                  "@cod_sesion = null," & _
+                  "@estado = 'INACTIVAR'"
+
+            Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
+            cmd.ExecuteNonQuery()
+
+            Dim CKSMFACTURA As HttpCookie = New HttpCookie("CKSMFACTURA")
+            CKSMFACTURA("cod_sesion") = String.Empty
+            CKSMFACTURA("cod_usuario") = String.Empty
+            CKSMFACTURA("Nombre_Usuario") = String.Empty
+            CKSMFACTURA("contrasenia") = String.Empty
+            CKSMFACTURA.Expires = Now.AddDays(-1)
+            Response.Cookies.Add(CKSMFACTURA)
+            Me.Session.Abandon()
+
+            FormsAuthentication.SignOut()
+            FormsAuthentication.RedirectToLoginPage()
+
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
+
+        Finally
+            If dbCon.State = ConnectionState.Open Then
+                dbCon.Close()
+            End If
+
+        End Try
+    End Sub
+#End Region
+End Class
+

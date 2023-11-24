@@ -1,0 +1,272 @@
+﻿<%@ Page Title="Facturacion" Language="VB" EnableEventValidation="false" MasterPageFile="~/master/prinFactura.master" AutoEventWireup="false" CodeFile="Factura.aspx.vb" Inherits="movimientos_Factura" %>
+
+<%@ Register Src="~/usercontrol/menu_catalogos.ascx" TagPrefix="uc1" TagName="menu_catalogos" %>
+ 
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="cpTitulo" Runat="Server">
+    <h4>Facturación</h4>
+</asp:Content>
+
+<asp:Content ID="Content3" ContentPlaceHolderID="cpUbicacion" Runat="Server">
+     <a href="../Default.aspx">Menu</a>
+    <label>&gt;</label>
+    <a href="Factura.aspx">Facturación</a>
+</asp:Content>
+
+<asp:Content ID="Content4" ContentPlaceHolderID="CP1" Runat="Server">
+    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+
+    <div id="main-form">
+        <div id="main-form-content">
+
+             <div class="factura-form">
+                 <div class="factura-form-header">
+                     <label>Factura</label>
+                     <asp:TextBox ID="txtNoFac" runat="server" ReadOnly="true" height="20px" Width="79px"></asp:TextBox>
+      
+
+                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                     <ContentTemplate>
+                         <label>Credito</label>
+                         <asp:RadioButton ID="rdbCredito"  GroupName="CondicionPago" AssociatedControlID="ddlCliente"  runat="server" />
+                        <%-- <asp:Button ID="btnLosCredi" runat="server" Text=""  class="hide" onclick="btnLosCredi_Click"/>--%>
+                     </ContentTemplate>
+                     <Triggers>
+                         <asp:AsyncPostBackTrigger ControlID="btnCboCLi" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnNomCli" EventName="Click" />
+                     </Triggers>
+                    </asp:UpdatePanel>
+                   
+
+                     <label>Contado</label>
+                     <asp:RadioButton ID="rdbContado"  GroupName="CondicionPago" runat="server" />
+                    
+                     <label>Nombre del Cliente</label>
+                     <asp:UpdatePanel ID="upDesc" runat="server" UpdateMode="Conditional">
+                     <ContentTemplate>
+                        <div class="factura-form-content w200px">
+                            <asp:DropDownList ID="ddlCliente" runat="server"  CssClass="SelectStyle SelectSearch" onchange="ClienEventLosFocu(this);"/>
+                            <asp:Button ID="btnCboCLi" runat="server" Text=""  class="hide" onclick="btnCboCLi_Click"/>
+                        </div>
+                    
+                        <label>Cliente Eventual</label>
+                        <asp:TextBox ID="TextNomClien" runat="server" MaxLength="50"  CssClass="w200px" onchange="ClienEventLosFocu(this);"></asp:TextBox>
+                        <asp:Button ID="btnNomCli" runat="server" Text=""  class="hide" onclick="btnNomCli_Click"/>
+                     </ContentTemplate>
+                     <Triggers>
+                         <asp:AsyncPostBackTrigger ControlID="btnCboCLi" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="btnNomCli" EventName="Click" />
+                     </Triggers>
+                    </asp:UpdatePanel>
+                   
+
+                     <label>ID</label>
+                     <asp:TextBox ID="TextId" runat="server" MaxLength="100"  CssClass="w80px"></asp:TextBox>
+
+                     <div class="clear"></div>
+
+                     <hr/><br />
+
+                     <div class="factura-form-content w400px">
+                        <label>Nombre del Producto</label> 
+                        <asp:DropDownList ID="ddlProducto" runat="server" CssClass="SelectStyle" />
+                        <ajaxToolkit:CascadingDropDown 
+                            ID="CCProducto" 
+                            runat="server" 
+                            TargetControlID="ddlProducto" 
+                            ServicePath="../services/WSCatProductos.asmx"
+                            ServiceMethod="GetProductos" 
+                            Category="CategoryName">
+                        </ajaxToolkit:CascadingDropDown>
+                     </div>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                     <div class="factura-form-content w80px">
+                         <label>Cantidad</label>
+                         <asp:Panel ID="PanelCantidad" runat="server" DefaultButton="btnVeriInvent">
+                                <asp:TextBox ID="TextCantidad" runat="server" CssClass="w80px" Text="0.00" onblur="formatNumber(this, 2); control_fill(this);" onkeypress="formatNumber(this, 2)" onfocus="control_clear(this)" OnTextChanged="TextCantidad_TextChanged" ></asp:TextBox>
+                                 <asp:Button ID="btnVeriInvent" runat="server" Text=""  class="hide" />
+                         </asp:Panel>
+                     </div>
+                   
+                     <div class="factura-form-content w80px">
+                         <label>Bultos</label>
+                         <asp:TextBox ID="TextBultos" runat="server" CssClass="w80px"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w80px">
+                         <label>Precio</label>
+                         <asp:TextBox ID="TextPrecio" runat="server" CssClass="w80px"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w80px">
+                         <label>Total</label>
+                         <asp:TextBox ID="TextTotal" runat="server" CssClass="w80px" readonly="true"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w160px paddingt27px">
+                         <asp:Button ID="BtnAdicionar" runat="server" Text="Adicionar Producto" class="btnEditar" />
+                     </div>
+
+                     <div class="factura-form-content w160px paddingt27px">
+                         <asp:Button ID="BtnBorrarTodos" runat="server" Text="Eliminar. Productos" Class="btnEditar" />
+                     </div>
+
+                     <div class="clear"></div>
+
+                     <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
+                   <%-- <input id="txtMensaje" type="text" style="width:25%;margin-left:35%;" runat="server" 
+                        placeholder="Mensaje a mostrar" class="form-control" />--%>
+
+                   <%--<asp:Button ID="btnMostrar" runat="server" style="margin-left:35%;" CssClass="btn btn-success" Text="Mostrar Mensaje" OnClick="btnMostrar_Click"/>--%>
+
+                    <div style ="min-height:200px; overflow:scroll;">
+                        <asp:GridView ShowHeaderWhenEmpty="True"
+                            ID="GridViewOne" 
+                            runat="server" 
+                            CssClass="table table-light table-sm table-striped table-hover table-bordered" 
+                            CellPadding="0"
+                            GridLines="none" 
+                            AllowPaging="True"
+                            AllowSorting ="True"
+                            PageSize="5" 
+                            AutoGenerateColumns="False" DataSourceID="FacturaTmp" BorderColor="#993300">
+        
+                            <SelectedRowStyle CssClass="SelectedRowDelete"/>
+
+                            <Columns>
+                                <asp:BoundField HeaderText="cod_producto" DataField="cod_producto" SortExpression="cod_producto" Visible="False"/>
+                                <asp:BoundField DataField="desc_imprimir" HeaderText="Producto" SortExpression="desc_imprimir" />
+                                <asp:BoundField DataField="cantidad" HeaderText="Cantidad" SortExpression="cantidad" />
+                                <asp:BoundField DataField="bultos" HeaderText="Bultos" SortExpression="bultos" />
+                                <asp:BoundField DataField="precio_unidad" HeaderText="Precio" SortExpression="precio_unidad" />
+                                <asp:BoundField DataField="sub_total" HeaderText="Subtotal" SortExpression="sub_total" />
+                                <asp:BoundField DataField="valor_descuento" HeaderText="Descuento" SortExpression="valor_descuento" />
+                                <asp:BoundField DataField="valor_iva" HeaderText="IVA" SortExpression="valor_iva" />
+                                <asp:BoundField DataField="neto" HeaderText="Neto" SortExpression="neto" />
+                            </Columns>
+                                                             
+                            <PagerTemplate>
+                                <div class="pagination">
+                                    <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag"  CommandArgument="First" CssClass="primero" Text="Primera"  formnovalidate/>
+                                    <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior"  CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate/>
+                                    <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate/>
+                                    <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag"  CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate/>
+                                    <asp:label id="CurrentPageLabel" runat="server" CssClass = "PagerLabel"/>
+                                </div>
+                            </PagerTemplate>
+                        </asp:GridView>
+                        <asp:SqlDataSource ID="FacturaTmp" runat="server" ConnectionString="<%$ ConnectionStrings:FacturacionConnectionString %>" SelectCommand="SELECT [no_factura] as NoFactura, [cod_producto] as Codigo, [desc_imprimir] as Producto, [cantidad] as Cantidad, [bultos] as Bultos, [precio_unidad] as Precio, [sub_total] as SubTotal, [valor_descuento] as Descuento, [valor_iva] as Iva, [neto] as Neto FROM [TmpDetFact]"></asp:SqlDataSource>
+                    </div>
+
+                     <div class="clear"></div>
+                     <br />
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>Total Libras</label>
+                         <asp:TextBox ID="TextLibras" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>Subtotal</label>
+                         <asp:TextBox ID="TextSubtotal" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>Porcentaje Desto.</label>
+                         <asp:TextBox ID="TextPorDesc" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>Valor Desto.</label>
+                         <asp:TextBox ID="TextValorDescu" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>.IVA</label>
+                         <asp:TextBox ID="TextIVA" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content factura-form-totales w130px">
+                         <label>Neto</label>
+                         <asp:TextBox ID="TextNeto" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-btn w160px paddingt27px">
+                         <asp:Button ID="BtnGuardar" runat="server" Text="Imprimir/Guardar" Class="btnEliminar" />
+                     </div>
+
+                     <div class="clear"></div>
+                     <hr /><br />
+
+                     <h3>Dinero Entregado</h3>
+
+                     <div class="factura-form-content w130px">
+                         <label>Valor</label>
+                         <asp:TextBox ID="TextDinero" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w130px">
+                         <label>Vuelto</label>
+                         <asp:TextBox ID="TextVuelto" runat="server"  Enabled="false"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w130px">
+                         <label>Dolares</label>
+                         <asp:TextBox ID="TextDolares" runat="server"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w130px">
+                         <label>Paridad</label>
+                         <asp:TextBox ID="TextTipoCambio" runat="server" Enabled="false"></asp:TextBox>
+                     </div>
+
+                     <div class="factura-form-content w130px">
+                         <label>Cordobas</label>
+                         <asp:TextBox ID="TextCordoba" runat="server"  Enabled="false"></asp:TextBox>
+                     </div>
+
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="GridViewOne" EventName="SelectedIndexChanged" />
+                </Triggers>
+            </asp:UpdatePanel>
+
+                 </div><!-- END:factura-form-header -->
+             </div><!-- END:factura-form -->
+
+        </div><!-- END: #main-form-content -->
+    </div><!-- END: #main-form -->
+                         
+
+    
+</asp:Content>
+
+<asp:Content ID="Content5" ContentPlaceHolderID="cpScripts" Runat="Server">
+     <script >
+
+       function ClienEventLosFocu()
+       {
+           if ($("#<%=rdbCredito.ClientID%>").is(':checked')) {
+               var CboClie = document.getElementById('<%=ddlCliente.ClientID%>');
+
+               if (CboClie.value == 0 || CboClie.value == "CLIENTE EVENTUAL") {
+                   alert("Selecciona Un Cliente factura es de credito");
+                   CboClie.focus();
+               }
+           }
+       }
+         
+
+         $("#<%=rdbCredito.ClientID%>").click(function () {
+             if ($(this).is(':checked'))
+             {
+                 $("#<%=ddlCliente.ClientID%>").focus();
+             }
+         });
+      
+    </script>
+
+</asp:Content>

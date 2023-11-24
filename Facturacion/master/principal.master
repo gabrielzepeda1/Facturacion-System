@@ -1,0 +1,333 @@
+﻿<%@ Master Language="VB" CodeFile="principal.master.vb" Inherits="Mater_principal" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title></title>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+<%--<script src="<%= ResolveClientUrl("../js/jquery-ui-1.12.1/jquery-ui.js")%>" type="text/javascript"></script>
+    <link href="<%= ResolveClientUrl("../js/jquery-ui-1.12.1/jquery-ui.min.css")%>" rel="stylesheet" />--%>
+    <%--<script src="<%= ResolveClientUrl("../js/jquery.sidr.min.js")%>" type="text/javascript"></script>--%>
+    <%--<link href="<%= ResolveClientUrl("../js/stylesheets/jquery.sidr.dark.min.css")%>" rel="stylesheet" />--%>
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>--%>
+    <%--<script src="<%= ResolveClientUrl("../js/datatable.min.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("../js/datatable.jquery.min.js")%>" type="text/javascript"></script>--%>
+    <%--<link href="<%= ResolveClientUrl("../css/datatable.min.css")%>" rel="stylesheet" />--%>
+    <%--<link href="<%= ResolveClientUrl("../css/basictable.css")%>" rel="stylesheet" />--%>
+    <%--<script src="<%= ResolveClientUrl("../js/jquery.basictable.min.js")%>" type="text/javascript"></script>--%>
+    <%--<script src="<%= ResolveClientUrl("../js/jquery.bpopup.min.js")%>" type="text/javascript"></script>--%>
+    <%--<script src="<%= ResolveClientUrl("../js/bxslider-4-4.2.12/src/js/jquery.bxslider.js")%>" type="text/javascript"></script>--%>
+    <%--<link href="<%= ResolveClientUrl("../js/bxslider-4-4.2.12/src/css/jquery.bxslider.css")%>" rel="stylesheet" />--%>
+
+    <%--<script src="<%= ResolveClientUrl("../js/alertify.min.js")%>" type="text/javascript"></script>--%>
+    <%--<link href="<%= ResolveClientUrl("../css/alertify.core.css")%>" rel="stylesheet" />--%>
+    <%--<link href="<%= ResolveClientUrl("../css/alertify.default.css")%>" rel="stylesheet" />--%>
+
+  
+    <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
+    <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Roboto&display=swap" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("../css/principal.css")%>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("../css/newStyles.css")%>" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+    <%--<link rel="stylesheet" href="../css/newStyles.css" />--%>
+</head>
+
+<body>
+    <form id="form1" runat="server" enctype="multipart/form-data" method="post">
+        <header>
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+
+                    <div class="d-flex col-1 justify-content-center">
+                        <a id="homeButton" class="navbar-brand" href="../Default.aspx">
+                            <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
+                    </div>
+
+                    <div class="d-flex col-5 align-items-center">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+                                <asp:Literal ID="ltMenu" runat="server"> </asp:Literal>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex col-6 align-items-center justify-content-end column-gap-2 px-3">
+
+                        <a class="btn btn-success text-center align-middle" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>" role="button">
+                            <i class="fas fa-user"></i>&nbsp <%= MyUserName%>
+                        </a>
+
+                        <%--<div class="affiliations-container">
+
+                        <div class="affiliation first">
+                            <p class="">Pais: <%= UserPais %></p>
+                            <p class="">Empresa: <%= UserEmpresa %></p>
+                            <p class="">Puesto: <%= UserPuesto %></p>
+                        </div>
+
+                        <div class="affiliation second">
+                            <p class="">Pais: <%= UserPais %></p>
+                            <p class="">Empresa: <%= UserEmpresa %></p>
+                            <p class="">Puesto: <%= UserPuesto %></p>
+                        </div>
+
+
+                    </div>--%>
+                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
+
+                        <%--                    <a class="btn btn-danger" onclick="OnCloseSession();" title="Cerrar Sesión" role="button"><i class="fas fa-sign-out-alt"></i>
+                         Cerrar Sesión</a>--%>
+                    </div>
+
+
+                    <%--<a class="btn btn-warning btn-lg" href="#sidebar-menu" title="Menú" role="button"><i class="fas fa-bars"></i></a>--%>
+                    <%--<a class="btn btn-primary btn-lg" title="Notificaciones" role="button"><i class="far fa-bell"></i></a>--%>
+                    <%--<a class="btn btn-secondary btn-lg" href="<%= ResolveClientUrl("../herramientas/administracion.aspx")%>" title="Herramientas"><i class="fas fa-cog" role="button"></i></a>--%>
+                </div>
+
+            </nav>
+        </header>
+
+        <div id="info-pag">
+            <div class="container-fluid bg-dark">
+                <div class="row text-white align-items-center px-2">
+
+                    <div id="titulo" class="d-flex col-5 align-items-center justify-content-start">
+                        <asp:ContentPlaceHolder ID="cpTitulo" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                    <div id="ubicacion" class="d-flex gap-2 col-7 align-items-center justify-content-end">
+
+                        <div class="affiliations-container py-2 mb-1">  
+
+
+                            <div class="affiliation first fw-semibold">
+                                País: <%= UserPais %>
+                            &emsp;
+                            Empresa: <%= UserEmpresa %>
+                            &emsp;
+                            Puesto: <%= UserPuesto %>
+                            &emsp; 
+                            </div>
+
+                            <div class="affiliation second fw-semibold">
+                                País: <%= UserPais %>
+                            &emsp;
+                            Empresa: <%= UserEmpresa %>
+                            &emsp;
+                            Puesto: <%= UserPuesto %>
+                            &emsp; 
+                            </div>
+                        </div>
+
+
+                        <asp:ContentPlaceHolder ID="cpUbicacion" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%--<asp:Button ID="btnCerrar" runat="server" Text="Cerrar sesion" Style="display: none;" formnovalidate="1" />--%>
+        <asp:ContentPlaceHolder ID="CP1" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("This is running");
+            ubicacionStyles();
+            tituloStyles();
+            btnNewStyles();
+            btnExportarStyles();
+            btnGridStyles();
+            removeElements();
+            preventBack();
+            //tableActive();
+
+            //$('.SelectSearch').select2({
+            //    theme: "classic",
+            //    placeholder: "Escribe para filtrar",
+            //    allowClear: false
+            //});
+
+
+            //$('#sidebar-menu').sidr({ side: 'right' });
+
+            //if (isMobile() == true) {
+            //    $('body').swipe({
+            //        //Deslizamientos hacia la izquieda
+            //        swipeLeft: function () {
+            //            $.sidr('close', 'sidr');
+            //        },
+            //        swipeRight: function () {
+            //            $.sidr('open', 'sidr');
+            //        },
+            //        //Default is 75px, set to 0 for demo so any distance triggers swipe
+            //        threshold: 90
+            //    });
+
+            //}
+
+        });
+
+        function preventBack() {
+            let homeButton = document.getElementById("homeButton");
+            let url = window.location.href;
+            console.log(url);
+            if (url.includes("Default")) {
+                homeButton.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default behavior (e.g., postback)
+                    console.log("Postback prevented. Estas en la pagina principal.");
+                });
+            }
+        }
+
+
+        function removeElements() {
+            // Get the ContentPlaceHolder element by its ID
+            var divUbicacion = document.getElementById("ubicacion");
+
+            if (divUbicacion) {
+                // Get all the anchor and label elements within the ContentPlaceHolder
+                var elementsToRemove = divUbicacion.querySelectorAll("a, label");
+
+                // Remove each of the found elements
+                for (var i = 0; i < elementsToRemove.length; i++) {
+                    var element = elementsToRemove[i];
+                    element.parentNode.removeChild(element);
+                }
+            }
+        }
+
+        function tituloStyles() {
+
+            console.log("ubicacionStyles() Running..")
+
+            let element = document.getElementById("titulo");
+
+            if (element) {
+
+                let childrenElements = element.children
+
+                if (childrenElements.length >= 1) {
+
+                    childrenElements[0].classList.add("text-white", "fs-5", "text-uppercase", "py-2", "mb-0")
+
+                    console.log("Completed!")
+                }
+            }
+
+        }
+
+        function ubicacionStyles() {
+
+            console.log("ubicacionStyles() Running..")
+
+            let ubicacionElement = document.getElementById("ubicacion");
+
+            if (ubicacionElement) {
+
+                let childrenElements = ubicacionElement.children
+
+
+                if (childrenElements.length >= 3) {
+
+                    childrenElements[0].classList.add("text-white", "fs-6", "text-decoration-none", "fw-semibold")
+                    childrenElements[2].classList.add("text-white", "fs-6", "text-decoration-none", "fw-semibold")
+
+                    console.log("Completed!")
+                }
+
+            }
+
+        }
+
+        function btnNewStyles() {
+
+            let element = document.getElementById("btnNew")
+
+            if (element) {
+
+                element.classList.remove("new")
+                element.classList.add("btn", "btn-primary", "btn-lg", "text-white")
+
+                console.log("Completed!")
+
+            }
+        }
+
+        function btnExportarStyles() {
+
+            let element = document.getElementById("btnExportar")
+
+            if (element) {
+
+                element.classList.remove("print")
+                element.classList.add("btn", "btn-success", "btn-lg", "text-white")
+
+                console.log("Completed!")
+
+            }
+        }
+
+        function btnGridStyles() {
+            let btnEditar = document.getElementById("btnEditar");
+            let btnEliminar = document.getElementById("btnEliminar");
+
+            if (btnEditar && btnEliminar) {
+                btnEditar.className = "btn btn-success"; // Set the class directly
+                btnEliminar.className = "btn btn-warning"; // Set the class directly
+            }
+        }
+
+
+
+        function isMobile() {
+            try {
+                document.createEvent("TouchEvent");
+                return true;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+
+       <%-- function OnCerrar() {
+            var btn = document.getElementById("<%=btnCerrar.ClientID%>");
+            btn.click();
+        }--%>
+    </script>
+
+    <asp:ContentPlaceHolder ID="cpScripts" runat="server"></asp:ContentPlaceHolder>
+
+</body>
+<script src="<%= ResolveClientUrl("../js/jquery.min.js")%>" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<script type="text/javascript">
+    //override defaults
+    alertify.defaults.transition = "slide";
+    alertify.defaults.theme.ok = "btn btn-primary";
+    alertify.defaults.theme.cancel = "btn btn-danger";
+    alertify.defaults.theme.input = "form-control";
+</script>
+
+</html>
