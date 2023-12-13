@@ -20,7 +20,7 @@ Imports System.Web.Script.Serialization
 <System.Web.Script.Services.ScriptService()> _
 Public Class datalist
     Inherits System.Web.Services.WebService
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim Database As New FACTURACION_CLASS.database
 
     ''' <summary>
@@ -34,7 +34,7 @@ Public Class datalist
     Public Function GetOrigen(ByVal knownCategoryValues As String, _
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -77,7 +77,7 @@ Public Class datalist
     Public Function GetCalidades(ByVal knownCategoryValues As String, _
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -120,7 +120,7 @@ Public Class datalist
     Public Function GetDepartamento(ByVal knownCategoryValues As String, _
                                     ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try

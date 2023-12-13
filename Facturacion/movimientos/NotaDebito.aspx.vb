@@ -8,7 +8,7 @@ Imports System.Drawing
 Partial Class movimientos_NotaDebito
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
@@ -180,7 +180,7 @@ Partial Class movimientos_NotaDebito
 
     Private Sub InsertNotaDebito()
         Dim Message As String = String.Empty
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
         Dim query As String = String.Empty
         Dim ExternoInterno As Integer
 
@@ -222,14 +222,14 @@ Partial Class movimientos_NotaDebito
             End If
         End Try
 
-        ltMensaje.Text = conn.pmsgBox("La nota de debito se ha guardado correctamente.", "success")
+        ltMensaje.Text = conn.PmsgBox("La nota de debito se ha guardado correctamente.", "success")
 
     End Sub
 
     Private Sub No_Nota_Debito()
         Dim Message As String = String.Empty
         Dim query As String = String.Empty
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
 
         Try
 

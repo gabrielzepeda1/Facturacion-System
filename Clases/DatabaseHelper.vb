@@ -1,5 +1,5 @@
 ﻿Imports System.Data.SqlClient
-Imports FACTURACION_CLASS.seguridad
+Imports FACTURACION_CLASS.Seguridad
 
 Public Class DatabaseHelper
 

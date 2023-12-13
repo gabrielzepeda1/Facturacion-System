@@ -10,7 +10,7 @@ Imports System.IO
 Imports System.Data.OleDb
 
 Public Class database
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New seguridad
 
     ''' <summary>
     ''' CREA UNA COPIA DEL ARCHIVO QUE SERA ADJUNTO EN MEMORIA, Y LUEGO BORRA DICHA COPIA
@@ -41,7 +41,7 @@ Public Class database
     ''' <remarks></remarks>
     Public Function GetDataSet(ByVal Query As String) As DataSet
 
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
 
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
 
@@ -87,7 +87,7 @@ Public Class database
     ''' <returns>DATATABLE</returns>
     ''' <remarks></remarks>
     Public Function GetDateTableProcedimiento(ByVal Query As String) As DataTable
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -134,7 +134,7 @@ Public Class database
     ''' <returns>DATATABLE</returns>
     ''' <remarks></remarks>
     Public Function GetDateTable(ByVal Query As String) As DataTable
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -180,7 +180,7 @@ Public Class database
     ''' <returns>DATAREADER</returns>
     ''' <remarks></remarks>
     Public Function GetDataReader(ByVal Query As String) As System.Data.OleDb.OleDbDataReader
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
 
         Try
@@ -223,7 +223,7 @@ Public Class database
     ''' <returns>BOOLEAN</returns>
     ''' <remarks></remarks>
     Public Function GetBoleano(ByVal Query As String, ByVal campo As String) As Boolean
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -265,7 +265,7 @@ Public Class database
     ''' <returns>DATAREADER</returns>
     ''' <remarks></remarks>
     Public Function GetString(ByVal Query As String, ByVal campo As String) As String
-        Dim cnn As String = conn.conn
+        Dim cnn As String = conn.Conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then

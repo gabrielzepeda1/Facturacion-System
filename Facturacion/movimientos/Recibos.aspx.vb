@@ -25,7 +25,7 @@ Partial Class movimientos_Recibos
 
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
@@ -181,7 +181,7 @@ Partial Class movimientos_Recibos
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. de vendedor" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. de vendedor" & ex.Message, "error")
         End Try
     End Sub
     Private Sub CboCliente()
@@ -233,7 +233,7 @@ Partial Class movimientos_Recibos
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento CboCliente()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento CboCliente()" & ex.Message, "error")
 
         End Try
     End Sub
@@ -257,7 +257,7 @@ Partial Class movimientos_Recibos
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en FORMA DE PAGO" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en FORMA DE PAGO" & ex.Message, "error")
 
         End Try
 
@@ -283,7 +283,7 @@ Partial Class movimientos_Recibos
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en MONEDA" & ex.Message, " error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en MONEDA" & ex.Message, " error")
 
         End Try
 
@@ -309,7 +309,7 @@ Partial Class movimientos_Recibos
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en Bancos" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en Bancos" & ex.Message, "error")
 
         End Try
 
@@ -348,7 +348,7 @@ Partial Class movimientos_Recibos
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en CboCuentaBanco()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en CboCuentaBanco()" & ex.Message, "error")
 
         End Try
 
@@ -363,7 +363,7 @@ Partial Class movimientos_Recibos
     End Sub
 
     Private Sub ddlVendedor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlVendedor.SelectedIndexChanged
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Dim vCPais As String = Context.Request.Cookies("CKSMFACTURA")("codPais")
 
         Try
@@ -387,7 +387,7 @@ Partial Class movimientos_Recibos
             End If
 
         Catch ex As Exception
-            ltMensaje.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla de vendedor" & ex.Message, "error")
+            ltMensaje.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla de vendedor" & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then
@@ -459,7 +459,7 @@ Partial Class movimientos_Recibos
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid()", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
         End Try
 
     End Sub

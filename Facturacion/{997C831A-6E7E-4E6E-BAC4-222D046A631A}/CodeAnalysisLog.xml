@@ -1,0 +1,1298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files\microsoft visual studio\2022\community\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="17.0">
+ <Targets>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Code.dll">
+   <Modules>
+    <Module Name="app_code.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="datalist" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetCalidades(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="datalist.vb" Line="77">'datalist.GetCalidades(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetDepartamento(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="datalist.vb" Line="120">'datalist.GetDepartamento(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="datalist.vb" Line="138">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'datalist.GetDepartamento(String, String)' could contain the following variables 'Param("CategoryPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetOrigen(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="datalist.vb" Line="34">'datalist.GetOrigen(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="dts_salida_contrato" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+           <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'dts_salida_contrato'.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="dts_salida_contrato+sp_view_salida_contrato_detalleDataTable" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+           <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'dts_salida_contrato.sp_view_salida_contrato_detalleDataTable'.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="dts_salida_contrato+sp_view_salida_contratoDataTable" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+           <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'dts_salida_contrato.sp_view_salida_contratoDataTable'.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="FacturacionDataSet" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+           <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'FacturacionDataSet'.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="FacturacionDataSet+ImpDocEnLineaDataTable" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+           <Issue Certainty="60" Level="Error">Add an implementation of GetObjectData to type 'FacturacionDataSet.ImpDocEnLineaDataTable'.</Issue>
+          </Message>
+         </Messages>
+        </Type>
+        <Type Name="Impresion" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="Breaking">
+           <Issue Name="ProvideDisposeBool" Certainty="95" Level="Error">Provide an overridable implementation of Dispose(bool) on 'Impresion' or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#Dispose()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="Breaking">
+             <Issue Name="DisposeImplementation" Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="DirectoImpresora.vb" Line="150">Modify 'Impresion.Dispose()' so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="SWDatos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetOrigen(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="SWDatos.vb" Line="27">'SWDatos.GetOrigen(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebSDatosClientes" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetPais(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WebSDatosClientes.vb" Line="29">'WebSDatosClientes.GetPais(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WSCatProductos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetBanco(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="738">'WSCatProductos.GetBanco(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="750">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetBanco(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetCalidades(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="128">'WSCatProductos.GetCalidades(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetCliente(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="868">'WSCatProductos.GetCliente(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="885">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetCliente(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetCuentaBanco(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="828">'WSCatProductos.GetCuentaBanco(String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="846">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetCuentaBanco(String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")', 'Param("CategoryBanco")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetData(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="821">Object 'dbCon' can be disposed more than once in method 'WSCatProductos.GetData(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 821</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="820">Object 'reader' can be disposed more than once in method 'WSCatProductos.GetData(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 820</Issue>
+            </Message>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="794">'WSCatProductos.GetData(String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="801">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetData(String)' could contain the following variables 'query'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetEmpresa(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="296">'WSCatProductos.GetEmpresa(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="321">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetEmpresa(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoUser")', 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoPais")', 'Param("CategoryPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetEmpresaXPais(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="949">'WSCatProductos.GetEmpresaXPais(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="974">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetEmpresaXPais(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")', 'Param("CategoryPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetFamilia(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="214">'WSCatProductos.GetFamilia(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetFormaPago(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="700">'WSCatProductos.GetFormaPago(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="717">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetFormaPago(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetMercado(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="584">'WSCatProductos.GetMercado(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="601">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetMercado(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetMoneda(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="623">'WSCatProductos.GetMoneda(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="640">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetMoneda(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetOrigen(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="83">'WSCatProductos.GetOrigen(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetPaises(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="250">'WSCatProductos.GetPaises(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="268">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetPaises(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoUser")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetPresentacion(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="171">'WSCatProductos.GetPresentacion(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetProductos(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="546">'WSCatProductos.GetProductos(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="562">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetProductos(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetPuesto(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="343">'WSCatProductos.GetPuesto(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="377">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetPuesto(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoUser")', 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoPais")', 'Param("CategoryPais")', 'Me.Context.Request.Cookies("CKSMFACTURA")("CodigoEmpresa")', 'Param("CategoryEmpresa")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetPuestoXPaisXEmpresa(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="997">'WSCatProductos.GetPuestoXPaisXEmpresa(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="1022">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetPuestoXPaisXEmpresa(String, String)' could contain the following variables 'Param("CategoryEmpresa")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetSigla(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="40">'WSCatProductos.GetSigla(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetTarjeta(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="662">'WSCatProductos.GetTarjeta(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="679">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'WSCatProductos.GetTarjeta(String, String)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetUnMedida(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="509">'WSCatProductos.GetUnMedida(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetUsuario(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="399">'WSCatProductos.GetUsuario(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetVendedor(System.String,System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\App_Code" File="WSCatProductos.vb" Line="472">'WSCatProductos.GetVendedor(String, String)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_0ezq5vzd.dll">
+   <Modules>
+    <Module Name="app_web_0ezq5vzd.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="catalogos_Bancos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Bancos.aspx.vb" Line="398">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Bancos.Actualizar(String, String, String)' could contain the following variables 'Pais', 'CodigoBanco', 'Descripcion'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Bancos.aspx.vb" Line="346">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Bancos.Eliminar()' could contain the following variables 'Conversions.ToString(Me.vPais)', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Bancos.aspx.vb" Line="309">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Bancos.Guardar()' could contain the following variables 'New String(8)(2)', 'Me.TextCodigo.Text', 'Me.txtDescripcion.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_FomaPago" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Boolean)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="FomaPago.aspx.vb" Line="567">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_FomaPago.Actualizar(String, String, Integer, Integer, Integer, Boolean)' could contain the following variables 'sql &amp; "EXEC Cat_FormaPago @opcion=1,@codigoPais =  " &amp; Conversions.ToString(CodigoPais) &amp; " ," &amp; "@codigoEmpresa =  " &amp; Conversions.ToString(CodigoEmpresa) &amp; " ," &amp; "@codigoPuesto =  " &amp; Conversions.ToString(CodigoPuesto) &amp; " ," &amp; "@codigoFormaPago =  '" &amp; CodigoForma &amp; "' ," &amp; "@descripcion =  " &amp; Descripcion &amp; " ," &amp; "@BUSQUEDAD = '0'  ," &amp; "@PorDefecto = " &amp; Interaction.IIf(PorDefecto, 1, 0) &amp; " "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="FomaPago.aspx.vb" Line="525">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_FomaPago.Eliminar()' could contain the following variables 'Me.hdfCodigo.Value'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="FomaPago.aspx.vb" Line="485">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_FomaPago.Guardar()' could contain the following variables 'sql &amp; "EXEC Cat_FormaPago @opcion=1,@codigoPais =  " &amp; Me.ddlPais.SelectedValue &amp; " ," &amp; "@codigoEmpresa =  " &amp; Me.ddlEmpresa.SelectedValue &amp; " ," &amp; "@codigoPuesto =  " &amp; Me.ddlPuesto.SelectedValue &amp; " ," &amp; "@codigoFormaPago =  '" &amp; Me.TextCodigo.Text.Trim() &amp; "' ," &amp; "@descripcion =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@BUSQUEDAD = '0'  ," &amp; "@PorDefecto = " &amp; Interaction.IIf(Me.CheckDefault.Checked, 1, 0) &amp; " "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Monedas" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.Int32,System.String,System.String,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Monedas.aspx.vb" Line="383">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Monedas.Actualizar(Integer, String, String, Integer)' could contain the following variables 'Conversions.ToString(Pais)', 'Conversions.ToString(Codigo)', 'simbolo', 'Descripcion'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Monedas.aspx.vb" Line="343">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Monedas.Eliminar()' could contain the following variables 'Conversions.ToString(Me.vPais)', 'New String(6)(4)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Monedas.aspx.vb" Line="305">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Monedas.Guardar()' could contain the following variables 'New String(10)(2)', 'Me.TextCodigo.Text', 'Me.TextSimbolo.Text', 'Me.txtDescripcion.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Puestos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.Int32,System.Int32,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Puestos.aspx.vb" Line="689">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Puestos.Actualizar(Integer, Integer, String, String, Integer, Integer, Integer, Integer, Integer, String, Integer, Integer, String, String, Integer)' could contain the following variables 'Codigo', 'Conversions.ToString(Empresa)', 'Conversions.ToString(Pais)', 'DescriPuesto', 'Conversions.ToString(debito)', 'Conversions.ToString(credito)', 'Conversions.ToString(recibo)', 'Conversions.ToString(factura)', 'Conversions.ToString(credRtenc)', 'ForIMpre', 'Conversions.ToString(LineIm)', 'New String(36)(24)', 'New String(36)(26)', 'Conversions.ToString(CuotPlan)', 'Conversions.ToString(inv)', 'telf', 'desCo'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Puestos.aspx.vb" Line="634">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Puestos.Eliminar()' could contain the following variables 'sql &amp; "EXEC Cat_puesto @opcion=2,@codPuesto =  " &amp; Me.hdfCodigo.Value &amp; " ," &amp; "@codEmpresa =  " &amp; Me.ddlEmpresa.SelectedValue &amp; " ," &amp; "@codPais =  " &amp; Me.ddlPais.SelectedValue &amp; " ," &amp; "@descripcion =  '" &amp; Me.TextPuesto.Text.Trim() &amp; "' ," &amp; "@noNotaDebito =  0 ," &amp; "@noNotaCredito =  0 ," &amp; "@noRecibo =  0 ," &amp; "@noFactura =  0 ," &amp; "@noCreditoRet = 0 ," &amp; "@formatoImpresion =  '" &amp; Me.TextFormatoImp.Text.Trim() &amp; "' ," &amp; "@lineasImprimir =  0 ," &amp; "@codusuario =   " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@NoCuotasPlanillas = 0 ," &amp; "@VerifInventario =  " &amp; Interaction.IIf(Me.CheckVeInv.Checked, 1, 0) &amp; " ," &amp; "@telefono =  '" &amp; Me.TextTelefono.Text.Trim() &amp; " '," &amp; "@descripCorta =  '" &amp; Me.TextDescCorta.Text.Trim() &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Puestos.aspx.vb" Line="583">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Puestos.Guardar()' could contain the following variables 'sql &amp; "EXEC Cat_puesto @opcion=1,@codPuesto =  " &amp; Me.txtCodigo.Text.Trim() &amp; " ," &amp; "@codEmpresa =  " &amp; Me.ddlEmpresa.SelectedValue &amp; " ," &amp; "@codPais =  " &amp; Me.ddlPais.SelectedValue &amp; " ," &amp; "@descripcion =  '" &amp; Me.TextPuesto.Text.Trim() &amp; "' ," &amp; "@noNotaDebito =  " &amp; Me.TextNoDebito.Text.Trim() &amp; " ," &amp; "@noNotaCredito =  " &amp; Me.TextNoCredito.Text.Trim() &amp; " ," &amp; "@noRecibo =  " &amp; Me.TextNoRecibo.Text.Trim() &amp; " ," &amp; "@noFactura =  " &amp; Me.TextFactura.Text.Trim() &amp; " ," &amp; "@noCreditoRet =  " &amp; Me.TextNoCredRetenc.Text.Trim() &amp; " ," &amp; "@formatoImpresion =  '" &amp; Me.TextFormatoImp.Text.Trim() &amp; "' ," &amp; "@lineasImprimir =  " &amp; Me.TextLineImpri.Text.Trim() &amp; " ," &amp; "@codusuario =   " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@NoCuotasPlanillas =  " &amp; Me.TextCuotaPla.Text.Trim() &amp; " ," &amp; "@VerifInventario =  " &amp; Interaction.IIf(Me.CheckVeInv.Checked, 1, 0) &amp; " ," &amp; "@telefono =  '" &amp; Me.TextTelefono.Text.Trim() &amp; "' ," &amp; "@descripCorta =  '" &amp; Me.TextDescCorta.Text.Trim() &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_UnidadMedida" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="UnidadMedida.aspx.vb" Line="320">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_UnidadMedida.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="UnidadMedida.aspx.vb" Line="282">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_UnidadMedida.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="UnidadMedida.aspx.vb" Line="242">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_UnidadMedida.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_52qlab2e.dll">
+   <Modules>
+    <Module Name="app_web_52qlab2e.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="movimientos_Factura" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Eliminar(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Facturacion.aspx.vb" Line="1310">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.Eliminar(String)' could contain the following variables 'sql &amp; "EXEC Factura @opcion=4,@codigoPais = " &amp; MyBase.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; MyBase.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; MyBase.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFactura.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; ProductoCodProd &amp; "'," &amp; "@consecutivoUsuario = " &amp; vUss &amp; "," &amp; "@porc_descuento = " &amp; Conversions.ToDecimal(Me.TextPorDesc.Text.Trim()) &amp; "," &amp; "@valor_descuento = " &amp; Nothing &amp; "," &amp; "@porc_iva = " &amp; MyBase.Session("porcImp") &amp; "," &amp; "@valor_iva = " &amp; Nothing &amp; "," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = " &amp; Nothing &amp; "," &amp; "@paridad = " &amp; MyBase.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; Me.ddlCliente.SelectedValue &amp; "'," &amp; "@cantidad = 0," &amp; "@bultos = 0," &amp; "@cod_und_medida = ''," &amp; "@precio_unidad = 0," &amp; "@Notas=  NULL ," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddlVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= " &amp; vext &amp; "," &amp; "@desc_imprimir = '" &amp; MyBase.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; Me.TextNombreCliente.Text &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GuardarTmpFact()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Facturacion.aspx.vb" Line="1088">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.GuardarTmpFact()' could contain the following variables '" SET DATEFORMAT DMY EXEC Factura @opcion= 1,@codigoPais = " &amp; MyBase.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; MyBase.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; MyBase.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFactura.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; Me.ddlProducto.SelectedValue &amp; "'," &amp; "@consecutivoUsuario = '" &amp; vUss &amp; "'," &amp; "@porc_descuento = " &amp; decPorcDesc &amp; "," &amp; "@valor_descuento = " &amp; decValorDesc &amp; "," &amp; "@porc_iva = " &amp; MyBase.Session("porcImp") &amp; "," &amp; "@valor_iva = " &amp; decIva &amp; "," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = " &amp; decTotalProd &amp; "," &amp; "@paridad = " &amp; MyBase.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; CodCliente &amp; "'," &amp; "@cantidad = " &amp; Conversions.ToDecimal(Me.TextCantidad.Text) &amp; "," &amp; "@bultos = " &amp; Conversions.ToDecimal(Me.TextBultos.Text) &amp; "," &amp; "@cod_und_medida =1," &amp; "@precio_unidad = " &amp; Conversions.ToDecimal(Me.TextPrecio.Text) &amp; "," &amp; "@Notas= '0'," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddlVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= " &amp; vext &amp; "," &amp; "@desc_imprimir = '" &amp; MyBase.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; Cliente &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GuardarTmpFact2()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Facturacion.aspx.vb" Line="1192">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.GuardarTmpFact2()' could contain the following variables '"SET DATEFORMAT DMY EXEC Factura @opcion = 1, @codigoPais = " &amp; MyBase.Session("cod_pais") &amp; ", " &amp; "@codigoPuesto = " &amp; MyBase.Session("cod_puesto") &amp; ", " &amp; "@codigoEmpresa = " &amp; MyBase.Session("cod_empresa") &amp; ", " &amp; "@no_factura = " &amp; Me.txtNoFactura.Text.Trim() &amp; ", " &amp; "@fecha = '01/01/1900', " &amp; "@cod_producto = '" &amp; Me.ddlProducto.SelectedValue &amp; "', " &amp; "@consecutivoUsuario = '" &amp; usuario &amp; "', " &amp; "@porc_descuento = " &amp; porcentajeDescuento &amp; ", " &amp; "@valor_descuento = " &amp; valorDescuento &amp; ", " &amp; "@porc_iva = " &amp; MyBase.Session("porcImp") &amp; ", " &amp; "@valor_iva = " &amp; iva &amp; ", " &amp; "@anulada =  0, " &amp; "@fechaHora_anulacion = '01/01/1900', " &amp; "@sub_total = " &amp; Conversions.ToDecimal(Me.TextTotal.Text) &amp; ", " &amp; "@paridad = " &amp; MyBase.Session("Paridad") &amp; ", " &amp; "@codcliente = '" &amp; codCliente &amp; "', " &amp; "@cantidad = " &amp; Conversions.ToDecimal(Me.TextCantidad.Text) &amp; ", " &amp; "@bultos = " &amp; Conversions.ToDecimal(Me.TextBultos.Text) &amp; ", " &amp; "@cod_und_medida = 1, " &amp; "@precio_unidad = " &amp; Conversions.ToDecimal(Me.TextPrecio.Text) &amp; ", " &amp; "@Notas = '0', " &amp; "@Contado = " &amp; contado &amp; ", " &amp; "@codvendedor = '" &amp; Me.ddlVendedor.SelectedValue &amp; "', " &amp; "@cedularuc = '" &amp; Me.TextId.Text.Trim() &amp; "', " &amp; "@externo = " &amp; vext &amp; ", " &amp; "@desc_imprimir = '" &amp; MyBase.Session("desimprimir") &amp; "', " &amp; "@NombreCliente = '" &amp; cliente &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GuarFomaPago()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Facturacion.aspx.vb" Line="2255">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.GuarFomaPago()' could contain the following variables 'Sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#ImprimirGuardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Facturacion.aspx.vb" Line="2323">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.ImprimirGuardar()' could contain the following variables 'Sql &amp; "EXEC Factura @opcion=2,@codigoPais = " &amp; Me.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; Me.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; Me.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFactura.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; Me.ddlProducto.SelectedValue &amp; "'," &amp; "@consecutivoUsuario = '0'," &amp; "@porc_descuento = " &amp; Conversions.ToDecimal(Me.TextPorDesc.Text.Trim()) &amp; "," &amp; "@valor_descuento = 0," &amp; "@porc_iva = " &amp; Me.Session("porcImp") &amp; "," &amp; "@valor_iva = 0," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = 0," &amp; "@paridad = " &amp; Me.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; Me.ddlCliente.SelectedValue &amp; "'," &amp; "@cantidad = " &amp; Conversions.ToDecimal(Me.TextCantidad.Text) &amp; "," &amp; "@bultos = " &amp; Conversions.ToDecimal(Me.TextBultos.Text) &amp; "," &amp; "@cod_und_medida = 0," &amp; "@precio_unidad = " &amp; Conversions.ToDecimal(Me.TextPrecio.Text) &amp; "," &amp; "@Notas=   '0'," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddlVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= 0," &amp; "@desc_imprimir = '" &amp; Me.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; Me.TextNombreCliente.Text &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_lyki0yte.dll">
+   <Modules>
+    <Module Name="app_web_lyki0yte.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="catalogos_ComisionVendedores" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.Decimal,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ComisionVendedores.aspx.vb" Line="582">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ComisionVendedores.Actualizar(String, Decimal, Integer, Integer, Integer, Integer, Integer, Integer)' could contain the following variables 'sql &amp; "EXEC Cat_ComisVendedores @opcion=1,@codigoPais =  " &amp; Conversions.ToString(Pais) &amp; " ," &amp; "@codigoEmp =  " &amp; Conversions.ToString(Empresa) &amp; " ," &amp; "@codigoPuesto =  " &amp; Conversions.ToString(Puesto) &amp; " ," &amp; "@codigoFamilia =  " &amp; Conversions.ToString(Familia) &amp; " ," &amp; "@codigoVendedor =  " &amp; Codigo &amp; " ," &amp; "@comision =  " &amp; Conversions.ToString(comision) &amp; " ," &amp; "@Activo =  '" &amp; Interaction.IIf(Me.CheckActivo.Checked, 1, 0) &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ComisionVendedores.aspx.vb" Line="538">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ComisionVendedores.Eliminar()' could contain the following variables 'sql &amp; "EXEC Cat_ComisVendedores @opcion=2,@codigoPais =  " &amp; Me.vPais &amp; " ," &amp; "@codigoEmp =  " &amp; Conversions.ToString(Me.vEmpresa) &amp; " ," &amp; "@codigoPuesto =  '" &amp; Conversions.ToString(Me.vPuesto) &amp; "' ," &amp; "@codigoFamilia =  " &amp; Conversions.ToString(Me.vFamilia) &amp; " ," &amp; "@codigoVendedor =  " &amp; Me.hdfCodigo.Value &amp; " ," &amp; "@comision =  0 ," &amp; "@Activo =  '" &amp; Interaction.IIf(Me.CheckActivo.Checked, 1, 0) &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ComisionVendedores.aspx.vb" Line="497">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ComisionVendedores.Guardar()' could contain the following variables 'sql &amp; "EXEC Cat_ComisVendedores @opcion=1,@codigoPais =  " &amp; Me.ddlPais.SelectedValue &amp; " ," &amp; "@codigoEmp =  " &amp; Me.ddlEmpresa.SelectedValue &amp; " ," &amp; "@codigoPuesto =  '" &amp; Me.ddlPuesto.SelectedValue &amp; "' ," &amp; "@codigoFamilia =  " &amp; Me.ddlFamilia.SelectedValue &amp; " ," &amp; "@codigoVendedor =  " &amp; Me.ddlVendedor.SelectedValue &amp; " ," &amp; "@comision =  " &amp; Me.TextComision.Text.Trim() &amp; " ," &amp; "@Activo =  '" &amp; Interaction.IIf(Me.CheckActivo.Checked, 1, 0) &amp; "' ," &amp; "@BUSQUEDAD = '" &amp; Me.BUSQUEDAD &amp; "' "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_origen" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="origen.aspx.vb" Line="343">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_origen.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="origen.aspx.vb" Line="305">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_origen.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="origen.aspx.vb" Line="267">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_origen.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Presentacion" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Presentacion.aspx.vb" Line="317">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Presentacion.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Presentacion.aspx.vb" Line="279">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Presentacion.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Presentacion.aspx.vb" Line="241">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Presentacion.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_ProductoPais" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.String,System.Int32,System.Int32,System.Boolean,System.Boolean)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductoPais.aspx.vb" Line="461">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductoPais.Actualizar(String, String, String, Integer, Integer, Boolean, Boolean)' could contain the following variables 'New String(24)(2)', 'Codigo', 'Conversions.ToString(VUnidad)', 'Descripcion', 'deImpre', 'Conversions.ToString(Numero)', 'New String(24)(14)', 'New String(24)(16)', 'New String(24)(18)', 'New String(24)(20)', 'New String(24)(22)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductoPais.aspx.vb" Line="417">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductoPais.Eliminar()' could contain the following variables 'sql &amp; "EXEC Cat_ProductosXPais @opcion=2,@codPais =  " &amp; Conversions.ToString(Me.vPais) &amp; " ," &amp; "@codigoProducto =  " &amp; Me.hdfCodigo.Value &amp; " ," &amp; "@codUndMedida =  0 ," &amp; "@descripcion =  '" &amp; Me.Session("Descrip") &amp; "' ," &amp; "@descripImpr =  '' ," &amp; "@numProducto =  '" &amp; Me.Session("numero") &amp; "' ," &amp; "@activo = 0 ," &amp; "@ExcentoImp = 0 ," &amp; "@codEmpresa =  " &amp; Me.Request.Cookies("CKSMFACTURA")("CodEmpresa") &amp; " ," &amp; "@codusuario =   " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_SectoresMercado" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="SectoresMercado.aspx.vb" Line="382">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_SectoresMercado.Actualizar(String, String, Integer)' could contain the following variables 'Codigo', 'Descripcio', 'Conversions.ToString(Pais)', 'New String(12)(8)', 'New String(12)(10)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="SectoresMercado.aspx.vb" Line="343">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_SectoresMercado.Eliminar()' could contain the following variables 'New String(12)(2)', 'Me.txtDescripcion.Text', 'Me.vPais', 'New String(12)(8)', 'New String(12)(10)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="SectoresMercado.aspx.vb" Line="303">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_SectoresMercado.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(10)(4)', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Vendedores" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Vendedores.aspx.vb" Line="565">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Vendedores.Actualizar(String, String, String, String, Integer, Integer, Integer)' could contain the following variables 'Conversions.ToString(Pais)', 'Conversions.ToString(Empresa)', 'Conversions.ToString(Puesto)', 'nombres', 'apellidos', 'New String(20)(12)', 'New String(20)(14)', 'Codigo', 'cta_contable'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Vendedores.aspx.vb" Line="522">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Vendedores.Eliminar()' could contain the following variables 'New String(8)(2)', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Vendedores.aspx.vb" Line="478">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Vendedores.Guardar()' could contain the following variables 'New String(20)(2)', 'New String(20)(4)', 'New String(20)(6)', 'Me.txtNombre.Text', 'Me.txtApellidos.Text', 'New String(20)(12)', 'New String(20)(14)', 'Me.TextCodigo.Text', 'Me.Textctacontable.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_mhzglmn4.dll">
+   <Modules>
+    <Module Name="app_web_mhzglmn4.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="Login" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Decrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion" File="login.aspx.vb" Line="179">Object 'cs' can be disposed more than once in method 'Login.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 179</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion" File="login.aspx.vb" Line="179">Object 'ms' can be disposed more than once in method 'Login.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 179, 182</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Encrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion" File="login.aspx.vb" Line="148">Object 'cs' can be disposed more than once in method 'Login.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 148</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion" File="login.aspx.vb" Line="148">Object 'ms' can be disposed more than once in method 'Login.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 148, 150</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_mymgsifg.dll">
+   <Modules>
+    <Module Name="app_web_mymgsifg.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="movimientos_Factura" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Eliminar(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Factura.aspx.vb" Line="862">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.Eliminar(String)' could contain the following variables 'sql &amp; "EXEC Factura @opcion=4,@codigoPais = " &amp; Me.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; Me.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; Me.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFac.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; ProductoCodProd &amp; "'," &amp; "@consecutivoUsuario = " &amp; vUss &amp; "," &amp; "@porc_descuento = " &amp; Conversions.ToDecimal(Me.TextPorDesc.Text.Trim()) &amp; "," &amp; "@valor_descuento = " &amp; Nothing &amp; "," &amp; "@porc_iva = " &amp; Me.Session("porcImp") &amp; "," &amp; "@valor_iva = " &amp; Nothing &amp; "," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = " &amp; Nothing &amp; "," &amp; "@paridad = " &amp; Me.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; Me.ddlCliente.SelectedValue &amp; "'," &amp; "@cantidad = 0," &amp; "@bultos = 0," &amp; "@cod_und_medida = ''," &amp; "@precio_unidad = 0," &amp; "@Notas=  NULL ," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= " &amp; vext &amp; "," &amp; "@desc_imprimir = '" &amp; Me.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; Me.TextNomClien.Text &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GuardarTmpFact()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Factura.aspx.vb" Line="1002">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.GuardarTmpFact()' could contain the following variables 'sql &amp; "EXEC Factura @opcion=1,@codigoPais = " &amp; Me.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; Me.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; Me.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFac.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; Me.ddlProducto.SelectedValue &amp; "'," &amp; "@consecutivoUsuario = " &amp; vUss &amp; "," &amp; "@porc_descuento = " &amp; Conversions.ToDecimal(Me.TextPorDesc.Text.Trim()) &amp; "," &amp; "@valor_descuento = " &amp; desc &amp; "," &amp; "@porc_iva = " &amp; Me.Session("porcImp") &amp; "," &amp; "@valor_iva = " &amp; v_iva &amp; "," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = " &amp; TotProdu &amp; "," &amp; "@paridad = " &amp; Me.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; Codcliente &amp; "'," &amp; "@cantidad = " &amp; Conversions.ToDecimal(Me.TextCantidad.Text) &amp; "," &amp; "@bultos = " &amp; Conversions.ToDecimal(Me.TextBultos.Text) &amp; "," &amp; "@cod_und_medida = " &amp; Me.Session("Unidad") &amp; "," &amp; "@precio_unidad = " &amp; Conversions.ToDecimal(Me.TextPrecio.Text) &amp; "," &amp; "@Notas=   = NULL ," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= " &amp; vext &amp; "," &amp; "@desc_imprimir = '" &amp; Me.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; cliente &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GuarFomaPago()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Factura.aspx.vb" Line="1547">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.GuarFomaPago()' could contain the following variables 'Sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#ImprimirGuardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Factura.aspx.vb" Line="1366">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Factura.ImprimirGuardar()' could contain the following variables 'Sql &amp; "EXEC Factura @opcion=2,@codigoPais = " &amp; Me.Session("cod_pais") &amp; "," &amp; "@codigoPuesto = " &amp; Me.Session("cod_puesto") &amp; "," &amp; "@codigoEmpresa = " &amp; Me.Session("cod_empresa") &amp; "," &amp; "@no_factura = " &amp; Me.txtNoFac.Text.Trim() &amp; "," &amp; "@fecha = '01/01/1900'," &amp; "@cod_producto = '" &amp; Me.ddlProducto.SelectedValue &amp; "'," &amp; "@consecutivoUsuario = '0'," &amp; "@porc_descuento = " &amp; Conversions.ToDecimal(Me.TextPorDesc.Text.Trim()) &amp; "," &amp; "@valor_descuento = 0," &amp; "@porc_iva = " &amp; Me.Session("porcImp") &amp; "," &amp; "@valor_iva = 0," &amp; "@anulada =  0," &amp; "@fechaHora_anulacion = '01/01/1900'," &amp; "@sub_total = 0," &amp; "@paridad = " &amp; Me.Session("Paridad") &amp; "," &amp; "@codcliente = '" &amp; Me.ddlCliente.SelectedValue &amp; "'," &amp; "@cantidad = " &amp; Conversions.ToDecimal(Me.TextCantidad.Text) &amp; "," &amp; "@bultos = " &amp; Conversions.ToDecimal(Me.TextBultos.Text) &amp; "," &amp; "@cod_und_medida = 0," &amp; "@precio_unidad = " &amp; Conversions.ToDecimal(Me.TextPrecio.Text) &amp; "," &amp; "@Notas=   '0'," &amp; "@Contado = " &amp; Contado &amp; "," &amp; "@codvendedor  = '" &amp; Me.ddVendedor.SelectedValue &amp; "'," &amp; "@cedularuc= '" &amp; Me.TextId.Text.Trim() &amp; "'," &amp; "@externo= 0," &amp; "@desc_imprimir = '" &amp; Me.Session("desimprimir") &amp; "'," &amp; "@NombreCliente = '" &amp; Me.TextNomClien.Text &amp; "'"'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="movimientos_NotaDebito" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#InsertNotaDebito()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="NotaDebito.aspx.vb" Line="213">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_NotaDebito.InsertNotaDebito()' could contain the following variables 'New String(18)(2)', 'Me.ddlCliente.SelectedItem.Value', 'New String(18)(6)', 'New String(18)(8)', 'New String(18)(10)', 'Conversions.ToString(ExternoInterno)', 'New String(18)(14)', 'New String(18)(16)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#No_Nota_Debito()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="NotaDebito.aspx.vb" Line="246">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_NotaDebito.No_Nota_Debito()' could contain the following variables 'New String(6)(1)', 'New String(6)(3)', 'New String(6)(5)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="movimientos_Recibos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ddlVendedor_SelectedIndexChanged(System.Object,System.EventArgs)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos" File="Recibos.aspx.vb" Line="380">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Recibos.ddlVendedor_SelectedIndexChanged(Object, EventArgs)' could contain the following variables 'Me.Context.Request.Cookies("CKSMFACTURA")("codPais")', 'Me.ddlVendedor.SelectedItem.Value'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_qjhnkcvu.dll">
+   <Modules>
+    <Module Name="app_web_qjhnkcvu.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="Mater_principal" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#OnCloseSession()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\master" File="principal.master.vb" Line="271">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Mater_principal.OnCloseSession()' could contain the following variables 'Me.Request.Cookies("CKSMFACTURA")("CodigoUser")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Refresh_Session_Time()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\master" File="principal.master.vb" Line="72">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Mater_principal.Refresh_Session_Time()' could contain the following variables 'Me.Request.Cookies("CKSMFACTURA")("CodigoUser")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_qo3sngus.dll">
+   <Modules>
+    <Module Name="app_web_qo3sngus.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="Mater_principal" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#OnCloseSession()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\master" File="principal.master.vb" Line="271">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Mater_principal.OnCloseSession()' could contain the following variables 'Me.Request.Cookies("CKSMFACTURA")("CodigoUser")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Refresh_Session_Time()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\master" File="principal.master.vb" Line="72">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Mater_principal.Refresh_Session_Time()' could contain the following variables 'Me.Request.Cookies("CKSMFACTURA")("CodigoUser")'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_rqkwm3cr.dll">
+   <Modules>
+    <Module Name="app_web_rqkwm3cr.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="admin_crear_menu" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Guardar(System.String,System.String,System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="crear-menu.aspx.vb" Line="269">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'admin_crear_menu.Guardar(String, String, String, String)' could contain the following variables 'sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="admin_permisos_menu" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Guardar(System.String,System.String,System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="permisos-menu.aspx.vb" Line="242">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'admin_permisos_menu.Guardar(String, String, String, String)' could contain the following variables 'sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="herramientas_roles" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Guardar(System.String,System.String,System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="roles.aspx.vb" Line="273">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'herramientas_roles.Guardar(String, String, String, String)' could contain the following variables 'sql'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="herramientas_usuario_editar" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Decrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuario_editar.aspx.vb" Line="177">Object 'cs' can be disposed more than once in method 'herramientas_usuario_editar.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 177</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuario_editar.aspx.vb" Line="177">Object 'ms' can be disposed more than once in method 'herramientas_usuario_editar.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 177, 180</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Encrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuario_editar.aspx.vb" Line="146">Object 'cs' can be disposed more than once in method 'herramientas_usuario_editar.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 146</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuario_editar.aspx.vb" Line="146">Object 'ms' can be disposed more than once in method 'herramientas_usuario_editar.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 146, 148</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuario_editar.aspx.vb" Line="280">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'herramientas_usuario_editar.Guardar(String)' could contain the following variables 'query'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="herramientas_usuarios" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Decrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuarios.aspx.vb" Line="260">Object 'cs' can be disposed more than once in method 'herramientas_usuarios.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 260</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuarios.aspx.vb" Line="260">Object 'ms' can be disposed more than once in method 'herramientas_usuarios.Decrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 260, 263</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Encrypt(System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuarios.aspx.vb" Line="228">Object 'cs' can be disposed more than once in method 'herramientas_usuarios.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 228</Issue>
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\herramientas" File="usuarios.aspx.vb" Line="228">Object 'ms' can be disposed more than once in method 'herramientas_usuarios.Encrypt(String)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 228, 231</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_rqxi4hwl.dll">
+   <Modules>
+    <Module Name="app_web_rqxi4hwl.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="movimientos_Reportes_Factura_ImprimirFactura" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#DosResport()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos\Reportes\Factura" File="ImprimirFactura.aspx.vb" Line="57">The query string passed to 'SqlDataAdapter.New(String, String)' in 'movimientos_Reportes_Factura_ImprimirFactura.DosResport()' could contain the following variables '" SET DATEFORMAT DMY EXEC ImpDocEnLinea  @opcion = 1,   @codigoPais=" &amp; Me.Session("cod_pais") &amp; ", " &amp; "  @codigoPuesto=" &amp; Me.Session("cod_puesto") &amp; ", " &amp; "  @codigoEmpresa=" &amp; Me.Session("cod_empresa") &amp; ", " &amp; "  @no_factura='" &amp; Me.Session("NoFactura") &amp; "', " &amp; "  @fecha='" &amp; Date.Today &amp; "', " &amp; "  @codcliente='1'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Page_Load(System.Object,System.EventArgs)" Kind="Method" Static="False" Accessibility="Family" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos\Reportes\Factura" File="ImprimirFactura.aspx.vb" Line="145">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Reportes_Factura_ImprimirFactura.Page_Load(Object, EventArgs)' could contain the following variables '" SET DATEFORMAT DMY EXEC ImpDocEnLinea  @opcion = 1,   @codigoPais=" &amp; Me.Session("cod_pais") &amp; ", " &amp; "  @codigoPuesto=" &amp; Me.Session("cod_puesto") &amp; ", " &amp; "  @codigoEmpresa=" &amp; Me.Session("cod_empresa") &amp; ", " &amp; "  @no_factura='" &amp; Me.Session("NoFactura") &amp; "', " &amp; "  @fecha='" &amp; Date.Today &amp; "', " &amp; "  @codcliente='" &amp; Me.Session("cod_cliente").ToString() &amp; "' "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Reporte()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\movimientos\Reportes\Factura" File="ImprimirFactura.aspx.vb" Line="84">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'movimientos_Reportes_Factura_ImprimirFactura.Reporte()' could contain the following variables '" SET DATEFORMAT DMY EXEC ImpDocEnLinea  @opcion = 1,   @codigoPais=" &amp; Me.Session("cod_pais") &amp; ", " &amp; "  @codigoPuesto=" &amp; Me.Session("cod_puesto") &amp; ", " &amp; "  @codigoEmpresa=" &amp; Me.Session("cod_empresa") &amp; ", " &amp; "  @no_factura='" &amp; Me.Session("NoFactura") &amp; "', " &amp; "  @fecha='" &amp; Date.Today &amp; "', " &amp; "  @codcliente='1'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_swck4jou.dll">
+   <Modules>
+    <Module Name="app_web_swck4jou.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="catalogos_Calidades" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Calidades.aspx.vb" Line="323">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Calidades.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Calidades.aspx.vb" Line="285">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Calidades.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Calidades.aspx.vb" Line="246">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Calidades.Guardar()' could contain the following variables 'Me.hdfCodigo.Value', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Denominaciones" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.Int32,System.String,System.String,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Denominaciones.aspx.vb" Line="418">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Denominaciones.Actualizar(Integer, String, String, Integer, Integer)' could contain the following variables 'Conversions.ToString(codigo)', 'Conversions.ToString(CodigoPais)', 'Conversions.ToString(CodigoMoneda)', 'denominacion', 'Descripcion'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Denominaciones.aspx.vb" Line="379">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Denominaciones.Eliminar()' could contain the following variables 'Me.hdfCodigo.Value'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Denominaciones.aspx.vb" Line="341">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Denominaciones.Guardar()' could contain the following variables 'Me.txtCodigo.Text', 'New String(12)(4)', 'New String(12)(6)', 'Me.TextDenominacion.Text', 'Me.TextDescripcion.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Empresas" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.Int32,System.String,System.String,System.String,System.Double,System.String,System.String,System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Empresas.aspx.vb" Line="560">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Empresas.Actualizar(Integer, String, String, String, Double, String, String, String, String)' could contain the following variables 'Conversions.ToString(Pais)', 'Codigo', 'DescriEmpresa', 'New String(26)(8)', 'New String(26)(10)', 'Impuesto', 'New String(26)(14)', 'DescripCorta', 'CedulaRuc', 'Direccion', 'AutorizMifin', 'Me.BUSQUEDAD'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Empresas.aspx.vb" Line="514">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Empresas.Eliminar()' could contain the following variables 'New String(10)(2)', 'New String(10)(4)', 'New String(10)(6)', 'Me.BUSQUEDAD'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Empresas.aspx.vb" Line="468">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Empresas.Guardar()' could contain the following variables 'New String(24)(2)', 'Me.txtCodigo.Text', 'Me.TextEmpresa.Text', 'New String(24)(8)', 'New String(24)(10)', 'Me.TextImpuesto.Text', 'Me.TextPorcImpuesto.Text', 'Me.TextDescripCorta.Text', 'Me.TextCedulaRuc.Text', 'Me.TextDireccion.Text', 'Me.TextAutorizMifin.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_familia" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Familia.aspx.vb" Line="317">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_familia.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Familia.aspx.vb" Line="279">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_familia.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Familia.aspx.vb" Line="241">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_familia.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_ProductosMaestro" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductosMaestro.aspx.vb" Line="595">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductosMaestro.Actualizar(String, String, Integer, String, Integer, Integer, Integer, Integer, Boolean)' could contain the following variables 'Codigo', 'Conversions.ToString(Numero)', 'Descripcio', 'Sigla', 'Conversions.ToString(origen)', 'Conversions.ToString(calidad)', 'Conversions.ToString(presentacion)', 'Conversions.ToString(familia)', 'New String(24)(18)', 'New String(24)(20)', 'New String(24)(22)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductosMaestro.aspx.vb" Line="547">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductosMaestro.Eliminar()' could contain the following variables 'sql &amp; "EXEC Cat_ProductosMaestro @opcion=2,@codigo =  " &amp; Me.hdfCodigo.Value &amp; " ," &amp; "@numproducto =  '" &amp; Me.txtNumProd.Text.Trim() &amp; "' ," &amp; "@descripcion =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@SIGLA =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@codorigen =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@codcalidad =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@codpresentacion =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@codfamilia =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@codusuario =   " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@produccionSm =  '" &amp; Interaction.IIf(Me.CheckSm.Checked, 1, 0) &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductosMaestro.aspx.vb" Line="502">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductosMaestro.Guardar()' could contain the following variables 'sql &amp; "EXEC Cat_ProductosMaestro @opcion=1,@codigo =  " &amp; Me.TextCodProducto.Text.Trim() &amp; " ," &amp; "@numproducto =  " &amp; Me.txtNumProd.Text.Trim() &amp; " ," &amp; "@descripcion =  '" &amp; Me.txtDescripcion.Text.Trim() &amp; "' ," &amp; "@SIGLA =  " &amp; Me.ddlSigla.SelectedValue &amp; " ," &amp; "@codorigen =  " &amp; Me.ddlOrigen.SelectedValue &amp; " ," &amp; "@codcalidad =  " &amp; Me.ddlCalidad.SelectedValue &amp; " ," &amp; "@codpresentacion =  " &amp; Me.ddlPresentacion.SelectedValue &amp; " ," &amp; "@codfamilia =  " &amp; Me.ddlFamilia.SelectedValue &amp; " ," &amp; "@codusuario =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@produccionSm =  '" &amp; Interaction.IIf(Me.CheckSm.Checked, 1, 0) &amp; "' ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_vp4refrw.dll">
+   <Modules>
+    <Module Name="app_web_vp4refrw.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="catalogos_CuentaBancos" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="CuentaBancos.aspx.vb" Line="642">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_CuentaBancos.Actualizar(Integer, String, Integer, Integer, Integer, Integer, Integer)' could contain the following variables 'Conversions.ToString(codigoCtaBanco)', 'Conversions.ToString(CodigoPais)', 'Conversions.ToString(CodigoBanco)', 'Conversions.ToString(CodigoEmpresa)', 'Conversions.ToString(CodigoPuesto)', 'Conversions.ToString(CodigoMoneda)', 'Descripcion'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="CuentaBancos.aspx.vb" Line="601">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_CuentaBancos.Eliminar(Integer, String, Integer, Integer, Integer, Integer, Integer)' could contain the following variables 'Conversions.ToString(codigoCtaBanco)', 'Conversions.ToString(CodigoPais)', 'Conversions.ToString(CodigoBanco)', 'Conversions.ToString(CodigoEmpresa)', 'Conversions.ToString(CodigoPuesto)', 'Conversions.ToString(CodigoMoneda)', 'Descripcion'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="CuentaBancos.aspx.vb" Line="560">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_CuentaBancos.Guardar()' could contain the following variables 'Me.TextCodigo.Text', 'New String(16)(4)', 'New String(16)(6)', 'New String(16)(8)', 'New String(16)(10)', 'New String(16)(12)', 'Me.txtDescripcion.Text'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#SaveUpdate()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="CuentaBancos.aspx.vb" Line="520">Object 'dr' can be disposed more than once in method 'catalogos_CuentaBancos.SaveUpdate()'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 520</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_Pais" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Pais.aspx.vb" Line="321">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Pais.Actualizar(String, String)' could contain the following variables 'Codigo', 'Descripcio', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Pais.aspx.vb" Line="283">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Pais.Eliminar()' could contain the following variables 'New String(10)(2)', 'Me.txtDescripcion.Text', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="Pais.aspx.vb" Line="244">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_Pais.Guardar()' could contain the following variables 'Me.txtDescripcion.Text', 'New String(8)(4)', 'New String(8)(6)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="catalogos_ProductoPaisEmp" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\catalogos" File="ProductoPaisEmp.aspx.vb" Line="238">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'catalogos_ProductoPaisEmp.Guardar()' could contain the following variables 'sql &amp; "EXEC Cat_ProductosXPais @opcion=1,@codPais =  " &amp; Me.Request.Cookies("CKSMFACTURA")("codPais") &amp; " ," &amp; "@codigoProducto = '" &amp; Me.Session("Codigo") &amp; "' ," &amp; "@codUndMedida =  " &amp; Me.ddlUnidadMed.SelectedValue &amp; " ," &amp; "@descripcion =  '" &amp; Me.Session("Descrip") &amp; "' ," &amp; "@descripImpr =  '" &amp; Me.TextDecImpri.Text.Trim() &amp; "' ," &amp; "@numProducto =  '" &amp; Me.Session("Numero") &amp; "' ," &amp; "@activo = '" &amp; Interaction.IIf(Me.CheckAt.Checked, 1, 0) &amp; "' ," &amp; "@ExcentoImp = '" &amp; Interaction.IIf(Me.CheckImtos.Checked, 1, 0) &amp; "' ," &amp; "@codEmpresa =  " &amp; Me.Request.Cookies("CKSMFACTURA")("CodEmpresa") &amp; " ," &amp; "@codusuario =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@codusuarioUlt =  " &amp; Me.Request.Cookies("CKSMFACTURA")("cod_usuario") &amp; " ," &amp; "@BUSQUEDAD = '0'  "'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+  <Target Name="C:\Users\gabri\AppData\Local\Temp\tmp67BE.tmp.cadir\bin\App_Web_zfbsgydr.dll">
+   <Modules>
+    <Module Name="app_web_zfbsgydr.dll">
+     <Namespaces>
+      <Namespace Name="">
+       <Types>
+        <Type Name="Utilitarios_AccesosUsuarios" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Actualizar(System.String,System.String,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\Utilitarios" File="AccesosUsuarios.aspx.vb" Line="563">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Utilitarios_AccesosUsuarios.Actualizar(String, String, Integer, String, Integer, Integer, Integer, Integer, Integer)' could contain the following variables 'New String(10)(2)', 'New String(10)(4)', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Eliminar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\Utilitarios" File="AccesosUsuarios.aspx.vb" Line="527">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Utilitarios_AccesosUsuarios.Eliminar()' could contain the following variables 'New String(10)(2)', 'New String(10)(4)', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Guardar()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\Utilitarios" File="AccesosUsuarios.aspx.vb" Line="446">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Utilitarios_AccesosUsuarios.Guardar()' could contain the following variables 'New String(10)(2)', 'New String(10)(4)', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#IfExists()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100" Status="Active" Created="2023-12-05 18:15:37Z" FixCategory="DependsOnFix">
+             <Issue Name="WithNonLiterals" Certainty="75" Level="Warning" Path="C:\Users\gabri\Code\SAN MARTIN\Facturacion\Utilitarios" File="AccesosUsuarios.aspx.vb" Line="480">The query string passed to 'OleDbCommand.New(String, OleDbConnection)' in 'Utilitarios_AccesosUsuarios.IfExists()' could contain the following variables 'New String(10)(2)', 'New String(10)(4)', 'New String(10)(6)', 'New String(10)(8)'. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202">
+   <Name>Do not dispose objects multiple times</Name>
+   <Description>A correctly implemented Dispose method can be called multiple times without throwing an exception. However, this is not guaranteed and to avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.</Description>
+   <Resolution Name="Default">Object {0} can be disposed more than once in method {1}. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 520</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182334.aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="17.0.0.0" />
+  </Rule>
+  <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
+   <Name>Implement IDisposable correctly</Name>
+   <Description>All IDisposable types should implement the Dispose pattern correctly.</Description>
+   <Resolution Name="DisposeImplementation">Modify {0} so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Resolution>
+   <Resolution Name="ProvideDisposeBool">Provide an overridable implementation of Dispose(bool) on {0} or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms244737.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="designrules.dll" Version="17.0.0.0" />
+  </Rule>
+  <Rule TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240">
+   <Name>Implement ISerializable correctly</Name>
+   <Description>If a type is assignable to ISerializable, it should implement GetObjectData. For unsealed types, the GetObjectData method should be callable and overridable by derived types.</Description>
+   <Resolution Name="Default">Add an implementation of GetObjectData to type {0}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182342.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="60">Error</MessageLevel>
+   <File Name="usagerules.dll" Version="17.0.0.0" />
+  </Rule>
+  <Rule TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200">
+   <Name>Rethrow to preserve stack details</Name>
+   <Description>Use the IL rethrow instruction to preserve original stack details when re-raising a caught exception.</Description>
+   <Resolution Name="Default">{0} rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182363.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="usagerules.dll" Version="17.0.0.0" />
+  </Rule>
+  <Rule TypeName="Review SQL queries for security vulnerabilities" Category="Microsoft.Security" CheckId="CA2100">
+   <Name>Review SQL queries for security vulnerabilities</Name>
+   <Description>A SQL command string built from user input is vulnerable to SQL injection attacks. Microsoft SQL Server and other database servers support stored procedures and parameterized SQL queries, which reduce the risk of injection attacks.</Description>
+   <Resolution Name="WithNonLiterals">The query string passed to {0} in {1} could contain the following variables {2}. If any of these variables could come from user input, consider using a stored procedure or a parameterized SQL query instead of building the query with string concatenations.</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182310.aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="17.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
+ </Localized>
+</FxCopReport>

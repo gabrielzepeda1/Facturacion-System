@@ -14,7 +14,7 @@ Imports AjaxControlToolkit
 Partial Class Utilitarios_AccesosUsuarios
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
@@ -89,7 +89,7 @@ Partial Class Utilitarios_AccesosUsuarios
             ds.Dispose()
 
         Catch ex As Exception
-            ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
         End Try
     End Sub
 
@@ -105,7 +105,7 @@ Partial Class Utilitarios_AccesosUsuarios
                 End If
             End If
         Catch ex As Exception
-            ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
         End Try
     End Sub
 
@@ -119,7 +119,7 @@ Partial Class Utilitarios_AccesosUsuarios
             hdfPuesto.Value = String.Empty
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -139,7 +139,7 @@ Partial Class Utilitarios_AccesosUsuarios
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
     End Sub
@@ -183,7 +183,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDeleting. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDeleting. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -426,7 +426,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Guardar()
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
 
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -467,7 +467,7 @@ Partial Class Utilitarios_AccesosUsuarios
     Private Function IfExists() As Boolean
 
 
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
         Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
         sql &= "EXEC AccesosUsuarios @opcion=4, " &
                "@codusuario =  " & ddlUsuario.SelectedValue & " ," &
@@ -509,7 +509,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Eliminar()
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -546,7 +546,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Actualizar(Codigo As String, Descripcio As String, Numero As Integer, Sigla As String, origen As Integer, calidad As Integer, presentacion As Integer, familia As Integer, prodSm As Integer)
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -666,7 +666,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
         End Try
     End Sub
 

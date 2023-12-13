@@ -13,7 +13,7 @@ Imports System.Configuration
 Partial Class catalogos_ProductosMaestro
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
@@ -105,7 +105,7 @@ Partial Class catalogos_ProductosMaestro
             ds.Dispose()
           
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
 
         End Try
     End Sub
@@ -122,7 +122,7 @@ Partial Class catalogos_ProductosMaestro
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -136,7 +136,7 @@ Partial Class catalogos_ProductosMaestro
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -158,7 +158,7 @@ Partial Class catalogos_ProductosMaestro
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
 
@@ -189,7 +189,7 @@ Partial Class catalogos_ProductosMaestro
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -320,7 +320,7 @@ Partial Class catalogos_ProductosMaestro
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowEditing SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowEditing SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -465,13 +465,13 @@ Partial Class catalogos_ProductosMaestro
             Me.ddlFamilia.ClearSelection()
             Me.CheckSm.Checked = False
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
         End Try
     End Sub
     Private Sub Guardar()
         Dim MessegeText As String = String.Empty
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -522,7 +522,7 @@ Partial Class catalogos_ProductosMaestro
 
     Private Sub Eliminar()
         Dim MessegeText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -567,7 +567,7 @@ Partial Class catalogos_ProductosMaestro
 
     Private Sub Actualizar(Codigo As String, Descripcio As String, Numero As Integer, Sigla As String, origen As Integer, calidad As Integer, presentacion As Integer, familia As Integer, prodSm As Boolean)
         Dim MessegeText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -678,7 +678,7 @@ Partial Class catalogos_ProductosMaestro
                 Exit Sub
             End If
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
 
         End Try
     End Sub
@@ -781,7 +781,7 @@ Partial Class catalogos_ProductosMaestro
 
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
         End Try
     End Sub
 

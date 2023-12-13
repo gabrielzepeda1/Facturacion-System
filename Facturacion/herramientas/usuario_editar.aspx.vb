@@ -9,7 +9,7 @@ Imports IpPublicKnowledge
 
 Partial Class herramientas_usuario_editar
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
@@ -120,7 +120,7 @@ Partial Class herramientas_usuario_editar
             dr.Close()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
 
         End Try
     End Sub
@@ -271,7 +271,7 @@ Partial Class herramientas_usuario_editar
     Private Sub Guardar(query As String)
         Dim MessegeText As String = String.Empty
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()

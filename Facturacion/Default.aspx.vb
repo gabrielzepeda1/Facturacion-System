@@ -2,7 +2,7 @@
 
 Partial Class [Default]
     Inherits System.Web.UI.Page
-    Dim _conn As New FACTURACION_CLASS.seguridad
+    Dim _conn As New FACTURACION_CLASS.Seguridad
     Dim _database As New FACTURACION_CLASS.database
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load

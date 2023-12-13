@@ -6,7 +6,7 @@ Imports System.Xml
 
 Partial Public Class catalogos_paridad
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
@@ -76,7 +76,7 @@ Partial Public Class catalogos_paridad
             'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
 
         End Try
     End Sub
@@ -93,7 +93,7 @@ Partial Public Class catalogos_paridad
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -107,7 +107,7 @@ Partial Public Class catalogos_paridad
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -130,7 +130,7 @@ Partial Public Class catalogos_paridad
                 ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
     End Sub
@@ -143,7 +143,7 @@ Partial Public Class catalogos_paridad
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
 
         End Try
     End Sub

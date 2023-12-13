@@ -2,7 +2,7 @@
 
 Partial Class admin_administracion
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim Database As New FACTURACION_CLASS.database
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load

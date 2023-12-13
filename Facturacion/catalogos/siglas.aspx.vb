@@ -6,7 +6,7 @@ Imports FACTURACION_CLASS.DatabaseHelper
 
 Partial Class Catalogos_Siglas
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
@@ -88,7 +88,7 @@ Partial Class Catalogos_Siglas
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
 
         End Try
     End Sub
@@ -105,7 +105,7 @@ Partial Class Catalogos_Siglas
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -119,7 +119,7 @@ Partial Class Catalogos_Siglas
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -141,7 +141,7 @@ Partial Class Catalogos_Siglas
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
     End Sub
@@ -156,7 +156,7 @@ Partial Class Catalogos_Siglas
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -171,7 +171,7 @@ Partial Class Catalogos_Siglas
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -185,7 +185,7 @@ Partial Class Catalogos_Siglas
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -201,7 +201,7 @@ Partial Class Catalogos_Siglas
             Actualizar(e.NewEditIndex.ToString, e.NewEditIndex.ToString)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -226,7 +226,7 @@ Partial Class Catalogos_Siglas
             txtDescripcion.Text.Equals("")
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
         End Try
     End Sub
 
@@ -520,7 +520,7 @@ Partial Class Catalogos_Siglas
 
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
         End Try
     End Sub
 

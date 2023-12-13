@@ -4,7 +4,7 @@ Imports System.Threading
 
 Partial Class admin_crear_menu
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
@@ -183,7 +183,7 @@ Partial Class admin_crear_menu
             dr.Close()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
 
         End Try
     End Sub
@@ -192,12 +192,12 @@ Partial Class admin_crear_menu
 #Region "PROCEDIMIENTOS EJECUTADOS EN LA BASE DE DATOS"
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
         If Me.txtPosicion.Text.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe escribir la posicion que tendra el apartado en el menú..", "alerta")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe escribir la posicion que tendra el apartado en el menú..", "alerta")
             Exit Sub
         End If
 
         If Me.txtEtiqueta.Text.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe escribir una etiqueta que identifique el apartado en el menú.", "alerta")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe escribir una etiqueta que identifique el apartado en el menú.", "alerta")
             Exit Sub
         End If
 
@@ -229,7 +229,7 @@ Partial Class admin_crear_menu
 
     Protected Sub btnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
         If Me.txtCodigo.Text.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un menú.", "alerta")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un menú.", "alerta")
             Exit Sub
         End If
 
@@ -260,7 +260,7 @@ Partial Class admin_crear_menu
     ''' <param name="ErrorMsg">MENSAJE DE ERROR QUE SERA VISUALIZADO POR EL VISITANTE.</param>
     ''' <remarks></remarks>
     Private Sub Guardar(sql As String, Query As String, ExitoMsg As String, ErrorMsg As String)
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -269,12 +269,12 @@ Partial Class admin_crear_menu
             Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
             cmd.ExecuteNonQuery()
 
-            Me.ltMensaje.Text = conn.pmsgBox(ExitoMsg, "exito")
+            Me.ltMensaje.Text = conn.PmsgBox(ExitoMsg, "exito")
 
             GetMenu()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ErrorMsg & " " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then

@@ -12,7 +12,7 @@ Imports SM.Data
 
 Partial Class herramientas_usuarios
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
     Private codigoUsuario As String
@@ -79,7 +79,7 @@ Partial Class herramientas_usuarios
         Try
             ''Thread.CurrentThread.CurrentCulture = New Globalization.CultureInfo("es-NI")
 
-            Using dbCon As New OleDbConnection(conn.conn)
+            Using dbCon As New OleDbConnection(conn.Conn)
                 dbCon.Open()
 
                 Dim sql As String = "EXEC sp_usuario " &
@@ -109,7 +109,7 @@ Partial Class herramientas_usuarios
             End Using
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text = conn.pmsgBox("Ocurrio un error al intentar cargar la lista de usuarios. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text = conn.PmsgBox("Ocurrio un error al intentar cargar la lista de usuarios. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -126,7 +126,7 @@ Partial Class herramientas_usuarios
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -138,7 +138,7 @@ Partial Class herramientas_usuarios
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "BSTT_SCRIPT", "SetBasicTable();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -158,7 +158,7 @@ Partial Class herramientas_usuarios
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
     End Sub
@@ -170,7 +170,7 @@ Partial Class herramientas_usuarios
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -197,7 +197,7 @@ Partial Class herramientas_usuarios
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -334,7 +334,7 @@ Partial Class herramientas_usuarios
 
         Try
 
-            Using dbCon As New OleDbConnection(conn.conn)
+            Using dbCon As New OleDbConnection(conn.Conn)
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_Usuario", dbCon)
@@ -389,7 +389,7 @@ Partial Class herramientas_usuarios
     Private Sub Eliminar()
         Dim messageText As String
         Try
-            Using dbCon As New OleDbConnection(conn.conn)
+            Using dbCon As New OleDbConnection(conn.Conn)
                 dbCon.Open()
                 Using cmd As New OleDbCommand("sp_Usuario", dbCon)
                     cmd.Parameters.AddWithValue("@consecutivo_usuario", Me.hdfCodigo.Value.Trim())

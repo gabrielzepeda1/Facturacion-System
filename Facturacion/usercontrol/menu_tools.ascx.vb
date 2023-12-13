@@ -2,7 +2,7 @@
 
 Partial Class usercontrol_menu_tools
     Inherits System.Web.UI.UserControl
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim Database As New FACTURACION_CLASS.database
 
 

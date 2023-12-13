@@ -23,12 +23,10 @@ Imports System.Windows.Forms
 
 Partial Class movimientos_Reportes_Factura_ImprimirFactura
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Public imprint As New Impresion ' llamando a la clase
     'Dim impresor As New Impresor
-
-
     Private Sub DosResport()
         'TODO: esta línea de código carga datos en la tabla 'DataSetImprirFactura.Factura' Puede moverla o quitarla según sea necesario.
         'Me.FacturaTableAdapter.Fill(Me.DataSetImprirFactura.Factura)
@@ -66,7 +64,7 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
 
     End Sub
     Private Sub Reporte()
-        Dim dbcom As New System.Data.OleDb.OleDbConnection(conn.conn) ''nombre de la conexion
+        Dim dbcom As New System.Data.OleDb.OleDbConnection(conn.Conn) ''nombre de la conexion
         Try
             If dbcom.State = ConnectionState.Closed Then
                 dbcom.Open()
@@ -115,7 +113,7 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el reporte." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el reporte." & ex.Message, "error")
 
         End Try
     End Sub
@@ -127,7 +125,7 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
             Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es-NI")
             System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es-NI")
             'Reporte()
-            Dim dbcom As New System.Data.OleDb.OleDbConnection(conn.conn) ''nombre de la conexion
+            Dim dbcom As New System.Data.OleDb.OleDbConnection(conn.Conn) ''nombre de la conexion
             Try
                 If dbcom.State = ConnectionState.Closed Then
                     dbcom.Open()
@@ -198,7 +196,7 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
                 'Me.ReportViewer1.LocalReport.Refresh
 
             Catch ex As Exception
-                Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el reporte." & ex.Message, "error")
+                Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el reporte." & ex.Message, "error")
 
             End Try
 

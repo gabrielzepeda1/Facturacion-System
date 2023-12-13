@@ -23,7 +23,7 @@ Partial Public Class movimientos_Factura
 
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
     Dim ProdusctoCodpais As Integer
@@ -164,7 +164,7 @@ Partial Public Class movimientos_Factura
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar la tabla de inventario." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar la tabla de inventario." & ex.Message, "error")
 
         End Try
     End Sub
@@ -234,7 +234,7 @@ Partial Public Class movimientos_Factura
             'The next line of code disposes of the dataset object to free up system resources.
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. de vendedor" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. de vendedor" & ex.Message, "error")
 
             'If any exceptions occur during the execution of the "Try...Catch" block, the code in the "Catch" block is executed. This code displays an error message using a custom message box method called "conn.pmsgBox".
 
@@ -287,7 +287,7 @@ Partial Public Class movimientos_Factura
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento CboCliente()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento CboCliente()" & ex.Message, "error")
 
         End Try
     End Sub
@@ -448,7 +448,7 @@ Partial Public Class movimientos_Factura
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text = conn.pmsgBox("Ocurrió un error en ddlCliente SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text = conn.PmsgBox("Ocurrió un error en ddlCliente SelectedIndexChanged. " & ex.Message, "error")
         End Try
     End Sub
 
@@ -480,7 +480,7 @@ Partial Public Class movimientos_Factura
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de productos en la tabla. Proceso CboProducto()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de productos en la tabla. Proceso CboProducto()" & ex.Message, "error")
 
         End Try
     End Sub
@@ -505,7 +505,7 @@ Partial Public Class movimientos_Factura
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento PRODUCTOSPRECIO()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla. Procedimiento PRODUCTOSPRECIO()" & ex.Message, "error")
 
         End Try
     End Sub
@@ -554,7 +554,7 @@ Partial Public Class movimientos_Factura
             dataSet.Dispose()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en FORMA DE PAGO" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en FORMA DE PAGO" & ex.Message, "error")
 
         End Try
 
@@ -698,7 +698,7 @@ Partial Public Class movimientos_Factura
                             If CDec(vcantida.Trim) < CDec(TextCantidad.Text.Trim) Then
                                 TextCantidad.Text = vcantida
                                 Dim errorMessage As String = "Cantidad a vender es mayor que la existencia=" & vcantida
-                                Me.ltMensajeGrid.Text = conn.pmsgBox(errorMessage, "Sin Inventario")
+                                Me.ltMensajeGrid.Text = conn.PmsgBox(errorMessage, "Sin Inventario")
                                 ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", GetAlertifyScript(errorMessage), True)
                             End If
 
@@ -706,7 +706,7 @@ Partial Public Class movimientos_Factura
                         Else
                             Nuevo()
                             Dim errorMessage As String = "Producto no tiene existencia, por lo tanto no puede facturarse"
-                            Me.ltMensajeGrid.Text = conn.pmsgBox(errorMessage, "error")
+                            Me.ltMensajeGrid.Text = conn.PmsgBox(errorMessage, "error")
                             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", GetAlertifyScript(errorMessage), True)
                             ddlProducto.Focus()
                         End If
@@ -715,7 +715,7 @@ Partial Public Class movimientos_Factura
             End If
         Catch ex As Exception
             Dim errorMessage As String = "Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message
-            Me.ltMensajeGrid.Text &= conn.pmsgBox(errorMessage, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox(errorMessage, "error")
         End Try
     End Sub
 
@@ -868,13 +868,13 @@ Partial Public Class movimientos_Factura
                 TextId.Text = Cedula
             Else
                 TextId.Text = String.Empty
-                ltMensaje.Text = conn.pmsgBox("Ingrese la cedula del cliente si la requiere.", "alerta")
+                ltMensaje.Text = conn.PmsgBox("Ingrese la cedula del cliente si la requiere.", "alerta")
 
             End If
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar la Cedula RUC del cliente. Procedimiento CEDULA()" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar la Cedula RUC del cliente. Procedimiento CEDULA()" & ex.Message, "error")
         End Try
 
     End Sub
@@ -978,14 +978,14 @@ Partial Public Class movimientos_Factura
 
         ' If all validations passed, display success message and call the function
         If allValidationsPassed Then
-            ltMensaje.Text = conn.pmsgBox("No se encontraron errores en las validaciones.", "exito")
+            ltMensaje.Text = conn.PmsgBox("No se encontraron errores en las validaciones.", "exito")
             GuardarTmpFact2()
         End If
     End Sub
 
 
     Private Sub GuardarTmpFact()
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -1118,10 +1118,10 @@ Partial Public Class movimientos_Factura
 
             'MessageText = "alertify.alert('El registro se ha guardado de forma correcta');"
             'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", MessageText, True)
-            ltMensaje.Text = conn.pmsgBox("El registro se ha guardado de forma correcta.", "exito")
+            ltMensaje.Text = conn.PmsgBox("El registro se ha guardado de forma correcta.", "exito")
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrió un error al intentar guardar el registro." & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrió un error al intentar guardar el registro." & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then
@@ -1133,7 +1133,7 @@ Partial Public Class movimientos_Factura
 
     Private Sub GuardarTmpFact2()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
 
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -1220,10 +1220,10 @@ Partial Public Class movimientos_Factura
 
             'MessageText = "alertify.alert('El registro se ha guardado de forma correcta');"
             'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", MessageText, True)
-            ltMensaje.Text = conn.pmsgBox("El registro se ha guardado de forma correcta.", "exito")
+            ltMensaje.Text = conn.PmsgBox("El registro se ha guardado de forma correcta.", "exito")
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrió un error al intentar guardar el registro." & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrió un error al intentar guardar el registro." & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then
@@ -1245,7 +1245,7 @@ Partial Public Class movimientos_Factura
     Private Sub Eliminar(ProductoCodProd As String)
 
         Dim MessageText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -1391,7 +1391,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid()", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
         End Try
     End Sub
 
@@ -1407,7 +1407,7 @@ Partial Public Class movimientos_Factura
                 End If
             End If
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -1421,7 +1421,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
 
         End Try
     End Sub
@@ -1445,7 +1445,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
 
         End Try
     End Sub
@@ -1460,7 +1460,7 @@ Partial Public Class movimientos_Factura
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -1483,7 +1483,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDeleting del grid " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDeleting del grid " & ex.Message, "error")
 
         End Try
     End Sub
@@ -1513,7 +1513,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
 
@@ -1530,7 +1530,7 @@ Partial Public Class movimientos_Factura
             Load_GridView()
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -1934,7 +1934,7 @@ Partial Public Class movimientos_Factura
 
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
 
         End Try
     End Sub
@@ -2142,7 +2142,7 @@ Partial Public Class movimientos_Factura
 
         Catch ex As Exception
 
-            Me.LiteralGridpop.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar la tabla del pop. forma de pago" & ex.Message, "error")
+            Me.LiteralGridpop.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar la tabla del pop. forma de pago" & ex.Message, "error")
             Session("Continuar") = 0
 
         End Try
@@ -2208,7 +2208,7 @@ Partial Public Class movimientos_Factura
 
         Dim MessageText As String
         Dim Sql As String
-        Dim dbCon As New OleDbConnection(conn.conn)
+        Dim dbCon As New OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -2272,7 +2272,7 @@ Partial Public Class movimientos_Factura
 
         Dim MessageText As String
         Dim Sql As String
-        Dim dbCon As New OleDbConnection(conn.conn)
+        Dim dbCon As New OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -2376,7 +2376,7 @@ Partial Public Class movimientos_Factura
             End If
         Catch ex As Exception
 
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBounnd grid Forma de Pago." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBounnd grid Forma de Pago." & ex.Message, "error")
 
         End Try
     End Sub
@@ -2390,7 +2390,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged del grid Forma de Pago." & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged del grid Forma de Pago." & ex.Message, "error")
 
         End Try
     End Sub
@@ -2411,7 +2411,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging. DEL GRID FORMA DE PAGO" & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging. DEL GRID FORMA DE PAGO" & ex.Message, "error")
 
         End Try
     End Sub
@@ -2425,7 +2425,7 @@ Partial Public Class movimientos_Factura
             End If
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. DEL GRID FORMA DE PAGO " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. DEL GRID FORMA DE PAGO " & ex.Message, "error")
 
         End Try
     End Sub
@@ -2477,7 +2477,7 @@ Partial Public Class movimientos_Factura
 
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDeleting del grid " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDeleting del grid " & ex.Message, "error")
 
         End Try
     End Sub
@@ -2554,7 +2554,7 @@ Partial Public Class movimientos_Factura
             ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -2568,7 +2568,7 @@ Partial Public Class movimientos_Factura
             Me.GridViewpop.EditIndex = e.NewEditIndex
             'Load_GridView()
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
         End Try
     End Sub
 

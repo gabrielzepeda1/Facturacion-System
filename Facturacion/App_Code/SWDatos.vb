@@ -20,14 +20,14 @@ Imports System.Web.Script.Serialization
 <System.Web.Script.Services.ScriptService()> _
 Public Class SWDatos
     Inherits System.Web.Services.WebService
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim Database As New FACTURACION_CLASS.database
 
     <WebMethod()> _
     Public Function GetOrigen(ByVal knownCategoryValues As String, _
                             ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then

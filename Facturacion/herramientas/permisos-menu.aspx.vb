@@ -4,7 +4,7 @@ Imports System.Threading
 
 Partial Class admin_permisos_menu
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
@@ -79,7 +79,7 @@ Partial Class admin_permisos_menu
             ds.Dispose()
             trvMenu.ExpandAll()
         Catch ex As Exception
-            Me.ltMensaje.Text &= conn.pmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+            Me.ltMensaje.Text &= conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
         End Try
     End Sub
 #End Region
@@ -89,7 +89,7 @@ Partial Class admin_permisos_menu
         ltMensaje.Text = String.Empty
 
         If ddlUsuario.Text = String.Empty Then
-            ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
+            ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
             trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -130,7 +130,7 @@ Partial Class admin_permisos_menu
             trvPermisos.ExpandAll()
 
         Catch ex As Exception
-            ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+            ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
         End Try
     End Sub
 #End Region
@@ -158,14 +158,14 @@ Partial Class admin_permisos_menu
                 End If
             Next i
         Catch ex As Exception
-            ltMensaje.Text &= conn.pmsgBox("Ocurrio un error al intentar crear los hijos del arbol de nodos. " & ex.Message, "error")
+            ltMensaje.Text &= conn.PmsgBox("Ocurrio un error al intentar crear los hijos del arbol de nodos. " & ex.Message, "error")
         End Try
     End Sub
 
 #Region "PROCEDIMIENTOS DE LA BASE DE DATOS"
     Protected Sub trvMenu_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvMenu.SelectedNodeChanged
         If ddlUsuario.Text = String.Empty Then
-            ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
+            ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
             trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -183,7 +183,7 @@ Partial Class admin_permisos_menu
 
     Protected Sub trvPermisos_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvPermisos.SelectedNodeChanged
         If Me.ddlUsuario.Text = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -202,13 +202,13 @@ Partial Class admin_permisos_menu
 
     Protected Sub ddlRol_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRol.SelectedIndexChanged
         If Me.ddlUsuario.Text = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un usuario de la lista desplegable.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
 
         If Me.ddlRol.Text = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la lista desplegable.", "info")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la lista desplegable.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -233,7 +233,7 @@ Partial Class admin_permisos_menu
     ''' <param name="ErrorMsg">MENSAJE DE ERROR QUE SERA VISUALIZADO POR EL VISITANTE.</param>
     ''' <remarks></remarks>
     Private Sub Guardar(sql As String, Query As String, ExitoMsg As String, ErrorMsg As String)
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -243,13 +243,13 @@ Partial Class admin_permisos_menu
             cmd.ExecuteNonQuery()
 
             If Not ExitoMsg = String.Empty Then
-                Me.ltMensaje.Text = conn.pmsgBox(ExitoMsg, "exito")
+                Me.ltMensaje.Text = conn.PmsgBox(ExitoMsg, "exito")
             End If
 
             GetMenuPermisos()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ErrorMsg & " " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then

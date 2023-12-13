@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SM.Entity
+﻿namespace SM.Entity
 {
     public class Cliente
     {
@@ -30,7 +24,6 @@ namespace SM.Entity
         public int CodigoVendedor { get; set; }
         public int CodigoUser { get; set; }
         public int CodigoUserUlt { get; set; }
-
 
     }
 }

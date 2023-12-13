@@ -16,8 +16,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Business", "SM.Business\SM.Business.csproj", "{09D1628A-F98D-453C-8DBE-2075AC02D6B1}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facturacion(2)", "Facturacion\", "{997C831A-6E7E-4E6E-BAC4-222D046A631A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0145CCA0-A932-4DBB-93BF-F947969E36EE} = {0145CCA0-A932-4DBB-93BF-F947969E36EE}
+	EndProjectSection
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		ProjectReferences = "{09D1628A-F98D-453C-8DBE-2075AC02D6B1}|SM.Business.dll;{F2090524-F4D5-44EF-B5C0-18FE5536D6C2}|SM.Entity.dll;{04790E1D-7701-4D15-A409-69E645AABC69}|SM.Data.dll;{0145cca0-a932-4dbb-93bf-f947969e36ee}|FACTURACION_CLASS.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_50659"
 		Debug.AspNetCompiler.PhysicalPath = "Facturacion\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50659\"

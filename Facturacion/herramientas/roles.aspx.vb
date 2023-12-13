@@ -4,7 +4,7 @@ Imports System.Threading
 
 Partial Class herramientas_roles
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
@@ -59,7 +59,7 @@ Partial Class herramientas_roles
 
 
         Catch ex As Exception
-            Me.ltMensaje.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            Me.ltMensaje.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
         End Try
     End Sub
 
@@ -98,7 +98,7 @@ Partial Class herramientas_roles
             Me.trvPermisos.ExpandAll()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -142,7 +142,7 @@ Partial Class herramientas_roles
             Me.trvMenu.ExpandAll()
 
         Catch ex As Exception
-            ltMensaje.Text &= conn.pmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+            ltMensaje.Text &= conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
         End Try
     End Sub
 
@@ -179,7 +179,7 @@ Partial Class herramientas_roles
 #Region "PROCEDIMIENTOS DE LA BASE DE DATOS"
     Protected Sub trvMenu_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvMenu.SelectedNodeChanged
         If Me.hdfCodigo.Value.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -197,7 +197,7 @@ Partial Class herramientas_roles
 
     Protected Sub trvPermisos_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvPermisos.SelectedNodeChanged
         If Me.hdfCodigo.Value.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.pmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
+            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -264,7 +264,7 @@ Partial Class herramientas_roles
     Private Sub Guardar(sql As String, Query As String, ExitoMsg As String, ErrorMsg As String)
         Dim MessegeText As String = String.Empty
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -282,7 +282,7 @@ Partial Class herramientas_roles
             GetMenuPermisos()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.pmsgBox(ErrorMsg & " " & ex.Message, "error")
+            Me.ltMensaje.Text = conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then
