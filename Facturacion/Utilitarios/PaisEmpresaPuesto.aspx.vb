@@ -7,7 +7,7 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     Inherits Page
 
     Dim _conn As New seguridad
-    Dim DataBase As New database
+    Dim _database As New database
 
     Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
     Public MyUserName As String
