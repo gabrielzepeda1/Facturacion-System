@@ -7,7 +7,7 @@ Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
             Attributes_Text()
         End If
@@ -40,12 +40,13 @@ Partial Class Login
     End Function
 
 #Region "INICIAR SESIÓN"
-
     Private Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
-        ValidateUser()
+        UserLogin()
 
     End Sub
-    Protected Sub ValidateUser()
+
+    ''''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER. Si el SWITCH case es ELSE, el usuario es valido.</summary>
+    Protected Sub UserLogin()
 
         Dim username As String = txtUsuario.Text.Trim()
         Dim password As String = HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim()))
@@ -88,6 +89,8 @@ Partial Class Login
         End Try
     End Sub
     Protected Sub HandleUserSession(username As String, browserData As String)
+
+        ''Maneja la sesion del usuario ya autenticado.
 
         Dim sessionData As Dictionary(Of String, Object) = _conn.ControlarSesion(username, ObtenerIp_Publica(), browserData)
 
@@ -132,25 +135,20 @@ Partial Class Login
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub Generar_Password_Encriptado()
-        Dim messegeText As String = String.Empty
         Try
-
-            Dim password As String = "Ladmin19*"
-
+            Dim password = "Ladmin19*"
             Dim passwordEncript As String = HttpUtility.UrlEncode(Encrypt(password))
 
             Response.Write("<p>Desencriptado: " & Decrypt(HttpUtility.UrlDecode(passwordEncript)) & "</p>")
-
             Response.Write(String.Format("<P>Encriptado: " & passwordEncript & "</P>"))
-        Catch ex As Exception
-            messegeText = "alertify.error('" & ex.Message & "');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", messegeText, True)
 
+        Catch ex As Exception
+            Dim messegeText = "alertify.error('" & ex.Message & "');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", messegeText, True)
         End Try
     End Sub
 
     Private Function Encrypt(clearText As String) As String
-        'Dim EncryptionKey As String = conn.Key
         Dim encryptionKey As String = _conn.Key
 
         Dim clearBytes As Byte() = Encoding.Unicode.GetBytes(clearText)
