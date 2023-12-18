@@ -89,7 +89,6 @@ Public Class seguridad
     End Property
 
 #End Region
-
     ''' <summary>Returns Alert-Success-Error Message.</summary>
     ''' <param name="Mensaje">Message</param>
     ''' <param name="Tipo">Message Type: [info, exito, alerta, error]</param>
@@ -143,100 +142,62 @@ Public Class seguridad
 #End Region
 
 #Region "LOGIN"
+    ''' <summary>
+    ''' REGISTRA LOS DATOS DE UN INICIO DE SESIÓN
+    ''' </summary>
+    ''' <param name="Usuario">NOMBRE DE USUARIO</param>
+    ''' <param name="IpConexion">IP PUBLICA DE LA CONEXION</param>
+    ''' <param name="Nombre_Host">NOMBRE DE HOST</param>
+    ''' <returns>OleDbDataReader</returns>
+    ''' <remarks></remarks>
+    Public Function ControlarSesion(usuario As String, ipConexion As String, nombreHost As String) As Dictionary(Of String, Object)
 
-    '''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER, si devuelve TRUE, el usuario esta registrado y puede iniciar sesión.</summary>
-    '''<param name="usuario">Nombre de Usuario</param>
-    '''<param name="password">Password</param>
-    '''<param name="IpConexion">Direccion Ip del Usuario</param>
-    ''' <param name="Nombre_Host">Nombre del Host</param>
-    Public Function IniciarSesion(usuario As String, password As String, IpConexion As String, Nombre_Host As String) As Dictionary(Of String, Object)
-
-        Dim userData As New Dictionary(Of String, Object)
+        Dim sessionData As New Dictionary(Of String, Object)
 
         Try
+
             Using dbCon As New OleDbConnection(conn)
+
                 dbCon.Open()
 
-                Dim cmd As New OleDbCommand("sp_sys_login", dbCon)
-                cmd.Parameters.AddWithValue("@Username", usuario)
-                cmd.Parameters.AddWithValue("@Password", password)
-                cmd.Parameters.AddWithValue("@IpConexion", IpConexion)
-                cmd.Parameters.AddWithValue("@Nombre_Host", Nombre_Host)
+                Using cmd As New OleDbCommand("sp_sys_Abrir_Sesion", dbCon)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("@Username", usuario)
+                    cmd.Parameters.AddWithValue("@IpConexion", ipConexion)
+                    cmd.Parameters.AddWithValue("@Nombre_Host", nombreHost)
 
-                cmd.CommandType = CommandType.StoredProcedure
-                Dim dr As OleDbDataReader = cmd.ExecuteReader()
+                    Dim dr As OleDbDataReader = cmd.ExecuteReader()
 
-                If dr.Read() Then
-                    If dr.Item("Status") = "SESION INICIADA" Then
-                        userData("Username") = dr.Item("Username")
-                        userData("Password") = dr.Item("Pssword")
-                        userData("CodigoSesion") = dr.Item("CodigoSesion")
-                        userData("CodigoUser") = dr.Item("CodigoUser")
-                        userData("Status") = dr.Item("Status")
+                    If dr.Read() Then
+                        If dr.Item("Status") = "SESION INICIADA" Then
+                            sessionData("CodigoSesion") = dr.Item("CodigoSesion")
+                            sessionData("CodigoUser") = dr.Item("CodigoUser")
+                            sessionData("Username") = dr.Item("Username")
+                            sessionData("Password") = dr.Item("Password")
+                            sessionData("Status") = dr.Item("Status")
 
-                        Return userData
-
-                    ElseIf dr.Item("Status") = "PREVIA SESION ACTIVA" Then
-
-                        userData("PrevCodigoSesion") = dr.Item("PrevCodigoSesion")
-                        userData("Username") = dr.Item("Username")
-                        userData("CodigoUser") = dr.Item("CodigoUser")
-                        userData("Nombre_Host") = dr.Item("Nombre_Host")
-                        userData("LastLogin") = dr.Item("LastLogin")
-                        userData("TimeSinceLastLogin") = dr.Item("TimeSinceLastLogin")
-                        userData("Status") = dr.Item("Status")
-
-                        Return userData
-
-                    ElseIf dr.Item("Status") = "ERROR AL INICIAR SESION" Then
-                        Return Nothing
+                            Return sessionData
+                        Else
+                            sessionData("Status") = dr.Item("Status")
+                            Return sessionData
+                        End If
                     End If
-                End If
 
-                Return Nothing
+                    Return Nothing
 
+                End Using
             End Using
+
         Catch ex As Exception
-            MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Error en Inicio de Sesión")
-            Exit Function
-        End Try
-
-    End Function
-
-#End Region
-
-#Region "CERRAR SESION"
-
-    Public Function CerrarSesion(codigoUser As String, codigoSesion As String) As Boolean
-        Try
-            Using dbCon As New OleDbConnection(conn)
-                dbCon.Open()
-
-                Dim cmd As New OleDbCommand("sp_sys_logout", dbCon)
-                cmd.Parameters.AddWithValue("@CodigoUser", codigoUser)
-                cmd.Parameters.AddWithValue("@CodigoSesion", codigoSesion)
-                cmd.CommandType = CommandType.StoredProcedure
-
-                ' Check if stored procedure executed successfully
-                Dim dr As OleDbDataReader = cmd.ExecuteReader()
-
-                If dr.Read() Then
-                    If dr.Item("Status") = "SESION FINALIZADA" Then
-                        Return True
-                    ElseIf dr.Item("Status") = "SESION NO ENCONTRADA" Then
-                        Return False
-                    End If
-                End If
-
-                Return False
-
-            End Using
-        Catch ex As Exception
-            MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Sistema de Facturacion")
-            Return False
+            MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
         End Try
     End Function
 
+    ''''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER, si devuelve TRUE, el usuario esta registrado y puede iniciar sesión.</summary>
+    ''''<param name="usuario">Nombre de Usuario</param>
+    ''''<param name="password">Password</param>
+    ''''<param name="IpConexion">Direccion Ip del Usuario</param>
+    '''' <param name="Nombre_Host">Nombre del Host</param>
 #End Region
 
 End Class

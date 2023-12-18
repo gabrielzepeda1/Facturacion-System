@@ -1,6 +1,8 @@
-﻿Imports System.IO
+﻿Imports System.Data.OleDb
+Imports System.IO
 Imports System.Security.Cryptography
 Imports FACTURACION_CLASS
+Imports Microsoft.ReportingServices.DataProcessing
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
@@ -13,10 +15,10 @@ Partial Class Login
 
     Private Sub Attributes_Text()
         txtUsuario.Attributes.Add("placeholder", "Escriba su nombre de usuario")
-        txtUsuario.Attributes.Add("required", "required")
+        'txtUsuario.Attributes.Add("required", "required")
         txtUsuario.Attributes.Add("autocomplete", "off")
         txtPass.Attributes.Add("placeholder", "Introduzca su contraseña")
-        txtPass.Attributes.Add("required", "required")
+        'txtPass.Attributes.Add("required", "required")
         txtPass.Attributes.Add("autocomplete", "off")
     End Sub
 
@@ -40,96 +42,80 @@ Partial Class Login
 #Region "INICIAR SESIÓN"
 
     Private Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
+        ValidateUser()
+
+    End Sub
+    Protected Sub ValidateUser()
+
+        Dim username As String = txtUsuario.Text.Trim()
+        Dim password As String = HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim()))
+        Dim browserData As String = Request.Browser.Browser & " " & Request.Browser.Version & " " & Request.Browser.Platform
+        Dim codigoUser As Integer = 0
 
         Try
-            Dim username As String = txtUsuario.Text.Trim()
-            Dim password As String = HttpUtility.UrlEncode(Encrypt(txtPass.Text.Trim()))
-            Dim browserData As String = Request.Browser.Browser & " " & Request.Browser.Version & " " & Request.Browser.Platform
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
 
-            Dim userData As Dictionary(Of String, Object) = _conn.IniciarSesion(username, password, ObtenerIp_Publica(), browserData)
+                Using cmd As New OleDbCommand("sp_sys_login", dbCon)
 
-            If userData IsNot Nothing Then
-                If userData.ContainsKey("Status") AndAlso userData("Status").ToString() = "SESION INICIADA" Then
-                    Login(userData)
-                ElseIf userData.ContainsKey("Status") AndAlso userData("Status").ToString() = "PREVIA SESION ACTIVA" Then
-                    HandlePreviousSession(userData)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("@Username", username)
+                    cmd.Parameters.AddWithValue("@Password", password)
+
+                    codigoUser = Convert.ToInt32(cmd.ExecuteScalar())
+                End Using
+
+                Select Case codigoUser
+                    Case -1
+                        'MsgBox("Usuario o Contraseña Incorrectos", MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+                        Exit Select
+                    Case -2
+                        'MsgBox("Usuario Inactivo", MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+                        Exit Select
+                    Case Else
+                        If Not String.IsNullOrEmpty(Request.QueryString("ReturnUrl")) Then
+                            FormsAuthentication.SetAuthCookie(username, False)
+                            Response.Redirect(Request.QueryString("ReturnUrl"))
+                        Else
+                            HandleUserSession(username, browserData)
+                        End If
+                        Exit Select
+                End Select
+            End Using
+
+        Catch ex As Exception
+            ShowErrorMessage(ex.Message)
+        End Try
+    End Sub
+    Protected Sub HandleUserSession(username As String, browserData As String)
+
+        Dim sessionData As Dictionary(Of String, Object) = _conn.ControlarSesion(username, ObtenerIp_Publica(), browserData)
+
+        Try
+            If sessionData IsNot Nothing Then
+
+                If sessionData.ContainsKey("Status") AndAlso sessionData.Item("Status") = "SESION INICIADA" Then
+
+                    Dim cookie As New HttpCookie("CKSMFACTURA")
+
+                    cookie("CodigoSesion") = sessionData.Item("CodigoSesion").ToString()
+                    cookie("CodigoUser") = sessionData.Item("CodigoUser").ToString()
+                    cookie("Username") = sessionData.Item("Username").ToString()
+                    cookie("Password") = sessionData.Item("Password").ToString()
+
+                    cookie.Expires = Now.AddDays(1)
+                    Response.Cookies.Add(cookie)
+
+                    'FormsAuthentication.RedirectFromLoginPage(username, False)
+                    Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
+                Else
+                    Dim userLoggedInAlert As String = $"alertify.alert('{ sessionData.Item("Status").ToString()}')"
+                    ScriptManager.RegisterStartupScript(Me, Page.GetType, "userLoggedInAlert", userLoggedInAlert, True)
                 End If
-            ElseIf userData Is Nothing Then
-                ShowErrorMessage("Usuario y/o contraseña incorrect@s.")
             End If
         Catch ex As Exception
-            LogException(ex)
-            ShowErrorMessage("Ha ocurrido un error al iniciar sesión. Si el problema persiste, contacte con el administrador.")
+            ShowErrorMessage(ex.Message)
         End Try
-    End Sub
-
-    Private Sub Login(userData As Dictionary(Of String, Object))
-
-        Dim cookie As New HttpCookie("CKSMFACTURA")
-
-        cookie("Username") = userData.Item("Username").ToString()
-        cookie("Password") = userData.Item("Password").ToString()
-        cookie("CodigoSesion") = userData.Item("CodigoSesion").ToString()
-        cookie("CodigoUser") = userData.Item("CodigoUser").ToString()
-        cookie.Expires = Now.AddDays(1)
-        Response.Cookies.Add(cookie)
-
-        'FormsAuthentication.RedirectFromLoginPage(txtUsuario.Text().Trim(), False)
-        'Response.Redirect(ResolveClientUrl("~/Utilitarios/PaisEmpresaPuesto.aspx"))
-        Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
-
-    End Sub
-
-    Private Sub HandlePreviousSession(userData As Dictionary(Of String, Object))
-
-        Dim timeSinceLastLogin As Integer = Convert.ToInt32(userData("TimeSinceLastLogin"))
-
-        If timeSinceLastLogin > 15 Then
-            If TryCloseSession(userData) Then
-                ResetSession()
-                Login(userData)
-            End If
-        Else
-            DisplaySessionErrorMessage(userData)
-        End If
-
-    End Sub
-
-    Private Function TryCloseSession(userData As Dictionary(Of String, Object)) As Boolean
-        Try
-            Dim codigoUser As String = userData("CodigoUser").ToString()
-            Dim codigoSesion As String = userData("PrevCodigoSesion").ToString()
-
-            If _conn.CerrarSesion(codigoUser, codigoSesion) Then
-                Return True
-            End If
-
-            Return False
-        Catch ex As Exception
-            LogException(ex)
-            Return False
-        End Try
-    End Function
-
-    Private Sub ResetSession()
-        Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-        cookie.Expires = Now.AddDays(-1)
-        Request.Cookies.Clear()
-        Session.Abandon()
-        FormsAuthentication.SignOut()
-    End Sub
-
-    Private Sub DisplaySessionErrorMessage(userData As Dictionary(Of String, Object))
-        Dim loggedUsername = userData("Username")
-        Dim nombreHost = userData("Nombre_Host")
-        Dim timeRemaining = 15 - Convert.ToInt32(userData("TimeSinceLastLogin"))
-        Dim msg As String = "alertify.alert('Sesión Activa', 'El usuario " & loggedUsername & " se encuentra conectado en " & nombreHost & ", debe esperar " & timeRemaining & " minutos para iniciar sesión o cerrar la sesión activa.')"
-        ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
-
-    End Sub
-
-    Private Sub LogException(ex As Exception)
-        _conn.pmsgBox(ex.Message, "Error")
     End Sub
 
     Private Sub ShowErrorMessage(message As String)

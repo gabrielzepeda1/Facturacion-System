@@ -55,22 +55,6 @@
                             <i class="fas fa-user"></i>&nbsp <%= MyUserName%>
                         </a>
 
-                        <%--<div class="affiliations-container">
-
-                        <div class="affiliation first">
-                            <p class="">Pais: <%= UserPais %></p>
-                            <p class="">Empresa: <%= UserEmpresa %></p>
-                            <p class="">Puesto: <%= UserPuesto %></p>
-                        </div>
-
-                        <div class="affiliation second">
-                            <p class="">Pais: <%= UserPais %></p>
-                            <p class="">Empresa: <%= UserEmpresa %></p>
-                            <p class="">Puesto: <%= UserPuesto %></p>
-                        </div>
-
-
-                    </div>--%>
                         <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
 
                         <%--                    <a class="btn btn-danger" onclick="OnCloseSession();" title="Cerrar Sesión" role="button"><i class="fas fa-sign-out-alt"></i>
@@ -96,7 +80,7 @@
                     </div>
                     <div id="ubicacion" class="d-flex gap-2 col-7 align-items-center justify-content-end">
 
-                        <div class="affiliations-container py-2 mb-1">  
+                        <div class="affiliations-container py-2 mb-1">
 
 
                             <div class="affiliation first fw-semibold">
@@ -131,7 +115,7 @@
         </asp:ContentPlaceHolder>
     </form>
 
-    <script>
+    <script type="text/ecmascript">
         document.addEventListener("DOMContentLoaded", () => {
             console.log("This is running");
             ubicacionStyles();
@@ -304,12 +288,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-<script type="text/javascript">
-    //override defaults
-    alertify.defaults.transition = "slide";
-    alertify.defaults.theme.ok = "btn btn-primary";
-    alertify.defaults.theme.cancel = "btn btn-danger";
-    alertify.defaults.theme.input = "form-control";
-</script>
+<script src="~/js/settings/alertifySettings.js" type="text/ecmascript"></script>
 
 </html>

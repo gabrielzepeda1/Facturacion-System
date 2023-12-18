@@ -49,23 +49,27 @@
         </asp:UpdatePanel>
     </form>
 
-    <%-- <script type="text/javascript">
-        $(document).ready(function () {
-            $('input[placeholder]').placeholderLabel();
+    <script type="text/javascript">
+    
+        const btnEnviar = document.getElementById("<%=btnEnviar.ClientID%>");
+        
 
-        })
+        btnEnviar.addEventListener("click", (event) => {
 
-        function validacionCustom() {
-            const txtUsuario = document.getElementById(<%=txtUsuario.ClientID%>);
-            const txtPassword = document.getElementById(<%=txtPass.ClientID%>);
+            event.preventDefault();
 
-            txtUsuario.setCustomValidity("Ingrese el nombre de usuario.");
-            txtPassword.setCustomValidity("Ingrese la contraseña.");
+            const txtUsuario = document.getElementById("<%=txtUsuario.ClientID%>");
+            const txtPassword = document.getElementById("<%=txtPass.ClientID%>");
 
-            txtUsuario.reportValidity();
-            txtPassword.reportValidity();
-        }
-    </script>--%>
+            if (txtUsuario.value === "") {
+                alertify.error("El nombre de usuario no puede estar vacío")
+            } else if (txtPassword.value === "") {
+                alertify.error("La contraseña no puede estar vacía.")
+            } else { 
+                __doPostBack("<%=btnEnviar.UniqueID%>", "")
+            }
+         })
+    </script>
 
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/jquery.placeholder.label.js" type="text/javascript"></script>

@@ -1,7 +1,7 @@
 ﻿Imports System.Data
 
 Partial Class [Default]
-    Inherits System.Web.UI.Page
+    Inherits Page
     Dim _conn As New FACTURACION_CLASS.Seguridad
     Dim _database As New FACTURACION_CLASS.database
 

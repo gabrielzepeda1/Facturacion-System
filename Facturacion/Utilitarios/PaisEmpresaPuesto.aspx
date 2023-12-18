@@ -8,13 +8,15 @@
     <title><%=MyUserName%></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
-    <link href="css/sesion.css" rel="stylesheet" />
     <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
+    <%--<link href="~/css/sesion.css" rel="stylesheet" />--%>
     <link href="<%= ResolveClientUrl("../css/principal.css")%>" rel="stylesheet" />
     <link href="<%= ResolveClientUrl("../css/newStyles.css")%>" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -24,7 +26,7 @@
             <div class="container-md bg-dark rounded p-3" style="max-width: 500px">
                 <div class="row mb-3">
                     <div class="d-flex col-2 justify-content-start align-items-center">
-                        <a id="homeButton" class="navbar-brand" href="../Default.aspx">
+                        <a id="homeButton" class="navbar-brand">
                             <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="100" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
                     </div>
 
@@ -33,7 +35,7 @@
                     </div>
                     <div class="d-flex col-4 align-items-center justify-content-end ">
                         <%--<a class="btn btn-success text-center align-middle" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>" role="button"><i class="fas fa-user"></i>&nbsp <%= MyUserName%></a>--%>
-                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server" OnClientClick="confirm('desea cerrar sesion?')"></asp:LinkButton>
+                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
                     </div>
                 </div>
 
@@ -86,11 +88,10 @@
 
                 <div class="row mb-3 px-1 align-items-center">
                     <div class="col-12 d-flex justify-content-center">
-                        <asp:LinkButton ID="btnSubmit" runat="server" Text='<i class="fas fa-sign-in-alt"></i> Iniciar Sesión' CssClass="btn btn-primary" OnClientClick="alert('Desea iniciar sesión con la configuración seleccionada?)" />
+                        <asp:LinkButton ID="btnSubmit" runat="server" Text='<i class="fas fa-sign-in-alt"></i> Iniciar Sesión' CssClass="btn btn-primary" />
                     </div>
                 </div>
             </div>
-
         </div>
 
         <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
@@ -134,10 +135,63 @@
             </Columns>
         </asp:GridView>--%>
     </form>
-</body>
 
-<script src="js/jquery.min.js" type="text/javascript"></script>
-<script src="js/jquery.placeholder.label.js" type="text/javascript"></script>
-<script src="<%= ResolveClientUrl("../js/jquery-ui-1.12.1/jquery-ui.js")%>" type="text/javascript"></script>
-<script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("../js/jquery.min.js")%>" type="text/javascript"></script>
+    <script src="~/js/jquery.placeholder.label.js" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("../js/jquery-ui-1.12.1/jquery-ui.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <script src="<%= ResolveClientUrl("~/js/settings/alertifySettings.js") %>"></script>
+
+    <script> 
+
+        const btnSubmit = document.getElementById("<%= btnSubmit.ClientID %>");
+        const btnCerrar = document.getElementById("<%= btnCerrar.ClientID %>");
+
+        btnSubmit.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const ddlPais = document.getElementById("<%= ddlPais.ClientID %>");
+            const ddlEmpresa = document.getElementById("<%= ddlEmpresa.ClientID %>");
+            const ddlPuesto = document.getElementById("<%= ddlPuesto.ClientID %>");
+
+            if (ddlPais.value === "") {
+                alertify.alert('Debe seleccionar un país.');
+            } else if (ddlEmpresa.value === "") {
+                alertify.alert('Debe seleccionar una empresa.');
+            } else if (ddlPuesto.value === "") {
+                alertify.alert('Debe seleccionar un puesto.');
+            } else {
+                alertify.confirm(
+                    '',
+                    'Iniciar Sesión?',
+                    function () {
+                        __doPostBack("<%=btnSubmit.UniqueID%>", '');
+                        alertify.success('Sesión Iniciada');
+                    },
+                    function () {
+                        alertify.error('Cancelado');
+                    });
+            }
+
+        });
+
+        btnCerrar.addEventListener("click", (event) => {
+            event.preventDefault();
+            alertify.confirm(
+                '',
+                'Está seguro que desea cerrar sesión?',
+                function () {
+                    __doPostBack("<%=btnCerrar.UniqueID%>", '');
+                    
+                },
+                function () {
+                    alertify.error('Cancelado');
+                });
+        })
+    </script>
+
+</body>
 </html>

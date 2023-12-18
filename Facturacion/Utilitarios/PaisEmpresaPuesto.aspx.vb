@@ -1,4 +1,6 @@
 ﻿Imports System.Data
+Imports System.Data.OleDb
+Imports System.Diagnostics
 Imports FACTURACION_CLASS
 
 Partial Class Utilitarios_PaisEmpresaPuesto
@@ -79,15 +81,22 @@ Partial Class Utilitarios_PaisEmpresaPuesto
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         If Not Page.IsPostBack Then
+
+            If Request.Cookies.Get("CKSMFACTURA") Is Nothing Then
+                Response.Redirect(ResolveClientUrl("~/Login.aspx"))
+            End If
 
             Dim cookie As HttpCookie = Request.Cookies("CKSMFACTURA")
 
             If cookie IsNot Nothing Then
-                'Used to remember the name of the user who previously logged in.'
                 MyUserName = "USUARIO: " & Context.Request.Cookies("CKSMFACTURA")("Username")
             End If
 
+            If WatchSession() = False Then
+                Debug.WriteLine("Sesión cerrada")
+            End If
         End If
     End Sub
 
@@ -217,9 +226,14 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     'End Sub
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
+        SetCookies()
 
+    End Sub
+
+    Protected Sub SetCookies()
         'Asignar en las cookies los datos seleccionados (pais, empresa, puesto).
         Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
+        Dim userCookie = cookie("Username")
 
         cookie("CodigoPais") = ddlPais.SelectedValue()
         cookie("CodigoEmpresa") = ddlEmpresa.SelectedValue()
@@ -238,9 +252,9 @@ Partial Class Utilitarios_PaisEmpresaPuesto
         Session("Empresa") = cookie("Empresa")
         Session("Puesto") = cookie("Puesto")
 
-        'Finalmente redireccionamos al usuario a la pagina principal "Default.aspx"
-        'Response.Redirect(ResolveClientUrl("../Default.aspx"))
-        Response.Redirect("~/Default.aspx")
+        'Redireccionar al usuario a la pagina principal "Default.aspx"
+        'FormsAuthentication.SetAuthCookie(userCookie, False)
+        FormsAuthentication.RedirectFromLoginPage(userCookie, False)
     End Sub
 
     Private Sub btnCerrar_Click(sender As Object, e As EventArgs) Handles btnCerrar.Click
@@ -248,41 +262,70 @@ Partial Class Utilitarios_PaisEmpresaPuesto
         Dim codigoUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser").ToString()
         Dim codigoSesion As String = Context.Request.Cookies("CKSMFACTURA")("CodigoSesion").ToString()
 
-        Try
-            If _conn.CerrarSesion(codigoSesion, codigoUser) Then
-
-                Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-                cookie.Expires = Now.AddDays(-1)
-
-                FormsAuthentication.SignOut()
-                Request.Cookies.Clear()
-                Session.Clear()
-                Session.Abandon()
-                FormsAuthentication.RedirectToLoginPage()
-            End If
-        Catch ex As Exception
-            Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
-        End Try
-
+        CerrarSesion(codigoUser, codigoSesion)
     End Sub
 
-    'Private Sub CerrarSesion(codigoSesion As String, codigoUser As String)
-    '    Try
-    '        Using dbCon As New OleDbConnection(_conn.conn)
-    '            dbCon.Open()
+    Private Sub CerrarSesion(codigoUser As String, codigoSesion As String)
 
-    '            Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-    '            cmd.Parameters.AddWithValue("@cod_usuario", codigoSesion)
-    '            cmd.Parameters.AddWithValue("@cod_sesion", codigoUser)
-    '            cmd.Parameters.AddWithValue("@estado", "INACTIVAR")
-    '            cmd.CommandType = CommandType.StoredProcedure
-    '            cmd.ExecuteNonQuery()
+        Try
 
-    '        End Using
-    '    Catch ex As Exception
-    '        Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
 
-    '    End Try
-    'End Sub
+                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
+                cmd.CommandType = CommandType.StoredProcedure
+
+                cmd.Parameters.AddWithValue("@cod_usuario", codigoUser)
+                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
+                cmd.Parameters.AddWithValue("@estado", "CERRAR")
+                Dim rowsAffected = cmd.ExecuteNonQuery()
+
+                If rowsAffected > 0 Then
+
+                    Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
+                    cookie.Expires = Now.AddDays(-1)
+                    Request.Cookies.Clear()
+                    Session.Abandon()
+                    FormsAuthentication.SignOut()
+                    FormsAuthentication.RedirectToLoginPage()
+
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
+            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
+        End Try
+    End Sub
+
+    Private Function WatchSession() As Boolean
+
+        Using dbCon As New OleDbConnection(_conn.conn)
+
+            dbCon.Open()
+
+            Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
+            cmd.CommandType = CommandType.StoredProcedure
+            cmd.Parameters.AddWithValue("@cod_usuario", Context.Request.Cookies("CKSMFACTURA")("CodigoUser"))
+            cmd.Parameters.AddWithValue("@cod_sesion", Context.Request.Cookies("CKSMFACTURA")("CodigoSesion"))
+            cmd.Parameters.AddWithValue("@estado", "CONSULTAR")
+
+            Dim reader As OleDbDataReader = cmd.ExecuteReader()
+
+            If reader.HasRows Then
+                Return True
+            End If
+
+            Return False
+
+        End Using
+
+    End Function
+
+    Private Sub CloseSessionSuccessAlert()
+        Dim msg = "alertify.success('Sesión cerrada correctamente.');"
+        ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
+    End Sub
 
 End Class

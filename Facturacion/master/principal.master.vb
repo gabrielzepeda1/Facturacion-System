@@ -19,12 +19,8 @@ Partial Class Mater_principal
         'Pagina se carga por primera vez
         If Not Page.IsPostBack Then
 
-            'Validar que las variables de sesión contienen un valor correcto
-            If Session("Pais") = String.Empty OrElse Session("Empresa") = String.Empty OrElse Session("Puesto") = String.Empty OrElse
-                   Session("cod_pais") = String.Empty OrElse Session("cod_empresa") = String.Empty OrElse Session("cod_puesto") = String.Empty Then
-
-                Response.Redirect(ResolveClientUrl("~/Utilitarios/PaisEmpresaPuesto.aspx"))
-
+            If Not Page.User.Identity.IsAuthenticated Then
+                FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
             Dim pagina As String = GetPageName()
@@ -213,14 +209,27 @@ Partial Class Mater_principal
 #End Region
 
 #Region "CERRAR SESIÓN"
-
-    Protected Sub btnCerrar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCerrar.Click
+    Protected Sub btnCerrar_Click(sender As Object, e As EventArgs) Handles btnCerrar.Click
 
         Dim codigoUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser").ToString()
         Dim codigoSesion As String = Context.Request.Cookies("CKSMFACTURA")("CodigoSesion").ToString()
 
+        CerrarSesion(codigoUser, codigoSesion)
+    End Sub
+    Private Sub CerrarSesion(codigoUser As String, codigoSesion As String)
+
         Try
-            If _conn.CerrarSesion(codigoUser, codigoSesion) Then
+
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
+
+                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
+                cmd.CommandType = CommandType.StoredProcedure
+
+                cmd.Parameters.AddWithValue("@cod_usuario", codigoUser)
+                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
+                cmd.Parameters.AddWithValue("@estado", "CERRAR")
+                cmd.ExecuteNonQuery()
 
                 Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
                 cookie.Expires = Now.AddDays(-1)
@@ -228,91 +237,13 @@ Partial Class Mater_principal
                 Session.Abandon()
                 FormsAuthentication.SignOut()
                 FormsAuthentication.RedirectToLoginPage()
-            Else
+            End Using
 
-                Request.Cookies.Clear()
-                Session.Abandon()
-                FormsAuthentication.SignOut()
-                FormsAuthentication.RedirectToLoginPage()
-
-                Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
-                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "msg", msg, True)
-                Exit Sub
-            End If
         Catch ex As Exception
             Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "msg", msg, True)
+            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
         End Try
-
     End Sub
-
-    'Private Sub OnCloseSession()
-    '    Dim dbCon As New System.Data.OleDb.OleDbConnection(_conn.conn)
-
-    '    Try
-
-    '        If dbCon.State = ConnectionState.Closed Then
-    '            dbCon.Open()
-    '        End If
-
-    '        Dim sql As String = String.Empty
-    '        sql = "EXEC sp_sys_sesion_activa " &
-    '                  "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("CodigoUser") & "," &
-    '                  "@cod_sesion = null," &
-    '                  "@estado = 'INACTIVAR'"
-
-    '        Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-    '        cmd.ExecuteNonQuery()
-
-    '        Dim cksmfactura As HttpCookie = New HttpCookie("CKSMFACTURA")
-    '        cksmfactura("CodigoSesion") = String.Empty
-    '        cksmfactura("CodigoUser") = String.Empty
-    '        cksmfactura("Username") = String.Empty
-    '        cksmfactura("Password") = String.Empty
-    '        cksmfactura.Expires = Now.AddDays(-1)
-    '        Response.Cookies.Add(cksmfactura)
-    '        Me.Session.Abandon()
-
-    '        FormsAuthentication.SignOut()
-    '        FormsAuthentication.RedirectToLoginPage()
-
-    '    Catch ex As Exception
-    '        Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
-
-    '    Finally
-    '        If dbCon.State = ConnectionState.Open Then
-    '            dbCon.Close()
-    '        End If
-
-    '    End Try
-    'End Sub
-    'Private Sub CerrarSesion(codigoSesion As String, codigoUser As String)
-
-    '    Try
-
-    '        Using dbCon As New OleDbConnection(_conn.conn)
-    '            dbCon.Open()
-
-    '            Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-    '            cmd.Parameters.AddWithValue("@cod_usuario", codigoSesion)
-    '            cmd.Parameters.AddWithValue("@cod_sesion", codigoUser)
-    '            cmd.Parameters.AddWithValue("@estado", "INACTIVAR")
-    '            cmd.CommandType = CommandType.StoredProcedure
-    '            cmd.ExecuteNonQuery()
-
-    '            Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-    '            cookie.Expires = Now.AddDays(-1)
-    '            Request.Cookies.Clear()
-    '            Session.Abandon()
-    '            FormsAuthentication.SignOut()
-    '            FormsAuthentication.RedirectToLoginPage()
-    '        End Using
-
-    '    Catch ex As Exception
-    '        Response.Write("Ocurrio un error al intentar cerrar la sesión de Usuario: " & ex.Message)
-
-    '    End Try
-    'End Sub
 
 #End Region
 
