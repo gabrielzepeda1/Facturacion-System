@@ -91,10 +91,10 @@ Public Class seguridad
 #End Region
     ''' <summary>Returns Alert-Success-Error Message.</summary>
     ''' <param name="Mensaje">Message</param>
-    ''' <param name="Tipo">Message Type: [info, exito, alerta, error]</param>
+    ''' <param name="Tipo">Message Type: ["info", "exito", "alerta", "error"]</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function pmsgBox(ByVal Mensaje As String, ByVal Tipo As String) As String
+    Public Function PmsgBox(Mensaje As String, Tipo As String) As String
         Select Case Tipo
             Case "info"
                 Return "<div class='info'>" & Mensaje & "</div>"
@@ -148,14 +148,13 @@ Public Class seguridad
     ''' <param name="Usuario">NOMBRE DE USUARIO</param>
     ''' <param name="IpConexion">IP PUBLICA DE LA CONEXION</param>
     ''' <param name="Nombre_Host">NOMBRE DE HOST</param>
-    ''' <returns>OleDbDataReader</returns>
+    ''' <returns>Dictionary(Of String, Object)</returns>
     ''' <remarks></remarks>
     Public Function ControlarSesion(usuario As String, ipConexion As String, nombreHost As String) As Dictionary(Of String, Object)
 
         Dim sessionData As New Dictionary(Of String, Object)
 
         Try
-
             Using dbCon As New OleDbConnection(conn)
 
                 dbCon.Open()
@@ -186,18 +185,16 @@ Public Class seguridad
                     Return Nothing
 
                 End Using
+
             End Using
 
         Catch ex As Exception
-            MsgBox("Error en clase de seguridad: " & ex.Message, MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+            PmsgBox("Error en clase de seguridad: " & ex.Message, "error")
+            Return Nothing
         End Try
     End Function
 
-    ''''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER, si devuelve TRUE, el usuario esta registrado y puede iniciar sesión.</summary>
-    ''''<param name="usuario">Nombre de Usuario</param>
-    ''''<param name="password">Password</param>
-    ''''<param name="IpConexion">Direccion Ip del Usuario</param>
-    '''' <param name="Nombre_Host">Nombre del Host</param>
+
 #End Region
 
 End Class
