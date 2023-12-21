@@ -34,7 +34,7 @@
     <div id="main-form" class="container">
 
         <div class="row">
-            <div class="col-md-2 bg-dark py-3 mx-1 vh-100">
+            <div class="col-md-2 bg-dark py-3 mx-2 vh-100">
                 <div class="" role="group" aria-label="Control Buttons">
                     <button id="btnNuevo" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#crearRol">Nuevo</button>
                     <asp:LinkButton CssClass="btn btn-danger" ID="btnDelete" OnClientClick="deleteValidation(event)" Text="Eliminar" runat="server"></asp:LinkButton>
@@ -57,7 +57,7 @@
                     <div class="card-header">
                         <h3 class="card-title fs-5">Opciones Disponibles</h3>
                     </div>
-                    <div class="card-body py-0">
+                    <div class="card-body py-1">
                         <asp:TreeView ID="trvMenu" runat="server" ImageSet="Simple" NodeIndent="10">
                             <ParentNodeStyle Font-Bold="True" CssClass="list-group" />
                             <HoverNodeStyle Font-Underline="True" ForeColor="#DD5555" />
@@ -94,8 +94,6 @@
             </div>
         </div>
     </div>
-
-
 
     <asp:UpdatePanel ID="upTable" runat="server" UpdateMode="Conditional">
         <ContentTemplate>

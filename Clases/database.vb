@@ -32,59 +32,40 @@ Public Class database
         End Using
 
     End Function
-
     ''' <summary>
-    ''' DEVUELVE UN CONTROL DATASET
+    ''' Retorna un DataSet
     ''' </summary>
-    ''' <param name="Query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
-    ''' <returns>DATASET</returns>
+    ''' <param name="query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
+    ''' <returns>DataSet</returns>
     ''' <remarks></remarks>
-    Public Function GetDataSet(ByVal Query As String) As DataSet
-
-        Dim cnn As String = conn.Conn
-
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
+    Public Function GetDataSet(query As String) As DataSet
 
         Try
-            If dbCon.State = ConnectionState.Closed Then
-                dbCon.Open()
-            End If
+            Using dbCon As New OleDbConnection(conn.conn)
 
-            Dim sql As String = "SET DATEFORMAT DMY "
+                Dim sql = "SET DATEFORMAT DMY "
+                sql = sql & vbCrLf & query
 
-            sql = sql & vbCrLf & Query
+                Dim cmd As New OleDbCommand(sql, dbCon)
+                cmd.CommandTimeout = 9999
 
-            'Dim cmd As New SqlClient.SqlCommand(sql, dbCon)
-            'cmd.CommandType = CommandType.StoredProcedure
+                Dim da As New OleDbDataAdapter(cmd)
+                Dim ds As New DataSet()
+                da.Fill(ds, "DT0")
 
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            'cmd.CommandType = CommandType.StoredProcedure
-            cmd.CommandTimeout = 9999
+                Return ds
 
-            Dim da As New System.Data.OleDb.OleDbDataAdapter(cmd)
-            Dim ds As New DataSet()
-            da.Fill(ds, "DT0")
-
-            Return ds
-
-            ds.Dispose()
+            End Using
 
         Catch ex As Exception
-            Throw New Exception(ex.Message)
-            Return Nothing
-
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
         End Try
     End Function
     ''' <summary>
     ''' DEVUELVE UN CONTROL DATATABLE
     ''' </summary>
     ''' <param name="Query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
-    ''' <returns>DATATABLE</returns>
+    ''' <returns>DataTable</returns>
     ''' <remarks></remarks>
     Public Function GetDateTableProcedimiento(ByVal Query As String) As DataTable
         Dim cnn As String = conn.Conn

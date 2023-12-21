@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="d-flex col-6 align-items-center text-white">
-                        <h4 class="mb-0">SELECCIONE:</h4>
+                        <h4 class="mb-0"><%=MyUserName%> </h4>
                     </div>
                     <div class="d-flex col-4 align-items-center justify-content-end ">
                         <%--<a class="btn btn-success text-center align-middle" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>" role="button"><i class="fas fa-user"></i>&nbsp <%= MyUserName%></a>--%>

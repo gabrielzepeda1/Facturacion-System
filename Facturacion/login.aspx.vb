@@ -74,12 +74,14 @@ Partial Class Login
                         'MsgBox("Usuario Inactivo", MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
                         Exit Select
                     Case Else
-                        If Not String.IsNullOrEmpty(Request.QueryString("ReturnUrl")) Then
-                            FormsAuthentication.SetAuthCookie(username, False)
-                            Response.Redirect(Request.QueryString("ReturnUrl"))
-                        Else
-                            HandleUserSession(username, browserData)
-                        End If
+                        'If Not String.IsNullOrEmpty(Request.QueryString("ReturnUrl")) Then
+                        '    FormsAuthentication.SetAuthCookie(username, False)
+                        '    Response.Redirect(Request.QueryString("ReturnUrl"))
+                        'Else
+                        '    HandleUserSession(username, browserData)
+                        'End If
+
+                        HandleUserSession(username, browserData)
                         Exit Select
                 End Select
             End Using

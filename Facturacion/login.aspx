@@ -50,25 +50,25 @@
     </form>
 
     <script type="text/javascript">
-    
+
         const btnEnviar = document.getElementById("<%=btnEnviar.ClientID%>");
-        
 
-        btnEnviar.addEventListener("click", (event) => {
+        btnEnviar.addEventListener("click",
+            (event) => {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            const txtUsuario = document.getElementById("<%=txtUsuario.ClientID%>");
-            const txtPassword = document.getElementById("<%=txtPass.ClientID%>");
+                const txtUsuario = document.getElementById("<%=txtUsuario.ClientID%>");
+                const txtPassword = document.getElementById("<%=txtPass.ClientID%>");
 
-            if (txtUsuario.value === "") {
-                alertify.error("El nombre de usuario no puede estar vacío")
-            } else if (txtPassword.value === "") {
-                alertify.error("La contraseña no puede estar vacía.")
-            } else { 
-                __doPostBack("<%=btnEnviar.UniqueID%>", "")
-            }
-         })
+                if (txtUsuario.value === "") {
+                    alertify.error("El nombre de usuario no puede estar vacío");
+                } else if (txtPassword.value === "") {
+                    alertify.error("La contraseña no puede estar vacía.");
+                } else {
+                    __doPostBack("<%=btnEnviar.UniqueID%>", "");
+                }
+            });
     </script>
 
     <script src="js/jquery.min.js" type="text/javascript"></script>

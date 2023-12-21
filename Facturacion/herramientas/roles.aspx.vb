@@ -1,11 +1,9 @@
 ﻿Imports System.Data
-Imports System.Globalization
-Imports System.Threading
 
 Partial Class herramientas_roles
-    Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
-    Dim DataBase As New FACTURACION_CLASS.database
+    Inherits Page
+    Dim _conn As New FACTURACION_CLASS.seguridad
+    Dim _dataBase As New FACTURACION_CLASS.database
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -40,72 +38,24 @@ Partial Class herramientas_roles
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
-            GetMenu()
-            Attributes_Text()
+
         End If
     End Sub
 
-    Private Sub Attributes_Text()
-        txtRol.Attributes.Add("placeholder", "Seleccione Rol...")
-        txtRol.Attributes.Add("autocomplete", "off")
-    End Sub
-
-#Region "PROCESOS Y EVENTOS DE SELECCION DE ROL"
-    Protected Sub ddlRol_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlRol.SelectedIndexChanged
+    Protected Sub ddlRol_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRol.SelectedIndexChanged
         Try
             hdfCodigo.Value = ddlRol.SelectedValue.ToString()
-
             GetMenuPermisos()
 
-
         Catch ex As Exception
-            Me.ltMensaje.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+            ltMensaje.Text &= _conn.PmsgBox("Ocurrió un error al seleccionar el Rol. " & ex.Message, "error")
         End Try
     End Sub
-
-    ''' <summary>
-    ''' EL OPERADOR DEBE SELECCIONAR EL NOMBRE DE USUARIO AL CUAL CARGAR LOS PERMISOS DEL MENÚ. UNA VEZ HECHO ESTO SE PROCEDE A DAR CLIC EN EL BOTON ACTUALIZAR
-    ''' SE CONSULTA A LA TABLA sys_Menu_Permisos EN LA BASE DE DATOS Y OPTIENE AQUELLOS NODOS ACTIVOS PARA EL USUARIO SELECCIONADO
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub GetMenuPermisos()
-        Try
-            Me.trvPermisos.Nodes.Clear()
-
-            Dim sql = "EXEC sp_Menu_Permisos_Rol " &
-                  "@cod_menu = NULL," &
-                  "@cod_rol = " & Me.hdfCodigo.Value & "," &
-                  "@Tipo = 'FULL'"
-
-            Dim ds As DataSet = DataBase.GetDataSet(sql)
-
-            Dim tnode As TreeNode
-
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                If ds.Tables(0).Rows(i).Item("cod_Padre").ToString = String.Empty Then
-                    'Verifico si el usuario tiene asignado el menu
-                    tnode = New TreeNode
-                    tnode.Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString
-                    tnode.Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString
-                    Me.trvPermisos.Nodes.Add(tnode)
-                    'hacemos un llamado al metodo recursivo encargado de generar el árbol del menú.
-                    AddMenuItem(tnode, ds)
-                End If
-            Next i
-
-            ds.Dispose()
-
-            Me.trvPermisos.ExpandAll()
-
-        Catch ex As Exception
-            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
-
-        End Try
-    End Sub
-#End Region
 
 #Region "CARGAR DATOS DEL MENÚ"
     Private Sub GetMenu()
+
+
         Try
             trvMenu.Nodes.Clear()
 
@@ -121,7 +71,7 @@ Partial Class herramientas_roles
                   "@Ocultar_Menu = NULL," &
                   "@Tipo = 'FULL'"
 
-            Dim ds As DataSet = DataBase.GetDataSet(sql)
+            Dim ds As DataSet = _dataBase.GetDataSet(sql)
 
             Dim tnode As TreeNode
 
@@ -142,44 +92,96 @@ Partial Class herramientas_roles
             Me.trvMenu.ExpandAll()
 
         Catch ex As Exception
-            ltMensaje.Text &= conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+            ltMensaje.Text &= _conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
         End Try
     End Sub
 
     ''' <summary>
-    ''' UTILIZA EL DATASET CARGADO EN EL PROCESO GetMenu PARA CREAR LOS NODOS HIJOS
+    ''' Obtiene los permisos del rol seleccionado en el control ddlRol para mostrarlos en el control trvPermisos. 
     ''' </summary>
-    ''' <param name="tnode"></param>
+    ''' <remarks></remarks>
+    Private Sub GetMenuPermisos()
+        Try
+            trvPermisos.Nodes.Clear()
+
+            Dim sql = "EXEC sp_Menu_Permisos_Rol " &
+                      "@cod_menu = NULL," &
+                      "@cod_rol = " & hdfCodigo.Value & "," &
+                      "@Tipo = 'FULL'"
+
+            Dim ds As DataSet = _dataBase.GetDataSet(sql)
+
+            Dim treeNode As TreeNode
+
+            For i = 0 To ds.Tables(0).Rows.Count - 1
+
+                'Agregar los nodos que tienen el cod_Padre como String.Empty, los son los nodos principales del trvPermisos. 
+                If ds.Tables(0).Rows(i).Item("cod_Padre").ToString() = String.Empty Then
+
+                    treeNode = New TreeNode With {
+                        .Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString(),
+                        .Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString()
+                    }
+                    trvPermisos.Nodes.Add(treeNode)
+
+                    AddMenuItem(treeNode, ds)
+
+                End If
+            Next i
+
+            ds.Dispose()
+            trvPermisos.ExpandAll()
+
+        Catch ex As Exception
+            ltMensaje.Text = _conn.PmsgBox("Error al desplegar los permisos. " & ex.Message, "error")
+        End Try
+    End Sub
+
+    ''' <summary>
+    '''  Crea los nodos hijos de cada nodo padre del control trvMenu utilizando un metodo recursivo.
+    ''' </summary>
+    ''' <param name="treeNode"></param>
     ''' <param name="ds"></param>
     ''' <remarks></remarks>
-    Private Sub AddMenuItem(ByRef tnode As TreeNode, ByVal ds As DataSet)
-        'Try
-        '' '' ''Recorremos cada elemento del datatable para poder determinar cuales son elementos hijos
-        '' '' ''del menuitem dado pasado como parametro ByRef.
+    Private Sub AddMenuItem(ByRef treeNode As TreeNode, ds As DataSet)
+        Try
+            'Recorremos cada registro del DataTable para poder determinar cuales son elementos hijos del parametro treeNode. 
 
-        For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-            If ds.Tables(0).Rows(i).Item("cod_Padre").ToString = tnode.Value AndAlso Not ds.Tables(0).Rows(i).Item("cod_menu").ToString = ds.Tables(0).Rows(i).Item("cod_Padre").ToString Then
-                Dim newnode As New TreeNode
-                newnode.Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString
-                newnode.Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString
+            For i = 0 To ds.Tables(0).Rows.Count - 1
 
-                tnode.ChildNodes.Add(newnode)
+                'Si el cod_Padre del registro actual es igual al cod_menu del treeNode.value.. 
+                'Entonces el i registro actual es un elemento hijo del treeNode.. 
+                If ds.Tables(0).Rows(i).Item("cod_Padre").ToString() = treeNode.Value Then
 
-                'llamada recursiva para ver si el nuevo menú ítem aun tiene elementos hijos.
-                AddMenuItem(newnode, ds)
-            End If
-        Next i
-        'Catch ex As Exception
-        '    Me.ltMensaje.Text &= conn.pmsgBox("Ocurrio un error al intentar crear los hijos del arbol de nodos. " & ex.Message, "error")
+                    If ds.Tables(0).Rows(i).Item("cod_menu").ToString() <> ds.Tables(0).Rows(i).Item("cod_Padre").ToString() Then
 
-        'End Try
+                        Dim newNode As New TreeNode With {
+                            .Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString(),
+                            .Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString()
+                        }
+
+                        treeNode.ChildNodes.Add(newNode)
+
+                        'llamada recursiva para ver si el nuevo menú ítem aun tiene elementos hijos.
+                        AddMenuItem(newNode, ds)
+                    End If
+                End If
+
+            Next i
+        Catch ex As Exception
+            ltMensaje.Text &= _conn.PmsgBox("Ocurrio un error al intentar crear los hijos del arbol de nodos. " & ex.Message, "error")
+        End Try
     End Sub
+
+
+
+
 #End Region
 
 #Region "PROCEDIMIENTOS DE LA BASE DE DATOS"
     Protected Sub trvMenu_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvMenu.SelectedNodeChanged
         If Me.hdfCodigo.Value.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
+            Me.ltMensaje.Text = _conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -187,9 +189,9 @@ Partial Class herramientas_roles
         Me.ltMensaje.Text = String.Empty
 
         Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-        sql = "EXEC sp_Menu_Permisos_Rol " & _
-              "@cod_menu = " & Me.trvMenu.SelectedValue & "," & _
-              "@cod_rol = " & Me.hdfCodigo.Value.Trim & "," & _
+        sql = "EXEC sp_Menu_Permisos_Rol " &
+              "@cod_menu = " & Me.trvMenu.SelectedValue & "," &
+              "@cod_rol = " & Me.hdfCodigo.Value.Trim & "," &
               "@Tipo = 'INSERTAR'"
 
         Guardar(sql, "sp_Menu_Permisos", String.Empty, "El proceso de guardado no se concreto. Intentelo de nuevo. Si el error continua contacte con el administrador.")
@@ -197,7 +199,7 @@ Partial Class herramientas_roles
 
     Protected Sub trvPermisos_SelectedNodeChanged(sender As Object, e As System.EventArgs) Handles trvPermisos.SelectedNodeChanged
         If Me.hdfCodigo.Value.Trim = String.Empty Then
-            Me.ltMensaje.Text = conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
+            Me.ltMensaje.Text = _conn.PmsgBox("El proceso no puede continuar. Debe seleccionar un rol en la tabla.", "info")
             Me.trvPermisos.Nodes.Clear()
             Exit Sub
         End If
@@ -205,9 +207,9 @@ Partial Class herramientas_roles
         Me.ltMensaje.Text = String.Empty
 
         Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-        sql = "EXEC sp_Menu_Permisos_Rol " & _
-              "@cod_menu = " & Me.trvPermisos.SelectedValue & "," & _
-              "@cod_rol = " & Me.hdfCodigo.Value.Trim & "," & _
+        sql = "EXEC sp_Menu_Permisos_Rol " &
+              "@cod_menu = " & Me.trvPermisos.SelectedValue & "," &
+              "@cod_rol = " & Me.hdfCodigo.Value.Trim & "," &
               "@Tipo = 'ELIMINAR'"
 
         Guardar(sql, "sp_Menu_Permisos", String.Empty, "El proceso de eliminación dio un error. Intentelo de nuevo. Si el error continua contacte con el administrador.")
@@ -224,10 +226,10 @@ Partial Class herramientas_roles
         End If
         ''CKGEIN
         Dim sql As String = String.Empty
-        sql = "EXEC sp_sys_roles_usuarios " & _
-              "@cod_rol = null, " & _
-              "@nombre_rol = '" & Me.txtRol.Text.Trim & "', " & _
-              "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & ", " & _
+        sql = "EXEC sp_sys_roles_usuarios " &
+              "@cod_rol = null, " &
+              "@nombre_rol = '" & Me.txtRol.Text.Trim & "', " &
+              "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & ", " &
               "@modo = 'INSERTAR'"
 
         Guardar(sql, String.Empty, "El registro fue guardado de forma correcta.", "Ocurrio un error al intentar guardar el registro.")
@@ -264,7 +266,7 @@ Partial Class herramientas_roles
     Private Sub Guardar(sql As String, Query As String, ExitoMsg As String, ErrorMsg As String)
         Dim MessegeText As String = String.Empty
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(_conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -282,7 +284,7 @@ Partial Class herramientas_roles
             GetMenuPermisos()
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")
+            Me.ltMensaje.Text = _conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")
 
         Finally
             If dbCon.State = ConnectionState.Open Then
