@@ -42,10 +42,8 @@ Partial Class herramientas_roles
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-
-
         'Agregamos el evento onclick al control trvMenu para que se ejecute el metodo checkBoxPostBack() cuando se haga click en el control.
-        'trvMenu.Attributes.Add("onclick", "checkBoxPostBack()")
+        trvMenu.Attributes.Add("onclick", "checkBoxPostBack()")
 
         If Not Page.IsPostBack Then
             ddlRol.Focus()

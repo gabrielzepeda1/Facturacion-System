@@ -114,11 +114,7 @@
         const ddlRol = document.getElementById("<%=ddlRol.ClientID%>");
         const trvMenu = "<%=trvMenu.ClientID%>";
 
-        document.getElementById(trvMenu).addEventListener('click', (e) => {
-            checkBoxPostBack(e);
-        })
-
-        const checkBoxPostBack = (e) => {
+        const checkBoxPostBack = () => {
 
             //Se llama esta funcion primero, antes de que se realice un postback con los cambios realizados en los permisos del rol. 
             //Esta funcion recorre los checkboxes hijos de cada TreeNode padre, si encuentra que todos los hijos estan checked, entonces el padre tambien se checkea. 
@@ -127,39 +123,31 @@
 
             //Esta funcion permite que se haga un postback en cada cambio de cualquier checkbox del trvMenu, para guardar los cambios a los permisos del rol seleccionado. 
 
-            const checkBoxes = document.querySelectorAll(`[id*=${trvMenu}] input[type="checkbox"] `);
+            const checkBoxes = document.querySelectorAll(`[id*=${trvMenu}] input[type="checkbox"]`);
 
             checkBoxes.forEach((item) => {
 
                 item.addEventListener('change', (e) => {
-                    console.log(e.target);
-
+                    
                     //Si el usuario hace click en un checkbox, hace un postback.  
                     if (e.target.tagName == "INPUT" && e.target.type == "checkbox") {
 
-                        console.log('here')
+                        console.log('Checkbox Postback'); 
                         __doPostBack(e.target.id)
 
                     }
                 })
             })
 
-            checkBoxes.forEach((item) => {
+            const checkBoxAnchors = document.querySelectorAll(`[id*=${trvMenu}] input[type="checkbox"] + a`);
 
-
-                if (item.nextElementSibling && item.nextElementSibling.tagName == "A") {
-
-                    const anchorElementToPrevent = item.nextElementSibling
-
+            checkBoxAnchors.forEach((anchor) => {
                     //Para evitar el evento SelectedNodeChanged, se usa la function preventDefault en cada TreeNode, para evitar que se dispare ese evento y no interferir con el TreeNodeCheckChanged.  
-                    anchorElementToPrevent.addEventListener('click', (e) => {
-                        e.preventDefault();
+                    anchor.addEventListener('click', (e) => {
                         console.log('SelectedNodeChanged stopped')
+                        e.preventDefault();
                     })
-                }
             })
-
-
         }
 
         const checkParentNode = () => {
