@@ -191,6 +191,24 @@ nav.alertify-buttons {
             text-align:center;
         }
 
+
+
+.spinner { 
+
+    display: flex; 
+    justify-content: center; 
+}
+
+.spinning { 
+    animation: spinner 1s linear infinite ;
+}
+
+@keyframes spinner { 
+    to { 
+        transform: rotate(360deg);
+    }
+}
+
 .flotante {
     position:fixed;
 }

@@ -113,6 +113,14 @@ Public Class seguridad
         End Select
     End Function
 
+    Public Sub AlertifySuccessMsg(message As String)
+
+
+
+
+    End Sub
+
+
 #Region "OBTENER DATOS DE LA MAQUINA CLIENTE"
 
     'Obtener la direccion IP del PC del usuario.
@@ -173,6 +181,7 @@ Public Class seguridad
                             sessionData("CodigoUser") = dr.Item("CodigoUser")
                             sessionData("Username") = dr.Item("Username")
                             sessionData("Password") = dr.Item("Password")
+                            sessionData("CodigoRol") = dr.Item("CodigoRol")
                             sessionData("Status") = dr.Item("Status")
 
                             Return sessionData

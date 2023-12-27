@@ -144,7 +144,7 @@ Partial Public Class movimientos_Factura
                           "@codigoPuesto =  " & Session("cod_puesto") & " "
 
                 Dim dt As New DataTable
-                dt = DataBase.GetDateTableProcedimiento(Sql)
+                dt = DataBase.GetDataTableProc(Sql)
 
                 If Sql.Contains(Session("cod_pais")) AndAlso Sql.Contains(Session("cod_empresa")) AndAlso Sql.Contains(Session("cod_puesto")) Then
 

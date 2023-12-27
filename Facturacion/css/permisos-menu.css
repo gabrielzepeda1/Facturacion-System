@@ -11,9 +11,38 @@ body {
 
 .card {
     height: 700px !important;
-    max-height: 800px;
+    max-height: 850px;
     max-width: 350px;
     overflow-y: scroll;
 }
 
+/* Custom styles for the TreeView */
+
+td { 
+    
+}
+
+.treeview-bootstrap .nav-link {
+    display: block;
+    padding: 2px 4px;
+    font-size: 12pt;
+    color: black;
+    text-decoration: none;
+}
+
+.treeview-bootstrap .fw-bold {
+    font-weight: bold;
+}
+
+.treeview-bootstrap .treeview-hover-node:hover {
+    text-decoration: underline;
+    color: #6666AA;
+}
+
+.treeview-bootstrap .treeview-selected-node {
+    background-color: #B5B5B5;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
 

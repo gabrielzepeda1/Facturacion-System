@@ -64,58 +64,50 @@ Public Class database
     ''' <summary>
     ''' DEVUELVE UN CONTROL DATATABLE
     ''' </summary>
-    ''' <param name="Query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
+    ''' <param name="query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
     ''' <returns>DataTable</returns>
     ''' <remarks></remarks>
-    Public Function GetDateTableProcedimiento(ByVal Query As String) As DataTable
-        Dim cnn As String = conn.Conn
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
+    Public Function GetDataTableProc(query As String) As DataTable
+
         Try
-            If dbCon.State = ConnectionState.Closed Then
-                dbCon.Open()
-            End If
+            Using dbCon As New OleDbConnection(conn.conn)
 
-            Dim sql As String = "SET DATEFORMAT DMY "
+                Dim sql = "SET DATEFORMAT DMY "
 
-            sql = sql & vbCrLf & Query
+                sql = sql & vbCrLf & query
 
-            'Dim daSrc As New System.Data.OleDb.OleDbDataAdapter(sql, dbCon)
-            'Dim dt As New DataTable("Factura")
-            'daSrc.Fill(dt)
+                'Dim daSrc As New System.Data.OleDb.OleDbDataAdapter(sql, dbCon)
+                'Dim dt As New DataTable("Factura")
+                'daSrc.Fill(dt)
 
-            'Return dt
-            'dt.Dispose()
-            'aqui 23/07/2021 
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            cmd.CommandTimeout = 9999
+                'Return dt
+                'dt.Dispose()
 
-            Dim da As New System.Data.OleDb.OleDbDataAdapter(cmd)
-            Dim ds As New DataSet()
-            da.Fill(ds, "DT0")
+                Dim cmd As New OleDbCommand(sql, dbCon)
+                cmd.CommandTimeout = 9999
 
-            Return ds.Tables(0)
+                Dim da As New OleDbDataAdapter(cmd)
+                Dim ds As New DataSet()
+                da.Fill(ds, "DT0")
 
-            ds.Dispose()
-            'fin 23/07/2021
+                Return ds.Tables(0)
+                ds.Dispose()
+
+            End Using
+
         Catch ex As Exception
             Throw New Exception(ex.Message)
-            Return Nothing
-
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
 
         End Try
     End Function
     ''' <summary>
-    ''' DEVUELVE UN CONTROL DATATABLE
+    ''' Retorna un DataTable
     ''' </summary>
-    ''' <param name="Query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
-    ''' <returns>DATATABLE</returns>
+    ''' <param name="query"></param>
+    ''' <returns>DataTable</returns>
     ''' <remarks></remarks>
-    Public Function GetDateTable(ByVal Query As String) As DataTable
-        Dim cnn As String = conn.Conn
+    Public Function GetDateTable(query As String) As DataTable
+        Dim cnn As String = conn.conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -124,7 +116,7 @@ Public Class database
 
             Dim sql As String = "SET DATEFORMAT DMY "
 
-            sql = sql & vbCrLf & Query
+            sql = sql & vbCrLf & query
 
             Dim daSrc As New System.Data.OleDb.OleDbDataAdapter(sql, dbCon)
             Dim dt As New DataTable("Factura")
@@ -144,12 +136,6 @@ Public Class database
             'fin 23/07/2021
         Catch ex As Exception
             Throw New Exception(ex.Message)
-            Return Nothing
-
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
 
         End Try
     End Function

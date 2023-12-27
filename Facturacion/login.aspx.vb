@@ -68,10 +68,10 @@ Partial Class Login
 
                 Select Case codigoUser
                     Case -1
-                        'MsgBox("Usuario o Contraseña Incorrectos", MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+                        ShowErrorMessage("Usuario y/o contraseña incorrect@s.")
                         Exit Select
                     Case -2
-                        'MsgBox("Usuario Inactivo", MsgBoxStyle.Critical, "Sistema de Corrales de Engorde")
+                        ShowErrorMessage("Cuenta de usuario inactiva.")
                         Exit Select
                     Case Else
                         'If Not String.IsNullOrEmpty(Request.QueryString("ReturnUrl")) Then
@@ -107,6 +107,7 @@ Partial Class Login
                     cookie("CodigoUser") = sessionData.Item("CodigoUser").ToString()
                     cookie("Username") = sessionData.Item("Username").ToString()
                     cookie("Password") = sessionData.Item("Password").ToString()
+                    cookie("CodigoRol") = sessionData.Item("CodigoRol").ToString()
 
                     cookie.Expires = Now.AddDays(1)
                     Response.Cookies.Add(cookie)

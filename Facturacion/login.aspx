@@ -47,6 +47,16 @@
                 <asp:AsyncPostBackTrigger ControlID="btnEnviar" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
+
+        <asp:UpdateProgress ID="uprGrid" runat="server" >
+            <ProgressTemplate>
+                <div class="loader spinner">
+                    <div>
+                        <i class="fa-solid fa-rotate spinning"></i>
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
     </form>
 
     <script type="text/javascript">

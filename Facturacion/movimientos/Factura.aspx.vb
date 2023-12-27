@@ -1052,7 +1052,7 @@ Partial Class movimientos_Factura
                           "@codigoPuesto =  " & Session("cod_puesto") & " "
 
                 Dim dt As New DataTable
-                dt = DataBase.GetDateTableProcedimiento(Sql)
+                dt = DataBase.GetDataTableProc(Sql)
 
                 If dt.Rows.Count Then
                     Dim DR As DataRow
