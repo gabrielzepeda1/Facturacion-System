@@ -128,11 +128,11 @@
             checkBoxes.forEach((item) => {
 
                 item.addEventListener('change', (e) => {
-                    
+
                     //Si el usuario hace click en un checkbox, hace un postback.  
                     if (e.target.tagName == "INPUT" && e.target.type == "checkbox") {
 
-                        console.log('Checkbox Postback'); 
+                        console.log('Checkbox Postback');
                         __doPostBack(e.target.id)
 
                     }
@@ -142,11 +142,11 @@
             const checkBoxAnchors = document.querySelectorAll(`[id*=${trvMenu}] input[type="checkbox"] + a`);
 
             checkBoxAnchors.forEach((anchor) => {
-                    //Para evitar el evento SelectedNodeChanged, se usa la function preventDefault en cada TreeNode, para evitar que se dispare ese evento y no interferir con el TreeNodeCheckChanged.  
-                    anchor.addEventListener('click', (e) => {
-                        console.log('SelectedNodeChanged stopped')
-                        e.preventDefault();
-                    })
+                //Para evitar el evento SelectedNodeChanged, se usa la function preventDefault en cada TreeNode, para evitar que se dispare ese evento y no interferir con el TreeNodeCheckChanged.  
+                anchor.addEventListener('click', (e) => {
+                    console.log('SelectedNodeChanged stopped')
+                    e.preventDefault();
+                })
             })
         }
 

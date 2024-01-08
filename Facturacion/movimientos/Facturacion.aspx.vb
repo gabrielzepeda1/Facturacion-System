@@ -263,7 +263,7 @@ Partial Public Class movimientos_Factura
                                       " AND externo = " & vext & " " &
                                        " order by ltrim(rtrim(nombre_comercial)) "
 
-            dt = DataBase.GetDateTable(Sql)
+            dt = DataBase.GetDataTable(Sql)
 
             If dt.Rows.Count > 0 Then
                 Dim DR As DataRow
@@ -495,7 +495,7 @@ Partial Public Class movimientos_Factura
                                            " and cod_puesto= " & Session("cod_puesto") & " "
 
             Dim dt As New DataTable
-            dt = DataBase.GetDateTable(Sql)
+            dt = DataBase.GetDataTable(Sql)
 
             If dt.Rows.Count > 0 Then
                 Dim DR As DataRow

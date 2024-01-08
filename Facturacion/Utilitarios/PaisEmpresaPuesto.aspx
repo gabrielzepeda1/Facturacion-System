@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 </head>
-<body>
+<body class="bg-black">
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
@@ -31,11 +31,11 @@
                     </div>
 
                     <div class="d-flex col-6 align-items-center text-white">
-                        <h4 class="mb-0"><%=MyUserName%> </h4>
+                        <a class="btn btn-warning mb-0"><%=MyUserName%></a>
                     </div>
                     <div class="d-flex col-4 align-items-center justify-content-end ">
                         <%--<a class="btn btn-success text-center align-middle" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>" role="button"><i class="fas fa-user"></i>&nbsp <%= MyUserName%></a>--%>
-                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
+                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span>' runat="server"></asp:LinkButton>
                     </div>
                 </div>
 

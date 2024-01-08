@@ -86,7 +86,7 @@ Partial Class movimientos_NotaDebito
                                        " order by ltrim(rtrim(nombre_comercial)) "
 
 
-            dt = DataBase.GetDateTable(Sql)
+            dt = DataBase.GetDataTable(Sql)
 
             If dt.Rows.Count > 0 Then
                 Dim DR As DataRow

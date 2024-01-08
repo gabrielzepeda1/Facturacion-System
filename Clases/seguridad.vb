@@ -10,7 +10,7 @@ Public Class seguridad
     Dim _conn As String = String.Empty
     Dim _key As String = String.Empty
 
-    Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
+    Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga1234"
 
     Public Property conn_Procedimientos() As String
         Get
@@ -24,7 +24,7 @@ Public Class seguridad
 
     Public Property conn() As String
         Get
-            _conn = "Provider=SQLOLEDB.1;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
+            _conn = "Provider=SQLOLEDB.1;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga1234"
             Return _conn
         End Get
         Set(ByVal value As String)
@@ -112,15 +112,6 @@ Public Class seguridad
                 Return "<div class='info'>" & Mensaje & "</div>"
         End Select
     End Function
-
-    Public Sub AlertifySuccessMsg(message As String)
-
-
-
-
-    End Sub
-
-
 #Region "OBTENER DATOS DE LA MAQUINA CLIENTE"
 
     'Obtener la direccion IP del PC del usuario.
@@ -153,12 +144,12 @@ Public Class seguridad
     ''' <summary>
     ''' REGISTRA LOS DATOS DE UN INICIO DE SESIÓN
     ''' </summary>
-    ''' <param name="Usuario">NOMBRE DE USUARIO</param>
+    ''' <param name="Username">NOMBRE DE USUARIO</param>
     ''' <param name="IpConexion">IP PUBLICA DE LA CONEXION</param>
-    ''' <param name="Nombre_Host">NOMBRE DE HOST</param>
+    ''' <param name="nombreHost">NOMBRE DE HOST</param>
     ''' <returns>Dictionary(Of String, Object)</returns>
     ''' <remarks></remarks>
-    Public Function ControlarSesion(usuario As String, ipConexion As String, nombreHost As String) As Dictionary(Of String, Object)
+    Public Function ControlarSesion(username As String, ipConexion As String, nombreHost As String) As Dictionary(Of String, Object)
 
         Dim sessionData As New Dictionary(Of String, Object)
 
@@ -169,7 +160,7 @@ Public Class seguridad
 
                 Using cmd As New OleDbCommand("sp_sys_Abrir_Sesion", dbCon)
                     cmd.CommandType = CommandType.StoredProcedure
-                    cmd.Parameters.AddWithValue("@Username", usuario)
+                    cmd.Parameters.AddWithValue("@Username", username)
                     cmd.Parameters.AddWithValue("@IpConexion", ipConexion)
                     cmd.Parameters.AddWithValue("@Nombre_Host", nombreHost)
 
@@ -192,11 +183,8 @@ Public Class seguridad
                     End If
 
                     Return Nothing
-
                 End Using
-
             End Using
-
         Catch ex As Exception
             PmsgBox("Error en clase de seguridad: " & ex.Message, "error")
             Return Nothing

@@ -1,13 +1,6 @@
-﻿Imports System
-Imports System.Collections
-Imports System.Net
-Imports System.Net.Mail
-Imports System.Net.Mime
-Imports System.Data
-Imports System.Net.Security
-Imports System.Security.Cryptography.X509Certificates
-Imports System.IO
+﻿Imports System.IO
 Imports System.Data.OleDb
+Imports AjaxControlToolkit
 
 Public Class database
     Dim conn As New seguridad
@@ -106,7 +99,7 @@ Public Class database
     ''' <param name="query"></param>
     ''' <returns>DataTable</returns>
     ''' <remarks></remarks>
-    Public Function GetDateTable(query As String) As DataTable
+    Public Function GetDataTable(query As String) As DataTable
         Dim cnn As String = conn.conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
@@ -124,60 +117,34 @@ Public Class database
 
             Return dt
             dt.Dispose()
-            'aqui 23/07/2021 
-            'Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            'cmd.CommandTimeout = 9999
 
-            'Dim da As New System.Data.OleDb.OleDbDataAdapter(cmd)
-            'Dim ds As New DataSet()
-            'da.Fill(ds, "DT0")
-            'Return ds.Tables(0)
-            'ds.Dispose()
-            'fin 23/07/2021
         Catch ex As Exception
             Throw New Exception(ex.Message)
 
         End Try
     End Function
 
-    ''' <summary>
-    ''' DEVUELVE UN CONTROL DATAREADER
-    ''' </summary>
-    ''' <param name="Query">SENTENCIA SQL QUE SERA ENVIADA A SQL SERVER</param>
-    ''' <returns>DATAREADER</returns>
+    ''' <summary>Esta función ejecuta un query de sql y retorna un OleDbDataReader</summary>
+    ''' <param name="sql">sql query</param>
+    ''' <returns>OleDbDataReader</returns>
     ''' <remarks></remarks>
-    Public Function GetDataReader(ByVal Query As String) As System.Data.OleDb.OleDbDataReader
-        Dim cnn As String = conn.Conn
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
-
+    Public Function GetDataReader(sql As String) As OleDbDataReader
         Try
-            If dbCon.State = ConnectionState.Closed Then
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
-            End If
 
-            Dim sql As String = "SET DATEFORMAT DMY"
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    cmd.CommandTimeout = 9999
+                    Dim dr As OleDbDataReader = cmd.ExecuteReader()
 
-            sql = sql & vbCrLf & Query
-
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            cmd.CommandTimeout = 9999
-
-            Dim dr As System.Data.OleDb.OleDbDataReader
-            dr = cmd.ExecuteReader
-
-            Return dr
-
-            dr.Close()
-
-        Catch ex As System.Data.OleDb.OleDbException
+                    Return dr
+                    dr.Close()
+                End Using
+            End Using
+        Catch ex As OleDbException
             Console.WriteLine("Error en OleDB")
 
             Return Nothing
-
-        Catch ex As Exception
-            Throw New Exception(ex.Message)
-            Return Nothing
-
 
         End Try
     End Function
@@ -190,7 +157,7 @@ Public Class database
     ''' <returns>BOOLEAN</returns>
     ''' <remarks></remarks>
     Public Function GetBoleano(ByVal Query As String, ByVal campo As String) As Boolean
-        Dim cnn As String = conn.Conn
+        Dim cnn As String = conn.conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -232,7 +199,7 @@ Public Class database
     ''' <returns>DATAREADER</returns>
     ''' <remarks></remarks>
     Public Function GetString(ByVal Query As String, ByVal campo As String) As String
-        Dim cnn As String = conn.Conn
+        Dim cnn As String = conn.conn
         Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -262,4 +229,72 @@ Public Class database
         End Try
     End Function
 
+    Public Function GetPaisesUsuario(CodigoUser As Integer) As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctPaisesUsuario({CodigoUser})"
+        Dim reader = GetDataReader(sql)
+        Dim ArrCodigoPais As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoPais.Add(reader("cod_pais"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoPais)
+
+        Return ArrCodigoPais
+
+    End Function
+
+    Public Function GetEmpresasUsuario(CodigoUser As Integer) As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctEmpresasUsuario({CodigoUser})"
+        Dim reader = GetDataReader(sql)
+        Dim ArrCodigoEmpresa As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoEmpresa.Add(reader("cod_empresa"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoEmpresa)
+        Return ArrCodigoEmpresa
+    End Function
+
+    Public Function GetPuestosUsuario(CodigoUser As Integer) As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctPuestosUsuario({CodigoUser})"
+        Dim reader = GetDataReader(sql)
+        Dim ArrCodigoPuesto As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoPuesto.Add(reader("cod_empresa"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoPuesto)
+        Return ArrCodigoPuesto
+    End Function
+
+    'Public Function GetDropdown(sql As String, knownCategoryValues As String, category As String) As CascadingDropDown
+    '    Using dbCon As New OleDbConnection(conn.conn)
+    '        dbCon.Open()
+
+    '        Using cmd As New OleDbCommand(sql, dbCon)
+    '            cmd.CommandTimeout = 9999
+    '            cmd.CommandType = CommandType.StoredProcedure
+    '            Dim dr As OleDbDataReader = cmd.ExecuteReader()
+
+    '            Dim values As New List(Of String)
+    '            Dim names As New List(Of String)
+
+    '            While dr.Read()
+    '                values.Add(dr.Item("Codigo").ToString())
+    '                names.Add(dr.Item("Nombre").ToString())
+    '            End While
+
+    '            Dim valuesArray As String() = values.ToArray()
+    '            Dim namesArray As String() = names.ToArray()
+
+    '            Return New CascadingDropDown(valuesArray, namesArray)
+    '        End Using
+    '    End Using
+    'End Function
 End Class

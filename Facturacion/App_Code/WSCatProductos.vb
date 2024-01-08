@@ -25,7 +25,7 @@ Public Class WSCatProductos
     Public Function GetSigla(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -68,7 +68,7 @@ Public Class WSCatProductos
     Public Function GetOrigen(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -113,7 +113,7 @@ Public Class WSCatProductos
     Public Function GetCalidades(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -156,7 +156,7 @@ Public Class WSCatProductos
     Public Function GetPresentacion(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -199,7 +199,7 @@ Public Class WSCatProductos
     Public Function GetFamilia(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -232,64 +232,53 @@ Public Class WSCatProductos
         End Try
     End Function
     <WebMethod()>
-    Public Function GetPaises(ByVal knownCategoryValues As String,
-                              ByVal category As String) As CascadingDropDownNameValue()
-
-        Dim dbCon As New OleDbConnection(conn.Conn)
+    Public Function GetPaises(knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
-            If dbCon.State = ConnectionState.Closed Then
+
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
-            End If
 
-            Dim vUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser")
+                Dim vUser As String = Session("CodigoUser")
 
-            Dim sql As String = String.Empty
-            sql = "EXEC CombosProductos " &
-                  "@opcion = 6," &
-                  "@codigo = " & vUser & " "
+                Dim cmd As New OleDbCommand("CombosProductos", dbCon)
+                cmd.Parameters.AddWithValue("opcion", 6)
+                cmd.Parameters.AddWithValue("codigo", vUser)
+                cmd.CommandType = CommandType.StoredProcedure
+                Dim Reader As OleDbDataReader = cmd.ExecuteReader()
 
-            Dim cmd As New OleDbCommand(sql, dbCon)
-            Dim Reader As OleDbDataReader = cmd.ExecuteReader()
-
-            Do While Reader.Read
-                Dim CategoryName = Reader("DesPais").ToString()
-                Dim CategoryValue = Reader("codPais").ToString()
-                SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
-            Loop
+                Do While Reader.Read
+                    Dim CategoryName = Reader("Pais").ToString()
+                    Dim CategoryValue = Reader("CodigoPais").ToString()
+                    SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
+                Loop
+            End Using
 
             Return SampleSource.ToArray()
-
         Catch ex As Exception
             Throw ex
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
         End Try
     End Function
-    ''' <summary>
-    ''' ?????
-    ''' </summary>
+    ''' <summary></summary>
     ''' <param name="knownCategoryValues"></param>
     ''' <param name="category"></param>
-    ''' <returns></returns>
+    ''' <returns>CascadingDropDownNameValue</returns>
     ''' <remarks></remarks>
     <WebMethod()>
-    Public Function GetEmpresa(ByVal knownCategoryValues As String,
-                              ByVal category As String) As CascadingDropDownNameValue()
+    Public Function GetEmpresa(knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
+
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
             End If
+
             Dim vPais As String = String.Empty
-            Dim vUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser")
+            Dim vUser As String = Session("CodigoUser")
 
             If Param("CategoryPais") = String.Empty Then
                 vPais = Context.Request.Cookies("CKSMFACTURA")("CodigoPais")
@@ -328,7 +317,7 @@ Public Class WSCatProductos
     Public Function GetPuesto(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Try
@@ -384,7 +373,7 @@ Public Class WSCatProductos
     Public Function GetUsuario(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -420,7 +409,7 @@ Public Class WSCatProductos
     <WebMethod()>
     Public Function GetRol(ByVal knownCategoryValues As String, ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
 
         Try
@@ -457,7 +446,7 @@ Public Class WSCatProductos
     Public Function GetVendedor(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -494,7 +483,7 @@ Public Class WSCatProductos
     Public Function GetUnMedida(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -531,7 +520,7 @@ Public Class WSCatProductos
     Public Function GetProductos(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -569,7 +558,7 @@ Public Class WSCatProductos
     Public Function GetMercado(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -608,7 +597,7 @@ Public Class WSCatProductos
     Public Function GetMoneda(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -647,7 +636,7 @@ Public Class WSCatProductos
     Public Function GetTarjeta(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -685,7 +674,7 @@ Public Class WSCatProductos
     Public Function GetFormaPago(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -724,7 +713,7 @@ Public Class WSCatProductos
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
 
         Try
-            Using dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+            Using dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
                 dbCon.Open()
                 Dim vCPais As String = Context.Request.Cookies("CKSMFACTURA")("codPais")
 
@@ -781,7 +770,7 @@ Public Class WSCatProductos
         Dim values As New List(Of CascadingDropDownNameValue)
 
         Try
-            Using dbCon As New OleDbConnection(conn.Conn)
+            Using dbCon As New OleDbConnection(conn.conn)
 
                 Dim cmd As New OleDbCommand(query, dbCon)
 
@@ -812,7 +801,7 @@ Public Class WSCatProductos
     <WebMethod()>
     Public Function GetCuentaBanco(knownCategoryValues As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
 
@@ -853,7 +842,7 @@ Public Class WSCatProductos
     Public Function GetCliente(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -934,7 +923,7 @@ Public Class WSCatProductos
     Public Function GetEmpresaXPais(ByVal knownCategoryValues As String,
                                     ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
@@ -982,7 +971,7 @@ Public Class WSCatProductos
     Public Function GetPuestoXPaisXEmpresa(ByVal knownCategoryValues As String,
                                     ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try

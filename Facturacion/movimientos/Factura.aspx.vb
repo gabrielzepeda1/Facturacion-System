@@ -344,7 +344,7 @@ Partial Class movimientos_Factura
                                       " order by ltrim(rtrim(nombre_comercial)) "
 
             Dim dt As New DataTable
-            dt = DataBase.GetDateTable(Sql)
+            dt = DataBase.GetDataTable(Sql)
 
             If dt.Rows.Count Then
                 Dim DR As DataRow
@@ -1102,7 +1102,7 @@ Partial Class movimientos_Factura
                                            " and cod_puesto= " & Session("cod_puesto") & " "
 
             Dim dt As New DataTable
-            dt = DataBase.GetDateTable(Sql)
+            dt = DataBase.GetDataTable(Sql)
 
             If dt.Rows.Count Then
                 Dim DR As DataRow

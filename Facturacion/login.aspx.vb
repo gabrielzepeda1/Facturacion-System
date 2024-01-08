@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Security.Cryptography
 Imports FACTURACION_CLASS
 Imports Microsoft.ReportingServices.DataProcessing
+Imports AlertifyClass
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
@@ -14,10 +15,10 @@ Partial Class Login
     End Sub
 
     Private Sub Attributes_Text()
-        txtUsuario.Attributes.Add("placeholder", "Escriba su nombre de usuario")
+        txtUsuario.Attributes.Add("placeholder", "Nombre de Usuario")
         'txtUsuario.Attributes.Add("required", "required")
         txtUsuario.Attributes.Add("autocomplete", "off")
-        txtPass.Attributes.Add("placeholder", "Introduzca su contraseña")
+        txtPass.Attributes.Add("placeholder", "Contraseña")
         'txtPass.Attributes.Add("required", "required")
         txtPass.Attributes.Add("autocomplete", "off")
     End Sub
@@ -42,16 +43,15 @@ Partial Class Login
 #Region "INICIAR SESIÓN"
     Private Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
         UserLogin()
-
     End Sub
 
     ''''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER. Si el SWITCH case es ELSE, el usuario es valido.</summary>
     Protected Sub UserLogin()
 
-        Dim username As String = txtUsuario.Text.Trim()
-        Dim password As String = HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim()))
+        Dim CodigoUser As Integer = 0
+        Dim Username As String = txtUsuario.Text.ToString()
+        Dim CodigoRol As Integer = 0
         Dim browserData As String = Request.Browser.Browser & " " & Request.Browser.Version & " " & Request.Browser.Platform
-        Dim codigoUser As Integer = 0
 
         Try
             Using dbCon As New OleDbConnection(_conn.conn)
@@ -60,75 +60,71 @@ Partial Class Login
                 Using cmd As New OleDbCommand("sp_sys_login", dbCon)
 
                     cmd.CommandType = CommandType.StoredProcedure
-                    cmd.Parameters.AddWithValue("@Username", username)
-                    cmd.Parameters.AddWithValue("@Password", password)
-
-                    codigoUser = Convert.ToInt32(cmd.ExecuteScalar())
+                    cmd.Parameters.AddWithValue("@Username", Username)
+                    cmd.Parameters.AddWithValue("@Password", HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim())))
+                    Dim dr As OleDbDataReader = cmd.ExecuteReader()
+                    If dr.Read() Then
+                        CodigoUser = Convert.ToInt32(dr("CodigoUser"))
+                        If dr("CodigoRol") IsNot DBNull.Value Then
+                            CodigoRol = Convert.ToInt32(dr("CodigoRol"))
+                        End If
+                    End If
                 End Using
 
-                Select Case codigoUser
+                Select Case CodigoUser
                     Case -1
-                        ShowErrorMessage("Usuario y/o contraseña incorrect@s.")
-                        Exit Select
+                        AlertifyErrorMessage(Me, "Usuario y/o contraseña incorrect@s.")
                     Case -2
-                        ShowErrorMessage("Cuenta de usuario inactiva.")
-                        Exit Select
+                        AlertifyErrorMessage(Me, "Usuario ya tiene una sesión activa.")
                     Case Else
-                        'If Not String.IsNullOrEmpty(Request.QueryString("ReturnUrl")) Then
-                        '    FormsAuthentication.SetAuthCookie(username, False)
-                        '    Response.Redirect(Request.QueryString("ReturnUrl"))
-                        'Else
-                        '    HandleUserSession(username, browserData)
-                        'End If
-
-                        HandleUserSession(username, browserData)
-                        Exit Select
+                        'Usuario inicia sesión correctamente
+                        Session("CodigoUser") = CodigoUser
+                        Session("CodigoRol") = CodigoRol
+                        HandleUserSession(Username, browserData)
                 End Select
             End Using
 
         Catch ex As Exception
-            ShowErrorMessage(ex.Message)
+            AlertifyErrorMessage(Me, ex.Message)
         End Try
     End Sub
     Protected Sub HandleUserSession(username As String, browserData As String)
-
-        ''Maneja la sesion del usuario ya autenticado.
-
+        'Maneja la sesion del usuario ya autenticado.
         Dim sessionData As Dictionary(Of String, Object) = _conn.ControlarSesion(username, ObtenerIp_Publica(), browserData)
 
         Try
             If sessionData IsNot Nothing Then
-
                 If sessionData.ContainsKey("Status") AndAlso sessionData.Item("Status") = "SESION INICIADA" Then
 
-                    Dim cookie As New HttpCookie("CKSMFACTURA")
-
-                    cookie("CodigoSesion") = sessionData.Item("CodigoSesion").ToString()
-                    cookie("CodigoUser") = sessionData.Item("CodigoUser").ToString()
-                    cookie("Username") = sessionData.Item("Username").ToString()
-                    cookie("Password") = sessionData.Item("Password").ToString()
-                    cookie("CodigoRol") = sessionData.Item("CodigoRol").ToString()
-
-                    cookie.Expires = Now.AddDays(1)
-                    Response.Cookies.Add(cookie)
+                    Session("CodigoSesion") = sessionData.Item("CodigoSesion").ToString()
+                    Session("Username") = sessionData.Item("Username").ToString()
+                    Session("Password") = sessionData.Item("Password").ToString()
 
                     'FormsAuthentication.RedirectFromLoginPage(username, False)
                     Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
+
+                    Select Case Session("CodigoRol")
+                        Case 1
+                        Case 2
+
+                        Case 3
+                        Case 4
+
+
+
+                    End Select
+
+
+
                 Else
-                    Dim userLoggedInAlert As String = $"alertify.alert('{ sessionData.Item("Status").ToString()}')"
-                    ScriptManager.RegisterStartupScript(Me, Page.GetType, "userLoggedInAlert", userLoggedInAlert, True)
+                    'Usuario tiene una sesion activa 
+                    AlertifyAlertMessage(Me, sessionData.Item("Status"))
                 End If
             End If
         Catch ex As Exception
-            ShowErrorMessage(ex.Message)
+            AlertifyErrorMessage(Me, ex.Message)
         End Try
     End Sub
-
-    Private Sub ShowErrorMessage(message As String)
-        Dim alertScript As String = "alertify.alert('" & message & "');"
-        ScriptManager.RegisterStartupScript(Me, Page.GetType, "errorLogin", alertScript, True)
-    End Sub
-
 #End Region
 
 #Region "PROCESO DE ENCRIPTACIÓN"

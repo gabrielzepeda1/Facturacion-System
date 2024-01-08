@@ -81,23 +81,146 @@ Partial Class Utilitarios_PaisEmpresaPuesto
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-
         If Not Page.IsPostBack Then
-
-            If Request.Cookies.Get("CKSMFACTURA") Is Nothing Then
+            If Session("CodigoSesion") Is Nothing Then
+                FormsAuthentication.SignOut()
                 Response.Redirect(ResolveClientUrl("~/Login.aspx"))
-            End If
 
-            Dim cookie As HttpCookie = Request.Cookies("CKSMFACTURA")
 
-            If cookie IsNot Nothing Then
-                MyUserName = "USUARIO: " & Context.Request.Cookies("CKSMFACTURA")("Username")
-            End If
+            Else
+                MyUserName = Session("Username")
+                Dim codigoRol As Integer = Convert.ToInt32(Session("CodigoRol"))
 
-            If WatchSession() = False Then
-                Debug.WriteLine("Sesión cerrada")
+                Select Case codigoRol
+
+                    Case 1 'Super Administrador
+                    Case 2 'Administrador Pais 
+
+
+                    Case 3 'AdministradorEmpresa 
+
+                    Case 4 'Administrador Puesto
+
+                End Select
             End If
         End If
+    End Sub
+
+    Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
+
+        Dim codigoUser As Integer = Convert.ToInt32(Session("CodigoUser"))
+        Dim codigoRol As Integer = Convert.ToInt32(Session("CodigoRol"))
+
+        SetUserVariables(codigoUser, codigoRol)
+    End Sub
+
+    Protected Sub SetUserVariables(CodigoUser As Integer, CodigoRol As Integer)
+
+        Select Case CodigoRol
+            Case 1 'SuperAdmin
+            Case 2 'AdminPais
+            Case 3 'AdminEmpresa
+            Case 4 'AdminPuesto
+                GetSessionPaisEmpresaPuesto()
+        End Select
+
+        'Redireccionar al usuario a la pagina principal "Default.aspx"
+        'FormsAuthentication.SetAuthCookie(userCookie, False)
+        FormsAuthentication.RedirectFromLoginPage(CodigoUser, False)
+    End Sub
+
+    Private Sub GetSessionPaisEmpresaPuesto()
+
+        'Estas functiones retornan un array de Pais, Empresa, Puestos a los cuales el usuario tiene acceso y los guarda en sus variables de sesion correspondientes. 
+        Session("cod_pais") = GetPaisesUsuario()
+        Session("cod_empresa") = GetEmpresasUsuario()
+        Session("cod_puesto") = GetPuestosUsuario()
+
+    End Sub
+
+    Private Function GetPaisesUsuario() As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctPaisesUsuario({Session("CodigoUser")})"
+        Dim reader = _database.GetDataReader(sql)
+        Dim ArrCodigoPais As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoPais.Add(reader("cod_pais"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoPais)
+
+        Return ArrCodigoPais
+
+    End Function
+
+    Private Function GetEmpresasUsuario() As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctEmpresasUsuario({Session("CodigoUser")})"
+        Dim reader = _database.GetDataReader(sql)
+        Dim ArrCodigoEmpresa As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoEmpresa.Add(reader("cod_empresa"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoEmpresa)
+        Return ArrCodigoEmpresa
+    End Function
+
+    Private Function GetPuestosUsuario() As List(Of Integer)
+
+        Dim sql = $"SELECT * FROM GetDistinctPuestosUsuario({Session("CodigoUser")})"
+        Dim reader = _database.GetDataReader(sql)
+        Dim ArrCodigoPuesto As New List(Of Integer)
+
+        Do While reader.Read()
+            ArrCodigoPuesto.Add(reader("cod_empresa"))
+        Loop
+
+        Debug.WriteLine(ArrCodigoPuesto)
+        Return ArrCodigoPuesto
+    End Function
+
+    Private Sub btnCerrar_Click(sender As Object, e As EventArgs) Handles btnCerrar.Click
+
+        Dim codigoUser As Integer = Convert.ToInt32(Session("CodigoUser"))
+        Dim codigoSesion As Integer = Convert.ToInt32(Session("CodigoSesion"))
+
+        CerrarSesion(codigoUser, codigoSesion)
+    End Sub
+
+    Private Sub CerrarSesion(codigoUser As String, codigoSesion As String)
+
+        Try
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
+
+                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
+                cmd.CommandType = CommandType.StoredProcedure
+
+                cmd.Parameters.AddWithValue("@cod_usuario", codigoUser)
+                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
+                cmd.Parameters.AddWithValue("@estado", "CERRAR")
+                Dim rowsAffected = cmd.ExecuteNonQuery()
+
+                If rowsAffected > 0 Then
+
+                    Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
+                    cookie.Expires = Now.AddDays(-1)
+                    Request.Cookies.Clear()
+                    Session.Abandon()
+                    FormsAuthentication.SignOut()
+                    FormsAuthentication.RedirectToLoginPage()
+
+                End If
+
+            End Using
+
+        Catch ex As Exception
+            Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
+            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
+        End Try
     End Sub
 
     'REMEMBER SUB PROCEDURES HAVE THEIR OWN SCOPE (VARIABLES, OBJECTS, CONSTANTS)
@@ -224,108 +347,4 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     '    Response.Redirect(ResolveClientUrl("../Default.aspx"))
 
     'End Sub
-
-    Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
-        SetCookies()
-
-    End Sub
-
-    Protected Sub SetCookies()
-        'Asignar en las cookies los datos seleccionados (pais, empresa, puesto).
-        Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-        Dim userCookie = cookie("Username")
-
-        cookie("CodigoPais") = ddlPais.SelectedValue()
-        cookie("CodigoEmpresa") = ddlEmpresa.SelectedValue()
-        cookie("CodigoPuesto") = ddlPuesto.SelectedValue()
-        cookie("Pais") = ddlPais.SelectedItem.Text()
-        cookie("Empresa") = ddlEmpresa.SelectedItem.Text()
-        cookie("Puesto") = ddlPuesto.SelectedItem.Text()
-        cookie.Expires = Now.AddDays(1)
-        Response.Cookies.Add(cookie)
-
-        'Asignamos las variables de sesion desde los controles en la pantalla PaisEmpresaPuesto.aspx
-        Session("cod_pais") = cookie("CodigoPais")
-        Session("cod_empresa") = cookie("CodigoEmpresa")
-        Session("cod_puesto") = cookie("CodigoPuesto")
-        Session("Pais") = cookie("Pais")
-        Session("Empresa") = cookie("Empresa")
-        Session("Puesto") = cookie("Puesto")
-
-        'Redireccionar al usuario a la pagina principal "Default.aspx"
-        'FormsAuthentication.SetAuthCookie(userCookie, False)
-        FormsAuthentication.RedirectFromLoginPage(userCookie, False)
-    End Sub
-
-    Private Sub btnCerrar_Click(sender As Object, e As EventArgs) Handles btnCerrar.Click
-
-        Dim codigoUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser").ToString()
-        Dim codigoSesion As String = Context.Request.Cookies("CKSMFACTURA")("CodigoSesion").ToString()
-
-        CerrarSesion(codigoUser, codigoSesion)
-    End Sub
-
-    Private Sub CerrarSesion(codigoUser As String, codigoSesion As String)
-
-        Try
-
-            Using dbCon As New OleDbConnection(_conn.conn)
-                dbCon.Open()
-
-                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-                cmd.CommandType = CommandType.StoredProcedure
-
-                cmd.Parameters.AddWithValue("@cod_usuario", codigoUser)
-                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
-                cmd.Parameters.AddWithValue("@estado", "CERRAR")
-                Dim rowsAffected = cmd.ExecuteNonQuery()
-
-                If rowsAffected > 0 Then
-
-                    Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-                    cookie.Expires = Now.AddDays(-1)
-                    Request.Cookies.Clear()
-                    Session.Abandon()
-                    FormsAuthentication.SignOut()
-                    FormsAuthentication.RedirectToLoginPage()
-
-                End If
-
-            End Using
-
-        Catch ex As Exception
-            Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
-        End Try
-    End Sub
-
-    Private Function WatchSession() As Boolean
-
-        Using dbCon As New OleDbConnection(_conn.conn)
-
-            dbCon.Open()
-
-            Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-            cmd.CommandType = CommandType.StoredProcedure
-            cmd.Parameters.AddWithValue("@cod_usuario", Context.Request.Cookies("CKSMFACTURA")("CodigoUser"))
-            cmd.Parameters.AddWithValue("@cod_sesion", Context.Request.Cookies("CKSMFACTURA")("CodigoSesion"))
-            cmd.Parameters.AddWithValue("@estado", "CONSULTAR")
-
-            Dim reader As OleDbDataReader = cmd.ExecuteReader()
-
-            If reader.HasRows Then
-                Return True
-            End If
-
-            Return False
-
-        End Using
-
-    End Function
-
-    Private Sub CloseSessionSuccessAlert()
-        Dim msg = "alertify.success('Sesión cerrada correctamente.');"
-        ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
-    End Sub
-
 End Class
