@@ -20,223 +20,102 @@
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
-        <div id="main-form-content">
+        <div class="container-fluid">
+            <div class="row mx-1 py-2 align-items-center justify-content-between">
+                <div class="col-8 d-flex">
+                    <button id="btnNuevo" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i class="fas fa-plus-circle"></i>&nbspNuevo</button>
+                    <asp:LinkButton ID="btnExportar" runat="server" CssClass="btn btn-secondary" ToolTip="Exportar"><i class="fas fa-file-excel"></i> Exportar</asp:LinkButton>
+                </div>
 
-            <div id="main-form-content-field">
+                <div class="col-4 d-flex">
+                    <asp:Panel ID="PnlSearch" runat="server" CssClass="input-group" DefaultButton="">
+                        <asp:TextBox ID="txtSearch" CssClass="form-control" OnTextChanged="Search" AutoPostBack="true" runat="server"></asp:TextBox>
+                        <a class="btn btn-secondary"><i class="fas fa-search"></i></a>
+                    </asp:Panel>
+                </div>
+            </div>
+        </div>
 
-                <div id="Control">
-                    <div class="container-fluid">
-                        <div class="row mx-1 py-2 align-items-center justify-content-between">
-                            <div class="col-8 d-flex">
+        <asp:UpdatePanel ID="upGrid" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="table-content">
+                    <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
+                    <div class="table-responsive">
 
-                                <%--'Trigger--%>
-                                <%--     <asp:LinkButton ID="btnNew" runat="server" CssClass="btn btn-primary btn-lg" ToolTip="Nuevo" OnClientClick="open_popup()"><i class="fas fa-plus-circle"></i> Nuevo </asp:LinkButton>--%>
+                        <asp:GridView ID="GridViewOne" runat="server" AutoGenerateColumns="False" CssClass="table table-light table-sm table-striped table-hover table-bordered "
+                            CellPadding="0" GridLines="None" AllowPaging="True"
+                            PageSize="10" DataKeyNames="sigla" AllowSorting="True"
+                            OnPageIndexChanging="OnPaging" EmptyDataText="No se encontraron registros...">
 
-                                <a id="btnNew" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-plus-circle"></i>&nbsp Nuevo</a>
+                            <HeaderStyle CssClass="table-header table-dark align-middle text-center" />
 
-                                <asp:LinkButton ID="btnExportar" runat="server" CssClass="btn btn-success btn-lg" ToolTip="Exportar"><i class="fas fa-file-excel"></i> Exportar a Excel </asp:LinkButton>
+                            <Columns>
+                                <asp:TemplateField HeaderText="SIGLA">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblSiglas" runat="server" Text='<%# Eval("sigla") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:TextBox ID="txtSiglas" runat="server" Text='<%# Eval("sigla") %>' Width="140"></asp:TextBox>
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
 
-                            </div>
+                                <asp:CommandField ButtonType="Link" EditText="Editar" ShowEditButton="true" CancelText="Cancelar"  ControlStyle-Width="70">
+                                    <ControlStyle CssClass="btn btn-primary btn-sm align-middle" />
+                                </asp:CommandField>
 
-                            <div class="col-4 d-flex">
-                                <asp:Panel ID="PnlSearch" runat="server" CssClass="input-group" DefaultButton="">
-                                    <asp:TextBox ID="txtBuscar" CssClass="form-control" ToolTip="Buscar..." runat="server"></asp:TextBox>
-                                    <div class="input-group-append">
-                                        <asp:LinkButton ID="btnBuscar" CssClass="btn btn-secondary" runat="server">Buscar&nbsp<i class="fas fa-search"></i></asp:LinkButton>
+                                <asp:CommandField ButtonType="Link" DeleteText="Eliminar" ShowDeleteButton="true">
+                                    <ControlStyle CssClass="btn btn-danger align-middle" />
+                                </asp:CommandField>
+                            </Columns>
 
-                                    </div>
-                                    <%-- Trigger --%>
-                                </asp:Panel>
-
-                            </div>
-
-                        </div>
+                            <PagerTemplate>
+                                <div class="pagination">
+                                    <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="1ra pág." CommandArgument="First" CssClass="primero" Text="1" formnovalidate />
+                                    <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate="true" />
+                                    <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Siguiente" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidat="true" />
+                                    <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Última pág." CommandArgument="Last" CssClass="ultimo" Text="Ult." formnovalidate="true" />
+                                    <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
+                                </div>
+                            </PagerTemplate>
+                        </asp:GridView>
                     </div>
                 </div>
+                <asp:HiddenField ID="hdfCodigo" runat="server" />
 
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="BtnGuardar" EventName="Click" />
+            </Triggers>
+        </asp:UpdatePanel>
 
-                <asp:UpdatePanel ID="upMensaje" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="BtnGuardar" EventName="Click" />
-                    </Triggers>
-                </asp:UpdatePanel>
-
-                <asp:UpdatePanel ID="upGrid" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-
-                        <div class="table-content">
-
-                            <div class="clear"></div>
-
-                            <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
-
-                            <div class="table-responsive">
-
-                                <asp:GridView
-                                    ID="GridViewOne"
-                                    runat="server"
-                                    CssClass="table table-light table-sm table-striped table-hover table-bordered"
-                                    CellPadding="0"
-                                    GridLines="None"
-                                    AllowPaging="True"
-                                    AllowSorting="True"
-                                    PageSize="10"
-                                    DataKeyNames="sigla"
-                                    AutoGenerateColumns="False">
-
-                                    <HeaderStyle CssClass="table-header table-dark align-middle text-center" />
-
-                                    <Columns>
-                                        <asp:BoundField HeaderText="Siglas" DataField="sigla" SortExpression="sigla" ItemStyle-CssClass="align-middle" />
-
-                                        <asp:CommandField
-                                            HeaderText=""
-                                            ButtonType="Button"
-                                            EditText="Actualizar"
-                                            ShowEditButton="true"
-                                            HeaderStyle-Width="120">
-                                            <ControlStyle CssClass="btn btn-success align-middle" />
-                                        </asp:CommandField>
-
-
-                                        <asp:CommandField
-                                            HeaderText=""
-                                            ButtonType="Button"
-                                            SelectText="Eliminar"
-                                            ShowDeleteButton="false"
-                                            ShowSelectButton="true"
-                                            HeaderStyle-Width="120">
-                                            <ControlStyle CssClass="btn btn-danger align-middle" />
-                                        </asp:CommandField>
-
-                                    </Columns>
-
-
-
-
-                                    <PagerTemplate>
-                                        <div class="pagination">
-                                            <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag" CommandArgument="First" CssClass="primero" Text="Primera" formnovalidate />
-                                            <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate />
-                                            <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate />
-                                            <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate />
-                                            <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
-                                        </div>
-                                    </PagerTemplate>
-                                </asp:GridView>
-                            </div>
-                        </div>
-                        <asp:HiddenField ID="hdfCodigo" runat="server" />
-
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="BtnGuardar" EventName="Click" />
-                    </Triggers>
-                </asp:UpdatePanel>
-
-            </div>
-            <!-- #main-form-content-field -->
-
-            <div class="clear"></div>
-
-        </div>
-        <!-- =========== #main-form-content ====================================================================== -->
     </div>
-    <!-- =========== #main-form ====================================================================== -->
 
-
-
-    <div id="popup-form" class="white-popup-block mfp-hide">
-        <div class="bstt-form PantallaPopUp">
-            <i class="fas fa-times-circle Close"></i>
-
-            <h2 class="center-color">Agregar Siglas</h2>
-
-            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <asp:TextBox ID="txtDescripcion" runat="server" MaxLength="100"></asp:TextBox>
-                </ContentTemplate>
-                <Triggers>
-                    <%--<asp:AsyncPostBackTrigger ControlID="GridViewOne" EventName="SelectedIndexChanged" />--%>
-                    <asp:AsyncPostBackTrigger ControlID="BtnGuardar" EventName="Click" />
-                </Triggers>
-            </asp:UpdatePanel>
-
-            <div class="btnGuarda">
-                <div class="izq">
-                    <asp:Button ID="BtnGuardar" runat="server" Text="Guardar" class="btnEditar" />
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5">Nuevas Siglas</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="Derecha">
-                    <asp:Button ID="BtnCerrar" runat="server" Text="Cerrar" Class="btnEliminar" />
+                <div class="modal-body">
+                    <label class="form-label">Descripción: </label>
+                    <asp:TextBox ID="txtDescripcion" CssClass="form-control" runat="server" AutoCompleteType="None"></asp:TextBox>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button ID="btnGuardar" CssClass="btn btn-primary" runat="server" Text="Guardar" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
-
-            <%--       <asp:LinkButton ID="btnBuscar" runat="server" CssClass="print" ToolTip="Exportar">
-                        <i class="fas fa-file-excel"></i><label>Exportar</label>
-                    </asp:LinkButton>--%>
         </div>
-        <!-- .bstt-form -->
     </div>
-    <!-- #popup-form -->
-
-
-    <asp:UpdateProgress ID="uprData" runat="server">
-        <ProgressTemplate>
-            <div class="loader">
-                <div>
-                    <img alt="Cargando" src="../img/load.gif" />
-                    <p>Cargando...</p>
-                </div>
-            </div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
 
 </asp:Content>
 
 <asp:Content ID="c5" ContentPlaceHolderID="cpScripts" runat="Server">
     <script>
-        $(document).ready(function () {
-            //$('.datagird').basictable();
 
-            $("#btnNew").click(function () {
-
-                $("#<%=hdfCodigo.ClientID%>").val("");
-
-                $("#<%=txtDescripcion.ClientID%>").val("");
-                $("#<%=txtDescripcion.ClientID%>").prev().removeClass('visible');
-
-                $("#popuptittle").text('Agregar Siglas');
-
-                open_popup();
-
-            });
-
-            $(".Close").click(function () {
-                $('#popup-form').bPopup().close();
-            });
-        });
-
-        function open_popup() {
-            $('#popup-form').bPopup({
-                appendTo: 'form',
-                speed: 650,
-                transition: 'slideIn',
-                transitionClose: 'slideBack'
-            });
-        }
-
-        function close_popup() {
-            $('#popup-form').bPopup().close()
-        }
-
-        function responsive_grid() {
-            //$('.datagird').basictable();
-        }
-    </script>
+</script>
 </asp:Content>
 
 

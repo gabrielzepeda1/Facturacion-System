@@ -13,12 +13,17 @@ Partial Class [Default]
 
     End Sub
 
+    Private Sub AdjustSessionVariables()
+
+
+    End Sub
+
 #Region "CREAR EL MENU DE FORMA DINAMICA"
     Private Sub GetMenuEncabezado()
         Try
 
             Dim sql = "EXEC sp_menu_accesos " &
-                  "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("CodigoUser") & "," &
+                  "@cod_usuario = " & Session("CodigoUser") & "," &
                   "@cod_padre = NULL"
 
             Dim ds As DataSet

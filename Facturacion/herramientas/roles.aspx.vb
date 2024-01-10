@@ -112,7 +112,7 @@ Partial Class herramientas_roles
                     }
             If parentId = 0 Then
                 trvMenu.Nodes.Add(child)
-                Dim dtChild As DataTable = Me.GetData("SELECT cod_menu, cod_padre, etiqueta, posicion FROM sys_menu_web WHERE cod_padre = " + child.Value)
+                Dim dtChild As DataTable = Me.GetData("SELECT cod_menu, cod_padre, etiqueta, posicion FROM sys_menu_web WHERE cod_padre = " & child.Value)
                 LoadTreeView(dtChild, Integer.Parse(child.Value), child)
             Else
                 treeNode.ChildNodes.Add(child)
@@ -326,7 +326,7 @@ Partial Class herramientas_roles
             End Using
 
         Catch ex As Exception
-            AlertifyErrorMessage(Page, ex.Message)
+            AlertifyErrorMessage(Me, ex.Message)
             Return False
         End Try
     End Function

@@ -39,15 +39,16 @@ Public Class database
                 Dim sql = "SET DATEFORMAT DMY "
                 sql = sql & vbCrLf & query
 
-                Dim cmd As New OleDbCommand(sql, dbCon)
-                cmd.CommandTimeout = 9999
-
-                Dim da As New OleDbDataAdapter(cmd)
-                Dim ds As New DataSet()
-                da.Fill(ds, "DT0")
-
-                Return ds
-
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandTimeout = 9999
+                    Using da As New OleDbDataAdapter(cmd)
+                        Using ds As New DataSet()
+                            da.Fill(ds, "DT0")
+                            Return ds
+                        End Using
+                    End Using
+                End Using
             End Using
 
         Catch ex As Exception
@@ -146,6 +147,28 @@ Public Class database
 
             Return Nothing
 
+        End Try
+    End Function
+
+    Public Function GetScalar(sql As String) As OleDbDataReader
+        Try
+            Using dbCon As New OleDbConnection(conn.conn)
+                dbCon.Open()
+
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    cmd.CommandType = CommandType.Text
+                    Dim result As Object = cmd.ExecuteScalar()
+
+                    If result IsNot DBNull.Value Then
+                        Return result
+                    End If
+
+                    Return Nothing
+                End Using
+            End Using
+        Catch ex As OleDbException
+            Console.WriteLine("Error en GetScalar")
+            Return Nothing
         End Try
     End Function
 

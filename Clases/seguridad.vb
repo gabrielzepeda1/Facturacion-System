@@ -12,12 +12,12 @@ Public Class seguridad
 
     Public Shared ReadOnly ConnectionString As String = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga1234"
 
-    Public Property conn_Procedimientos() As String
+    Public Property Sql_conn() As String
         Get
-            _conn = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga123"
+            _conn = "Data Source=localhost;Server=GILDEDSWORD\SQLEXPRESS;Database=Facturacion;UID=sa;PWD=ga1234"
             Return _conn
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             _conn = value
         End Set
     End Property
@@ -150,12 +150,10 @@ Public Class seguridad
     ''' <returns>Dictionary(Of String, Object)</returns>
     ''' <remarks></remarks>
     Public Function ControlarSesion(username As String, ipConexion As String, nombreHost As String) As Dictionary(Of String, Object)
-
         Dim sessionData As New Dictionary(Of String, Object)
 
         Try
             Using dbCon As New OleDbConnection(conn)
-
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_sys_Abrir_Sesion", dbCon)
@@ -165,7 +163,6 @@ Public Class seguridad
                     cmd.Parameters.AddWithValue("@Nombre_Host", nombreHost)
 
                     Dim dr As OleDbDataReader = cmd.ExecuteReader()
-
                     If dr.Read() Then
                         If dr.Item("Status") = "SESION INICIADA" Then
                             sessionData("CodigoSesion") = dr.Item("CodigoSesion")
@@ -174,6 +171,9 @@ Public Class seguridad
                             sessionData("Password") = dr.Item("Password")
                             sessionData("CodigoRol") = dr.Item("CodigoRol")
                             sessionData("Status") = dr.Item("Status")
+                            sessionData("CodigoPais") = dr.Item("CodigoPais")
+                            sessionData("CodigoEmpresa") = dr.Item("CodigoEmpresa")
+                            sessionData("CodigoPuesto") = dr.Item("CodigoPuesto")
 
                             Return sessionData
                         Else

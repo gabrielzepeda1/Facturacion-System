@@ -7,6 +7,7 @@ Imports AlertifyClass
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
+    Dim _database As New database
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
@@ -16,10 +17,8 @@ Partial Class Login
 
     Private Sub Attributes_Text()
         txtUsuario.Attributes.Add("placeholder", "Nombre de Usuario")
-        'txtUsuario.Attributes.Add("required", "required")
         txtUsuario.Attributes.Add("autocomplete", "off")
         txtPass.Attributes.Add("placeholder", "Contraseña")
-        'txtPass.Attributes.Add("required", "required")
         txtPass.Attributes.Add("autocomplete", "off")
     End Sub
 
@@ -58,7 +57,6 @@ Partial Class Login
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_sys_login", dbCon)
-
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@Username", Username)
                     cmd.Parameters.AddWithValue("@Password", HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim())))
@@ -99,23 +97,17 @@ Partial Class Login
                     Session("CodigoSesion") = sessionData.Item("CodigoSesion").ToString()
                     Session("Username") = sessionData.Item("Username").ToString()
                     Session("Password") = sessionData.Item("Password").ToString()
-
-                    'FormsAuthentication.RedirectFromLoginPage(username, False)
-                    Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
+                    Session("CodigoPais") = Convert.ToInt32(sessionData.Item("CodigoPais"))
+                    Session("CodigoEmpresa") = Convert.ToInt32(sessionData.Item("CodigoEmpresa"))
+                    Session("CodigoPuesto") = Convert.ToInt32(sessionData.Item("CodigoPuesto"))
 
                     Select Case Session("CodigoRol")
-                        Case 1
-                        Case 2
-
-                        Case 3
-                        Case 4
-
-
-
+                        'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
+                        Case 1, 2, 3, 4
+                            FormsAuthentication.RedirectFromLoginPage(Session("Username"), False)
+                        Case Else
+                            Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
                     End Select
-
-
-
                 Else
                     'Usuario tiene una sesion activa 
                     AlertifyAlertMessage(Me, sessionData.Item("Status"))
@@ -125,6 +117,52 @@ Partial Class Login
             AlertifyErrorMessage(Me, ex.Message)
         End Try
     End Sub
+
+    'Private Function GetCodigoPaisUser(CodigoUser As Integer) As Integer
+    '    Using dbCon As New OleDbConnection(_conn.conn)
+    '        dbCon.Open()
+
+    '        Dim sql = $"SELECT dbo.GetCod_PaisUsuario({CodigoUser})"
+    '        Dim CodigoPais = _database.GetScalar(sql)
+
+    '        If CodigoPais IsNot DBNull.Value Then
+    '            Return Convert.ToInt32(CodigoPais)
+    '        End If
+    '    End Using
+
+    '    Return Nothing
+    'End Function
+
+    'Private Function GetCodigoEmpresaUser(CodigoUser As Integer) As Integer
+    '    Using dbCon As New OleDbConnection(_conn.conn)
+    '        dbCon.Open()
+
+    '        Dim sql = $"SELECT dbo.GetCodigoEmpresaUsuario({CodigoUser})"
+    '        Dim CodigoEmpresa = _database.GetScalar(sql)
+
+    '        If CodigoEmpresa IsNot DBNull.Value Then
+    '            Return Convert.ToInt32(CodigoEmpresa)
+    '        End If
+    '    End Using
+
+    '    Return Nothing
+    'End Function
+
+    'Private Function GetCodigoPuestoUser(CodigoUser As Integer) As Integer
+    '    Using dbCon As New OleDbConnection(_conn.conn)
+    '        dbCon.Open()
+
+    '        Dim sql = $"SELECT dbo.GetCodigoPuestoUser({CodigoUser})"
+    '        Dim CodigoPais = _database.GetScalar(sql)
+
+    '        If CodigoPais IsNot DBNull.Value Then
+    '            Return Convert.ToInt32(CodigoPais)
+    '        End If
+    '    End Using
+
+    '    Return Nothing
+    'End Function
+
 #End Region
 
 #Region "PROCESO DE ENCRIPTACIÓN"

@@ -1,15 +1,12 @@
 ﻿Imports System.Data
-Imports System.Globalization
-Imports System.Threading
-'Inherits System.Web.UI.Page
-Imports FACTURACION_CLASS.DatabaseHelper
+Imports System.Data.SqlClient
+Imports AlertifyClass
 
 Partial Class Catalogos_Siglas
-    Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
-    Dim DataBase As New FACTURACION_CLASS.database
+    Inherits Page
+    Dim Seguridad As New FACTURACION_CLASS.seguridad
+    Dim Database As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
-
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -54,395 +51,241 @@ Partial Class Catalogos_Siglas
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        LoadDataGridView()
         If Not Page.IsPostBack Then
-
             Puesto_Name = "Industrial Comercial San Martin"
-
-            Me.txtDescripcion.Attributes.Add("placeholder", "Digite Descripción")
-            Me.txtDescripcion.Attributes.Add("requerid", "requerid")
-
-            Load_GridView()
-
+            txtDescripcion.Attributes.Add("placeholder", "Nuevas Siglas..")
+            txtDescripcion.Attributes.Add("requerid", "requerid")
         End If
     End Sub
 
 #Region "PROCESOS Y EVENTOS DEL GRIDVIEW"
-    Private Sub Load_GridView()
+    Private Sub LoadDataGridView()
         Try
-            Dim SQL As String = String.Empty
-            SQL &= "EXEC Cat_Siglas @opcion=3," & _
-                  "@siglas =  NULL  ," & _
-                  "@codusuario =  NULL ," & _
-                  "@codusuarioUlt =  NULL  ," & _
-                  "@BUSQUEDAD = '" & BUSQUEDAD & "' "
-
-            Dim ds As DataSet
-            ds = DataBase.GetDataSet(SQL)
-
-            dtTabla = ds.Tables(0)
-
-            Me.GridViewOne.DataSource = dtTabla.DefaultView
-            Me.GridViewOne.DataBind()
-            ds.Dispose()
-
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
-
-        End Try
-    End Sub
-
-    Protected Sub GridViewOne_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.DataBound
-        Try
-            If GridViewOne.Rows.Count > 0 Then
-                Dim pagerRow As GridViewRow = GridViewOne.BottomPagerRow
-                Dim pageLabel As Label = CType(pagerRow.Cells(0).FindControl("CurrentPageLabel"), Label)
-                If Not pageLabel Is Nothing Then
-                    Dim currentPage As Integer = GridViewOne.PageIndex + 1
-                    pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() & _
-                        " de " & GridViewOne.PageCount.ToString()
-                End If
+            Dim sql As String = "SELECT sigla FROM dbo.Siglas"
+            If Not String.IsNullOrEmpty(txtSearch.Text.Trim()) Then
+                sql &= " WHERE sigla LIKE '%' + @SearchTerm + '%'"
+                sql &= " ORDER BY sigla ASC"
             End If
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
 
+            Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+                dbCon.Open()
+
+                Using cmd As New SqlCommand(sql, dbCon)
+                    cmd.Parameters.AddWithValue("@SearchTerm", txtSearch.Text.Trim())
+                    Using sda As New SqlDataAdapter(cmd)
+                        Dim dt As New DataTable()
+                        sda.Fill(dt)
+                        GridViewOne.DataSource = dt
+                        GridViewOne.DataBind()
+                    End Using
+                End Using
+            End Using
+
+        Catch ex As Exception
+            AlertifyAlertMessage(Me, ex.Message)
         End Try
     End Sub
 
-    Protected Sub GridViewOne_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.PageIndexChanged
-        Try
-
-            Me.GridViewOne.SelectedIndex = -1
-            Me.hdfCodigo.Value = String.Empty
-
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
-
-        End Try
+    Protected Sub Search(sender As Object, e As EventArgs)
+        'En control txtSearch se define el evento OnTextChanged="Search"
+        'Cargar GridView con los parametros de Busqueda 
+        Me.LoadDataGridView()
     End Sub
 
-    Protected Sub GridViewOne_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewOne.PageIndexChanging
-        Try
-            Me.GridViewOne.PageIndex = e.NewPageIndex
+    Protected Sub OnPaging(sender As Object, e As GridViewPageEventArgs)
+        'En control GridView se define el evento OnPageIndexChanging="OnPaging"
+        'Cargar GridView con los parametros de Busqueda 
+        GridViewOne.PageIndex = e.NewPageIndex
+        Me.LoadDataGridView()
+    End Sub
 
-            'Para usar la de caché guardada en la variable de sesion
-            If (IsPostBack) AndAlso (Not dtTabla Is Nothing) Then
-                If Not dtTabla Is Nothing AndAlso dtTabla.Rows.Count > 0 Then
-                    If dtTabla.Rows.Count > 0 Then
-                        Me.GridViewOne.DataSource = dtTabla
-                        Me.GridViewOne.DataBind()
+    Protected Sub BtnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
+        If txtDescripcion.Text = String.Empty Then
+            AlertifyAlertMessage(Me, "El campo no puede estar vacío.")
+            Return
+        End If
+        Guardar()
+    End Sub
+    Private Sub Guardar()
+        Dim siglas = txtDescripcion.Text.Trim()
+        txtDescripcion.Text = ""
+
+        Try
+            Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+                Using cmd As New SqlCommand("Cat_Siglas", dbCon)
+                    dbCon.Open()
+
+                    cmd.Parameters.AddWithValue("@accion", "INSERT")
+                    cmd.Parameters.AddWithValue("@siglas", siglas)
+                    cmd.Parameters.AddWithValue("@codusuario", Session("CodigoUser"))
+                    cmd.Parameters.AddWithValue("@codusuarioUlt", Session("CodigoUser"))
+                    cmd.CommandType = CommandType.StoredProcedure
+                    Dim affectedRows = cmd.ExecuteNonQuery()
+
+                    If affectedRows > 0 Then
+                        AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
                     End If
+                End Using
+            End Using
+
+            LoadDataGridView()
+        Catch ex As Exception
+            AlertifyErrorMessage(Me, "Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.")
+        End Try
+    End Sub
+    'Protected Sub GridViewOne_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.DataBound
+    '    Try
+    '        If GridViewOne.Rows.Count > 0 Then
+    '            Dim pagerRow As GridViewRow = GridViewOne.BottomPagerRow
+    '            Dim pageLabel As Label = CType(pagerRow.Cells(0).FindControl("CurrentPageLabel"), Label)
+    '            If Not pageLabel Is Nothing Then
+    '                Dim currentPage As Integer = GridViewOne.PageIndex + 1
+    '                pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() &
+    '                    " de " & GridViewOne.PageCount.ToString()
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        Me.ltMensajeGrid.Text &= Seguridad.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+
+    '    End Try
+    'End Sub
+    'Protected Sub GridViewOne_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.PageIndexChanged
+    '    Try
+
+    '        Me.GridViewOne.SelectedIndex = -1
+    '        Me.hdfCodigo.Value = String.Empty
+
+    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+    '    Catch ex As Exception
+    '        Me.ltMensajeGrid.Text &= Seguridad.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+
+    '    End Try
+    'End Sub
+
+    'Protected Sub GridViewOne_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewOne.PageIndexChanging
+    '    Try
+    '        Me.GridViewOne.PageIndex = e.NewPageIndex
+
+    '        'Para usar la de caché guardada en la variable de sesion
+    '        If (IsPostBack) AndAlso (Not dtTabla Is Nothing) Then
+    '            If Not dtTabla Is Nothing AndAlso dtTabla.Rows.Count > 0 Then
+    '                If dtTabla.Rows.Count > 0 Then
+    '                    Me.GridViewOne.DataSource = dtTabla
+    '                    Me.GridViewOne.DataBind()
+    '                End If
+    '            End If
+    '        End If
+
+    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+    '    Catch ex As Exception
+    '        Me.ltMensajeGrid.Text &= Seguridad.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+
+    '    End Try
+    'End Sub
+
+    'Protected Sub GridViewOne_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewOne.RowDataBound
+    '    Try
+
+    '        If e.Row.RowType = DataControlRowType.DataRow Then
+    '            e.Row.Attributes.Add("OnMouseOver", "On(this);")
+    '            e.Row.Attributes.Add("OnMouseOut", "Off(this);")
+    '            'e.Row.Attributes.Add("OnClick", "" & Page.ClientScript.GetPostBackClientHyperlink(Me.GridViewOne, "Select$" + e.Row.RowIndex.ToString) & ";")
+    '        End If
+
+    '    Catch ex As Exception
+    '        Me.ltMensajeGrid.Text &= Seguridad.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+
+    '    End Try
+    'End Sub
+
+    Protected Sub GridViewOne_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridViewOne.RowEditing
+        Try
+            GridViewOne.EditIndex = e.NewEditIndex
+            LoadDataGridView()
+
+        Catch ex As Exception
+            AlertifyErrorMessage(Me, "Ocurrió un error al disparar el evento SelectedIndexChanged")
+        End Try
+    End Sub
+    Protected Sub GridViewOne_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridViewOne.RowUpdating
+        Dim row As GridViewRow = GridViewOne.Rows(e.RowIndex)
+        Dim id As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
+        Dim name As String = (TryCast(row.FindControl("txtSiglas"), TextBox)).Text
+
+        Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+            Using cmd As New SqlCommand("Cat_Siglas", dbCon)
+                dbCon.Open()
+                cmd.Parameters.AddWithValue("@accion", "UPDATE")
+                cmd.Parameters.AddWithValue("@siglas", name)
+                cmd.Parameters.AddWithValue("@codusuario", DBNull.Value)
+                cmd.Parameters.AddWithValue("@codusuarioUlt", Session("CodigoUser"))
+                cmd.CommandType = CommandType.StoredProcedure
+
+                Dim affectedRows = cmd.ExecuteNonQuery()
+
+                If affectedRows > 0 Then
+                    AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
                 End If
-            End If
+            End Using
+        End Using
 
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
-
-        End Try
-    End Sub
-
-    Protected Sub GridViewOne_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewOne.RowDataBound
-        Try
-
-            If e.Row.RowType = DataControlRowType.DataRow Then
-                e.Row.Attributes.Add("OnMouseOver", "On(this);")
-                e.Row.Attributes.Add("OnMouseOut", "Off(this);")
-                'e.Row.Attributes.Add("OnClick", "" & Page.ClientScript.GetPostBackClientHyperlink(Me.GridViewOne, "Select$" + e.Row.RowIndex.ToString) & ";")
-            End If
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
-
-        End Try
-    End Sub
-
-    Protected Sub GridViewOne_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles GridViewOne.RowDeleting
-        Try
-            'pasar la información del Gridview hacia otro control, en este caso el control HiddenField,
-            Me.hdfCodigo.Value = Me.GridViewOne.DataKeys(e.RowIndex).Value
-
-            Eliminar()
-
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
-
-        End Try
-    End Sub
-
-    Protected Sub GridViewOne_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.SelectedIndexChanged
-        Try
-            Me.hdfCodigo.Value = Me.GridViewOne.SelectedValue.ToString
-
-            Eliminar()
-
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
-
-        End Try
+        GridViewOne.EditIndex = -1
+        LoadDataGridView()
     End Sub
 
     Protected Sub GridViewOne_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles GridViewOne.RowCancelingEdit
         Me.GridViewOne.EditIndex = -1
-        Load_GridView()
+        LoadDataGridView()
     End Sub
 
-    Protected Sub GridViewOne_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridViewOne.RowEditing
+    Protected Sub GridViewOne_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles GridViewOne.RowDeleting
         Try
+            Dim siglaId As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
 
-            Actualizar(e.NewEditIndex.ToString, e.NewEditIndex.ToString)
+            Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+                Using cmd As New SqlCommand("Cat_Siglas", dbCon)
+                    dbCon.Open()
+                    cmd.Parameters.AddWithValue("@accion", "DELETE")
+                    cmd.Parameters.AddWithValue("@siglas", siglaId)
+                    cmd.Parameters.AddWithValue("@codusuario", DBNull.Value)
+                    cmd.Parameters.AddWithValue("@codusuarioUlt", DBNull.Value)
+                    cmd.CommandType = CommandType.StoredProcedure
+
+                    Dim affectedRows = cmd.ExecuteNonQuery()
+
+                    If affectedRows > 0 Then
+                        AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
+                    End If
+                End Using
+            End Using
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
-
+            AlertifyErrorMessage(Me, "Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.")
         End Try
     End Sub
 
-    Protected Sub GridViewOne_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridViewOne.RowUpdating
-        'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", " alert(""Esto es un mensaje"");", True)
-
-        Dim Codigo As String = e.Keys("sigla").ToString
-        Dim Descripcion As String = e.NewValues("sigla").ToString
-
-        Actualizar(Codigo, Descripcion)
-        Me.GridViewOne.EditIndex = -1
-        Load_GridView()
+    Private Sub GridViewOne_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewOne.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow AndAlso e.Row.RowIndex <> GridViewOne.EditIndex Then
+            TryCast(e.Row.Cells(2).Controls(0), LinkButton).Attributes("onclick") = "return confirm('Do you want to delete this row?');"
+        End If
     End Sub
 
 #End Region
-
-    Private Sub Nuevo()
-        Try
-            Me.txtDescripcion.Text = String.Empty
-            txtDescripcion.Text = ""
-            txtDescripcion.Text.Equals("")
-
-        Catch ex As Exception
-            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
-        End Try
-    End Sub
-
-    Protected Sub BtnGuardar_Click(sender As Object, e As EventArgs) Handles BtnGuardar.Click
-        Dim MessegeText As String = String.Empty
-
-        If Me.txtDescripcion.Text = String.Empty Then
-            MessegeText = "alertify.alert('El  proceso no puede continuar. Debe digitar descripción.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-            Return
-        End If
-
-        Guardar()
-    End Sub
-
-    Private Sub Guardar()
-        Try
-            ' Call ExecuteCatSiglas directly with parameters
-            ExecuteCatSiglas(1, txtDescripcion.Text.Trim(), Request.Cookies("CKSMFACTURA")("cod_usuario"), Request.Cookies("CKSMFACTURA")("cod_usuario"), "")
-
-            Load_GridView()
-            Nuevo()
-
-            Dim messageText As String = "alertify.success('El registro ha sido guardado de forma correcta.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-            Me.txtDescripcion.Text = ""
-
-
-        Catch ex As Exception
-
-            Dim messageText As String = "alertify.error('Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-
-        End Try
-
-        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Facturacion", "close_popup();", True)
-    End Sub
-
-    Private Sub Eliminar()
-        Try
-            ' Call ExecuteCatSiglas directly with parameters
-            ExecuteCatSiglas(2, Me.hdfCodigo.Value.ToString(), Request.Cookies("CKSMFACTURA")("cod_usuario"), Request.Cookies("CKSMFACTURA")("cod_usuario"), "")
-
-            Load_GridView()
-            Nuevo()
-
-            Dim messageText As String = "alertify.success('El registro ha sido eliminado de forma correcta.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-            Me.txtDescripcion.Text = ""
-
-
-        Catch ex As Exception
-
-            Dim messageText As String = "alertify.error('Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-
-        End Try
-
-        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Facturacion", "close_popup();", True)
-    End Sub
-
-    Private Sub Actualizar(Sigla As String, NuevaSigla As String)
-        Try
-            ' Call ExecuteCatSiglas directly with parameters
-            ExecuteCatSiglas(1, NuevaSigla, Request.Cookies("CKSMFACTURA")("cod_usuario"), Request.Cookies("CKSMFACTURA")("cod_usuario"), "")
-
-            Load_GridView()
-            'Nuevo()
-
-            Dim messageText As String = "alertify.success('El registro ha sido actualizado de forma correcta.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-            Me.txtDescripcion.Text = ""
-
-
-        Catch ex As Exception
-
-            Dim messageText As String = "alertify.error('Ha ocurrido un error al intentar actualizar los datos. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", messageText, True)
-
-        End Try
-
-        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Facturacion", "close_popup();", True)
-    End Sub
-
-    'Private Sub Guardar()
-    '    Dim MessegeText As String = String.Empty
-    '    Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
-    '    Try
-    '        If dbCon.State = ConnectionState.Closed Then
-    '            dbCon.Open()
-    '        End If
-
-    '        Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-    '        sql &= "EXEC Cat_Siglas @opcion=1," &
-    '              "@siglas =  '" & Me.txtDescripcion.Text.Trim & "' ," &
-    '              "@codusuario =  " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '              "@codusuarioUlt =  " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '              "@BUSQUEDAD = '0'  "
-
-    '        Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-    '        cmd.ExecuteNonQuery()
-
-
-
-
-
-    '        Load_GridView()
-    '        Nuevo()
-    '        MessegeText = "alertify.success('El registro ha sido guardado de forma correcta.');"
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-    '        Me.txtDescripcion.Text = ""
-    '    Catch ex As Exception
-    '        MessegeText = "alertify.error('Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.');"
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-    '    Finally
-    '        If dbCon.State = ConnectionState.Open Then
-    '            dbCon.Close()
-    '        End If
-
-    '    End Try
-
-    '    ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Facturacion", "close_popup();", True)
+    'Private Sub txtBuscar_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBuscar.TextChanged
+    '    'BUSQUEDAD = "%" & UCase(Trim(txtBuscar.Text)) & "%"
+    '    'If txtBuscar.Text <> "" Then
+    '    '    BUSQUEDAD = IIf(Me.txtBuscar.Text.Trim = String.Empty, "0", "" & Me.txtBuscar.Text.Trim & "")
+    '    '    Load_GridView()
+    '    'Else
+    '    '    BUSQUEDAD = "0"
+    '    '    Load_GridView()
+    '    'End If
     'End Sub
-
-    'Private Sub Eliminar()
-    '    Dim MessegeText As String = String.Empty
-    '    Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
-    '    Try
-    '        If dbCon.State = ConnectionState.Closed Then
-    '            dbCon.Open()
-    '        End If
-
-    '        Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-    '        sql &= "EXEC Cat_Siglas @opcion=2," &
-    '              "@siglas = '" & Me.hdfCodigo.Value & "' ," &
-    '              "@codusuario =   " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '              "@codusuarioUlt =  " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '              "@BUSQUEDAD = '0'  "
-
-    '        Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-    '        cmd.ExecuteNonQuery()
-
-    '        Load_GridView()
-
-    '        'ScriptManager.RegisterStartupScript(Me.Page, Me.GetType(), "EXECUTE", "EnableButtom()", True)
-
-    '        MessegeText = "alertify.success('El registro ha sido eliminado de forma correcta.');"
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-    '        Me.txtDescripcion.Text = ""
-    '    Catch ex As Exception
-    '        MessegeText = "alertify.error('Ha ocurrido un error al intentar eliminar los datos. Si el problema persiste, contacte con el administrador. " & Replace(ex.Message, "'", "") & "');"
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-    '    Finally
-    '        If dbCon.State = ConnectionState.Open Then
-    '            dbCon.Close()
-    '        End If
-
-    '    End Try
-    'End Sub
-
-    'Private Sub Actualizar(Codigo As String, Optional Descripcion As String = "")
-
-    '    Dim MessegeText As String = String.Empty
-    '    Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
-
-    '    Try
-    '        If dbCon.State = ConnectionState.Closed Then
-    '            dbCon.Open()
-    '        End If
-
-
-    '        Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-    '        sql &= "EXEC Cat_Siglas @opcion=1," &
-    '             "@siglas =  '" & Me.txtDescripcion.Text.Trim & "' ," &
-    '             "@codusuario =  " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '             "@codusuarioUlt =  " & Request.Cookies("CKSMFACTURA")("cod_usuario") & " ," &
-    '             "@BUSQUEDAD = '0'  "
-
-
-    '        Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-    '        cmd.ExecuteNonQuery()
-
-    '        MessegeText = "success_messege('El registro ha sido actualizado correctamente.');"
-
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-    '    Catch ex As Exception
-    '        MessegeText = "alertify.error('Ha ocurrido un error al intentar actualizar los datos. Si el problema persiste, contacte con el administrador. " & Replace(ex.Message, "'", "") & "');"
-    '        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-    '    Finally
-    '        If dbCon.State = ConnectionState.Open Then
-    '            dbCon.Close()
-    '        End If
-
-    '    End Try
-    'End Sub
-
-
-    Private Sub txtBuscar_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBuscar.TextChanged
-
-
-        BUSQUEDAD = "%" & UCase(Trim(txtBuscar.Text)) & "%"
-        If txtBuscar.Text <> "" Then
-            BUSQUEDAD = IIf(Me.txtBuscar.Text.Trim = String.Empty, "0", "" & Me.txtBuscar.Text.Trim & "")
-            Load_GridView()
-        Else
-            BUSQUEDAD = "0"
-            Load_GridView()
-        End If
-    End Sub
 
 #Region "EXPORTAR DATOS A EXCELL"
-
     Protected Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
         Try
             Response.Clear()
@@ -483,20 +326,20 @@ Partial Class Catalogos_Siglas
             MyHTML &= "<h2>Catalogo de Siglas <br/> al dia " & Date.Now.Day & "/" & Date.Now.Month & "/" & Date.Now.Year & "</h2>"
 
             If Not dtTabla Is Nothing Then
-                MyHTML &= "<table cellspacing=""0"" cellpadding=""0"">" & _
-                          "<tbody>" & _
-                          "<tr>" & _
-                          "<th></th>" & _
-                          "<th>SIGLA</th>" & _
+                MyHTML &= "<table cellspacing=""0"" cellpadding=""0"">" &
+                          "<tbody>" &
+                          "<tr>" &
+                          "<th></th>" &
+                          "<th>SIGLA</th>" &
                           "</tr>"
 
                 Dim clase As String = String.Empty
 
                 For i As Integer = 0 To dtTabla.Rows.Count - 1
-                    MyHTML &= "<tr" & clase & ">" & _
-                              "<td class=""first"">" & i + 1 & "</td>" & _
-                              "<td class=""ml"">" & dtTabla.Rows(i).Item("sigla").ToString.Trim & "</td>" & _
-                              "<td></td>" & _
+                    MyHTML &= "<tr" & clase & ">" &
+                              "<td class=""first"">" & i + 1 & "</td>" &
+                              "<td class=""ml"">" & dtTabla.Rows(i).Item("sigla").ToString.Trim & "</td>" &
+                              "<td></td>" &
                               "</tr>"
 
                     If clase = String.Empty Then
@@ -507,7 +350,7 @@ Partial Class Catalogos_Siglas
 
                 Next i
 
-                MyHTML &= "</tbody>" & _
+                MyHTML &= "</tbody>" &
                           "<table>"
             End If
 
@@ -520,12 +363,14 @@ Partial Class Catalogos_Siglas
 
 
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.PmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
+            'Me.ltMensaje.Text = Seguridad.PmsgBox("Ocurrio un error al intentar exportar la tabla. " & ex.Message, "error")
         End Try
     End Sub
 
-
-
+    Private Sub GridViewOne_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridViewOne.PageIndexChanging
+        GridViewOne.PageIndex = e.NewPageIndex
+        LoadDataGridView()
+    End Sub
 #End Region
 
 End Class

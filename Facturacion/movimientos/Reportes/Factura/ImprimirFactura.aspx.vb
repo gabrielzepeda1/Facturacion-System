@@ -17,13 +17,14 @@ Imports System.Drawing.Printing
 Imports System.Drawing.Imaging
 Imports System.Text
 Imports System.Windows.Forms
+Imports FACTURACION_CLASS
 
 
 
 
 Partial Class movimientos_Reportes_Factura_ImprimirFactura
     Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
+    Dim conn As New FACTURACION_CLASS.seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Public imprint As New Impresion ' llamando a la clase
     'Dim impresor As New Impresor
@@ -39,12 +40,12 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
         'ReportViewer1.SetDisplayMode(DisplayMode.Normal)
         'ReportViewer1.LocalReport.ReportEmbeddedResource = "WindowsApplication1.RptVtasClientes.rdlc"
 
-        sql = " SET DATEFORMAT DMY EXEC ImpDocEnLinea  @opcion = 1, " & _
-                 "  @codigoPais=" & Session("cod_pais") & ", " & _
-                 "  @codigoPuesto=" & Session("cod_puesto") & ", " & _
-                 "  @codigoEmpresa=" & Session("cod_empresa") & ", " & _
-                 "  @no_factura='" & Session("NoFactura") & "', " & _
-                 "  @fecha='" & Date.Today & "', " & _
+        sql = " SET DATEFORMAT DMY EXEC ImpDocEnLinea  @opcion = 1, " &
+                 "  @codigoPais=" & Session("cod_pais") & ", " &
+                 "  @codigoPuesto=" & Session("cod_puesto") & ", " &
+                 "  @codigoEmpresa=" & Session("cod_empresa") & ", " &
+                 "  @no_factura='" & Session("NoFactura") & "', " &
+                 "  @fecha='" & Date.Today & "', " &
                  "  @codcliente='1'  "
 
         Me.ReportViewer1.LocalReport.DataSources.Clear()
@@ -54,7 +55,7 @@ Partial Class movimientos_Reportes_Factura_ImprimirFactura
         'parameters(0) = New ReportParameter("CondicionFactura", Condicion)
         'parameters(1) = New ReportParameter("parameterEmpresa", Empresa)
         'da = (New SqlDataAdapter(sql, conn.Conexion_Procedimientos))
-        da = (New SqlDataAdapter(sql, conn.conn_Procedimientos))
+        da = (New SqlDataAdapter(sql, conn.Sql_conn))
         da.Fill(ds)
         Dim data1 As New ReportDataSource("DataSet1", ds.Tables(0)) ' DataSet1creasDataSetRptTotal el data source y le asignas al consulta--CostosDataSet
         ReportViewer1.LocalReport.DataSources.Add(data1) 'luego lo agregas

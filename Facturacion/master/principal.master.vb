@@ -31,10 +31,10 @@ Partial Class Mater_principal
                 End If
             End If
 
-            MyUserName = Request.Cookies("CKSMFACTURA")("Username")
-            UserPais = Request.Cookies("CKSMFACTURA")("Pais")
-            UserEmpresa = Request.Cookies("CKSMFACTURA")("Empresa")
-            UserPuesto = Request.Cookies("CKSMFACTURA")("Puesto")
+            MyUserName = Session("Username")
+            UserPais = String.Empty
+            UserEmpresa = String.Empty
+            UserPuesto = String.Empty
 
             GetMenuEncabezado()
             GridViewStyles()
@@ -44,17 +44,13 @@ Partial Class Mater_principal
     End Sub
 
     Private Sub Refresh_Session_Time()
-
-        Dim codigoUser = Convert.ToInt32(Request.Cookies("CKSMFACTURA")("CodigoUser"))
-        Dim codigoSesion = Convert.ToInt32(Request.Cookies("CKSMFACTURA")("CodigoSesion"))
-
         Try
             Using dbCon As New OleDbConnection(_conn.conn)
                 dbCon.Open()
 
                 Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-                cmd.Parameters.AddWithValue("@cod_usuario", codigoUser)
-                cmd.Parameters.AddWithValue("@cod_sesion", codigoSesion)
+                cmd.Parameters.AddWithValue("@cod_usuario", Session("CodigoUser"))
+                cmd.Parameters.AddWithValue("@cod_sesion", Session("CodigoSesion"))
                 cmd.Parameters.AddWithValue("@estado", "REFRESH")
                 cmd.CommandType = CommandType.StoredProcedure
                 cmd.ExecuteNonQuery()
@@ -86,10 +82,10 @@ Partial Class Mater_principal
             Dim sql As String
             Dim tienePermiso As Boolean
 
-            If Request.Cookies("CKSMFACTURA") IsNot Nothing Then
+            If Session("CodigoUser") IsNot Nothing Then
 
                 sql = "EXEC sp_val_PermisoUsuario " &
-                          "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("CodigoUser") & " ," &
+                          "@cod_usuario = " & Session("CodigoUser") & " ," &
                           "@Pagina = '" & pagina & "' "
 
                 tienePermiso = _database.GetBoleano(sql, "TRUE")
@@ -123,7 +119,7 @@ Partial Class Mater_principal
             'Este procedimiento se utiliza para obtener los encabezados del menu (Catalogos, Movimientos, Utilitarios), por esta razon el @cod_padre es NULL.
 
             Dim sql = "EXEC sp_menu_accesos " &
-                      "@cod_usuario = " & Request.Cookies("CKSMFACTURA")("CodigoUser") & " ," &
+                      "@cod_usuario = " & Session("CodigoUser") & " ," &
                       "@cod_padre = NULL"
 
             Dim ds As DataSet = _database.GetDataSet(sql)
@@ -195,31 +191,21 @@ Partial Class Mater_principal
     End Function
 
     Private Sub GridViewStyles()
-
         Dim gridView As GridView = DirectCast(FindControl("GridViewOne"), GridView)
 
         If gridView IsNot Nothing Then
-
             gridView.CssClass = "table table-light table-sm table-striped table-hover table-bordered"
-
         End If
-
     End Sub
 
 #End Region
 
 #Region "CERRAR SESIÓN"
     Protected Sub btnCerrar_Click(sender As Object, e As EventArgs) Handles btnCerrar.Click
-
-        Dim codigoUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser").ToString()
-        Dim codigoSesion As String = Context.Request.Cookies("CKSMFACTURA")("CodigoSesion").ToString()
-
-        CerrarSesion(codigoUser, codigoSesion)
+        CerrarSesion(Session("CodigoUser"), Session("CodigoSesion"))
     End Sub
     Private Sub CerrarSesion(codigoUser As String, codigoSesion As String)
-
         Try
-
             Using dbCon As New OleDbConnection(_conn.conn)
                 dbCon.Open()
 
@@ -231,9 +217,9 @@ Partial Class Mater_principal
                 cmd.Parameters.AddWithValue("@estado", "CERRAR")
                 cmd.ExecuteNonQuery()
 
-                Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-                cookie.Expires = Now.AddDays(-1)
-                Request.Cookies.Clear()
+                'Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
+                'cookie.Expires = Now.AddDays(-1)
+                'Request.Cookies.Clear()
                 Session.Abandon()
                 FormsAuthentication.SignOut()
                 FormsAuthentication.RedirectToLoginPage()

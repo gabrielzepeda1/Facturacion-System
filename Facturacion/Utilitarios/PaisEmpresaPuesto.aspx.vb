@@ -85,23 +85,10 @@ Partial Class Utilitarios_PaisEmpresaPuesto
             If Session("CodigoSesion") Is Nothing Then
                 FormsAuthentication.SignOut()
                 Response.Redirect(ResolveClientUrl("~/Login.aspx"))
-
-
             Else
                 MyUserName = Session("Username")
                 Dim codigoRol As Integer = Convert.ToInt32(Session("CodigoRol"))
 
-                Select Case codigoRol
-
-                    Case 1 'Super Administrador
-                    Case 2 'Administrador Pais 
-
-
-                    Case 3 'AdministradorEmpresa 
-
-                    Case 4 'Administrador Puesto
-
-                End Select
             End If
         End If
     End Sub
@@ -116,26 +103,9 @@ Partial Class Utilitarios_PaisEmpresaPuesto
 
     Protected Sub SetUserVariables(CodigoUser As Integer, CodigoRol As Integer)
 
-        Select Case CodigoRol
-            Case 1 'SuperAdmin
-            Case 2 'AdminPais
-            Case 3 'AdminEmpresa
-            Case 4 'AdminPuesto
-                GetSessionPaisEmpresaPuesto()
-        End Select
-
         'Redireccionar al usuario a la pagina principal "Default.aspx"
         'FormsAuthentication.SetAuthCookie(userCookie, False)
         FormsAuthentication.RedirectFromLoginPage(CodigoUser, False)
-    End Sub
-
-    Private Sub GetSessionPaisEmpresaPuesto()
-
-        'Estas functiones retornan un array de Pais, Empresa, Puestos a los cuales el usuario tiene acceso y los guarda en sus variables de sesion correspondientes. 
-        Session("cod_pais") = GetPaisesUsuario()
-        Session("cod_empresa") = GetEmpresasUsuario()
-        Session("cod_puesto") = GetPuestosUsuario()
-
     End Sub
 
     Private Function GetPaisesUsuario() As List(Of Integer)
@@ -205,14 +175,10 @@ Partial Class Utilitarios_PaisEmpresaPuesto
                 Dim rowsAffected = cmd.ExecuteNonQuery()
 
                 If rowsAffected > 0 Then
-
-                    Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-                    cookie.Expires = Now.AddDays(-1)
                     Request.Cookies.Clear()
                     Session.Abandon()
                     FormsAuthentication.SignOut()
                     FormsAuthentication.RedirectToLoginPage()
-
                 End If
 
             End Using
