@@ -1,5 +1,7 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
+Imports System.Web.Configuration
+Imports AlertifyClass
 
 Partial Class Mater_principal
 
@@ -16,19 +18,26 @@ Partial Class Mater_principal
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
+        Response.Cache.SetCacheability(HttpCacheability.NoCache)
+        'If Not Me.IsPostBack Then
+        '    Session("Reset") = True
+        '    Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~/web.Config")
+        '    Dim section As SessionStateSection = DirectCast(config.GetSection("system.web/sessionState"), SessionStateSection)
+        '    Dim timeout As Integer = CInt(section.Timeout.TotalMinutes) * 1000 * 60
+        '    ScriptManager.RegisterStartupScript(Me, [GetType](), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
+        'End If
+
+
         'Pagina se carga por primera vez
         If Not Page.IsPostBack Then
-
             If Not Page.User.Identity.IsAuthenticated Then
                 FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
             Dim pagina As String = GetPageName()
 
-            If Not pagina = String.Empty Then
-                If Not pagina = "Default.aspx" Then
-                    GetPermisos()
-                End If
+            If pagina <> String.Empty And pagina <> "Default.aspx" Then
+                GetPermisos()
             End If
 
             MyUserName = Session("Username")
@@ -39,6 +48,8 @@ Partial Class Mater_principal
             GetMenuEncabezado()
             GridViewStyles()
             'Refresh_Session_Time()
+
+
         End If
 
     End Sub
@@ -65,7 +76,6 @@ Partial Class Mater_principal
     ‘’’ El sistema crea opciones en el menu para cada usuario.
     ''' Sin embargo, si el usuario escribe manualmente la dirección URL este entrara a la pagina.
     ‘’’ Este procedimiento verifica si el usuario está en una pagina a la que tiene permiso en el menú.
-
     ''' Si no tiene permiso, lo redirecciona a la ‘’’ pagina del perfil. ‘’’ </summary>
     ''' <remarks></remarks>
     Private Sub GetPermisos()
@@ -117,7 +127,6 @@ Partial Class Mater_principal
     Private Sub GetMenuEncabezado()
         Try
             'Este procedimiento se utiliza para obtener los encabezados del menu (Catalogos, Movimientos, Utilitarios), por esta razon el @cod_padre es NULL.
-
             Dim sql = "EXEC sp_menu_accesos " &
                       "@cod_usuario = " & Session("CodigoUser") & " ," &
                       "@cod_padre = NULL"
@@ -160,10 +169,9 @@ Partial Class Mater_principal
     End Sub
 
     Function GetMenuDetalle(codigoMenuPadre As String, ds As DataSet) As String
-
         Dim html As New StringBuilder()
-        Try
 
+        Try
             For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
 
                 Dim codigoPadre = ds.Tables(0).Rows(i).Item("cod_padre").ToString.Trim()
@@ -171,7 +179,6 @@ Partial Class Mater_principal
                 'Comparamos si el codigoPadre de el DETALLE es igual al codigoMenu del ENCABEZADO (codigoMenuPadre) que se trae desde el procedimiento anterior).
 
                 If codigoPadre = codigoMenuPadre Then
-
                     'Get menu items
                     Dim ruta = ds.Tables(0).Rows(i).Item("ruta").ToString.Trim()
                     Dim icono = ds.Tables(0).Rows(i).Item("Icono").ToString.Trim()
@@ -184,7 +191,6 @@ Partial Class Mater_principal
             Next i
         Catch ex As Exception
             html.AppendLine("<li>Error al crear el menú detalle: " & ex.Message & "</li>")
-
         End Try
 
         Return html.ToString()
@@ -228,6 +234,7 @@ Partial Class Mater_principal
         Catch ex As Exception
             Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
             ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
+            AlertifyErrorMessage(Me.Page, "Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.")
         End Try
     End Sub
 

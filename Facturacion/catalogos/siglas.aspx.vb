@@ -56,6 +56,7 @@ Partial Class Catalogos_Siglas
             Puesto_Name = "Industrial Comercial San Martin"
             txtDescripcion.Attributes.Add("placeholder", "Nuevas Siglas..")
             txtDescripcion.Attributes.Add("requerid", "requerid")
+
         End If
     End Sub
 
@@ -371,6 +372,8 @@ Partial Class Catalogos_Siglas
         GridViewOne.PageIndex = e.NewPageIndex
         LoadDataGridView()
     End Sub
+
+
 #End Region
 
 End Class
