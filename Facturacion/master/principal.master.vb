@@ -1,10 +1,10 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
+Imports System.Diagnostics
 Imports System.Web.Configuration
 Imports AlertifyClass
 
 Partial Class Mater_principal
-
     Inherits MasterPage
 
     Dim _conn As New FACTURACION_CLASS.seguridad
@@ -19,13 +19,23 @@ Partial Class Mater_principal
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Response.Cache.SetCacheability(HttpCacheability.NoCache)
-        'If Not Me.IsPostBack Then
-        '    Session("Reset") = True
-        '    Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~/web.Config")
-        '    Dim section As SessionStateSection = DirectCast(config.GetSection("system.web/sessionState"), SessionStateSection)
-        '    Dim timeout As Integer = CInt(section.Timeout.TotalMinutes) * 1000 * 60
-        '    ScriptManager.RegisterStartupScript(Me, [GetType](), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
-        'End If
+        If Not Page.IsPostBack Then
+            Session("Reset") = True
+            Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~/web.Config")
+            Dim section As SessionStateSection = DirectCast(config.GetSection("system.web/sessionState"), SessionStateSection)
+            Dim timeout As Integer = CInt(section.Timeout.TotalMinutes) * 1000 * 60
+            Debug.WriteLine(Session.Timeout)
+            ScriptManager.RegisterStartupScript(Me.Page, Page.GetType(), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
+        End If
+
+        If Page.IsPostBack AndAlso hdfRefresh.Value Then
+            ' Assuming hdfTimeout.Value is the new timeout value in minutes
+            Session.Timeout = Convert.ToInt32(hdfTimeout.Value)
+        ElseIf Page.IsPostBack AndAlso hdfRefresh.Value = False Then
+            CerrarSesion(Session("CodigoUser"), Session("CodigoSesion"))
+        End If
+
+
 
 
         'Pagina se carga por primera vez

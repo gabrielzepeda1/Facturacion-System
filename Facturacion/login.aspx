@@ -42,11 +42,16 @@
 
         <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
         <asp:Label ID="lblPublicoIp" runat="server" Text="" Style="display: none;"></asp:Label>
-    </form>
 
+
+        <div>
+            <h3>Session Idle:&nbsp;<span id="secondsIdle"></span>&nbsp;seconds.</h3>
+            <asp:LinkButton ID="lnkFake" runat="server" />
+        </div>
+
+    </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script type="text/javascript">
-      
         const btnEnviar = document.getElementById("<%=btnEnviar.ClientID%>");
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -84,18 +89,17 @@
                 e.preventDefault();
 
                 const txtUsuario = document.getElementById("<%=txtUsuario.ClientID%>");
-        const txtPassword = document.getElementById("<%=txtPass.ClientID%>");
+                const txtPassword = document.getElementById("<%=txtPass.ClientID%>");
 
-        if (txtUsuario.value === "") {
-            alertify.error("El nombre de usuario no puede estar vacío");
-        } else if (txtPassword.value === "") {
-            alertify.error("La contraseña no puede estar vacía.");
-        } else {
-            __doPostBack("<%=btnEnviar.UniqueID%>", "");
+                if (txtUsuario.value === "") {
+                    alertify.error("El nombre de usuario no puede estar vacío");
+                } else if (txtPassword.value === "") {
+                    alertify.error("La contraseña no puede estar vacía.");
+                } else {
+                    __doPostBack("<%=btnEnviar.UniqueID%>", "");
                 }
             });
 
     </script>
-
 </body>
 </html>

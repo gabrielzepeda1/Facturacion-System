@@ -55,7 +55,7 @@
                                     Width="100%"
                                     OnPageIndexChanging="OnPaging" EmptyDataText="No se encontraron registros...">
 
-                                    <HeaderStyle CssClass="table-header table-dark align-middle fw-bold text-center " />
+                                    <HeaderStyle CssClass="table-header table-dark align-middle text-center " />
 
                                     <Columns>
                                         <asp:TemplateField HeaderText="SIGLA" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="45%">
