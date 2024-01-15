@@ -12,31 +12,10 @@ Partial Class Mater_principal
 
     Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
     Public MyUserName As String = String.Empty
-    Public UserPais As String = String.Empty
-    Public UserEmpresa As String = String.Empty
-    Public UserPuesto As String = String.Empty
+    Public MyRol As String = String.Empty
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-
         Response.Cache.SetCacheability(HttpCacheability.NoCache)
-        If Not Page.IsPostBack Then
-            Session("Reset") = True
-            Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~/web.Config")
-            Dim section As SessionStateSection = DirectCast(config.GetSection("system.web/sessionState"), SessionStateSection)
-            Dim timeout As Integer = CInt(section.Timeout.TotalMinutes) * 1000 * 60
-            Debug.WriteLine(Session.Timeout)
-            ScriptManager.RegisterStartupScript(Me.Page, Page.GetType(), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
-        End If
-
-        If Page.IsPostBack AndAlso hdfRefresh.Value Then
-            ' Assuming hdfTimeout.Value is the new timeout value in minutes
-            Session.Timeout = Convert.ToInt32(hdfTimeout.Value)
-        ElseIf Page.IsPostBack AndAlso hdfRefresh.Value = False Then
-            CerrarSesion(Session("CodigoUser"), Session("CodigoSesion"))
-        End If
-
-
-
 
         'Pagina se carga por primera vez
         If Not Page.IsPostBack Then
@@ -44,42 +23,22 @@ Partial Class Mater_principal
                 FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
+            'Get the sessionTimeout value in minutes
+            Dim timeout As Integer = Session("Timeout")
+            'Se ejecuta la function JavaScript que inicializa el conteo del timeout.
+            ScriptManager.RegisterStartupScript(Me.Page, Page.GetType(), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
+
             Dim pagina As String = GetPageName()
 
-            If pagina <> String.Empty And pagina <> "Default.aspx" Then
+            If pagina <> String.Empty AndAlso pagina <> "Default.aspx" Then
                 GetPermisos()
             End If
 
             MyUserName = Session("Username")
-            UserPais = String.Empty
-            UserEmpresa = String.Empty
-            UserPuesto = String.Empty
-
+            MyRol = Session("CodigoRol")
             GetMenuEncabezado()
             GridViewStyles()
-            'Refresh_Session_Time()
-
-
         End If
-
-    End Sub
-
-    Private Sub Refresh_Session_Time()
-        Try
-            Using dbCon As New OleDbConnection(_conn.conn)
-                dbCon.Open()
-
-                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
-                cmd.Parameters.AddWithValue("@cod_usuario", Session("CodigoUser"))
-                cmd.Parameters.AddWithValue("@cod_sesion", Session("CodigoSesion"))
-                cmd.Parameters.AddWithValue("@estado", "REFRESH")
-                cmd.CommandType = CommandType.StoredProcedure
-                cmd.ExecuteNonQuery()
-
-            End Using
-        Catch ex As Exception
-            Response.Write("Ocurrio un error al intentar actualizar la sesión de Usuario: " & ex.Message)
-        End Try
     End Sub
 
     ‘'' <summary> ‘’’ Verifica los permisos del usuario para entrar a la pagina actual.
@@ -125,15 +84,34 @@ Partial Class Mater_principal
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPageName() As String
-
-        Dim arrPath() As String = HttpContext.Current.Request.RawUrl.Split("/")
-
-        Return arrPath(arrPath.GetUpperBound(0))
+    Public Function GetPageName() As String
+        Try
+            Dim arrPath As String() = HttpContext.Current.Request.RawUrl.Split("/")
+            Return arrPath(arrPath.GetUpperBound(0))
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar validar los permisos del usuario en la pagina maestra. " & ex.Message)
+        End Try
+        Return String.Empty
     End Function
+    Private Sub Refresh_Session_Time()
+        Try
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
+
+                Dim cmd As New OleDbCommand("sp_sys_sesion_activa", dbCon)
+                cmd.Parameters.AddWithValue("@cod_usuario", Session("CodigoUser"))
+                cmd.Parameters.AddWithValue("@cod_sesion", Session("CodigoSesion"))
+                cmd.Parameters.AddWithValue("@estado", "REFRESH")
+                cmd.CommandType = CommandType.StoredProcedure
+                cmd.ExecuteNonQuery()
+
+            End Using
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar actualizar la sesión de Usuario: " & ex.Message)
+        End Try
+    End Sub
 
 #Region "CREAR EL MENU DE FORMA DINAMICA"
-
     Private Sub GetMenuEncabezado()
         Try
             'Este procedimiento se utiliza para obtener los encabezados del menu (Catalogos, Movimientos, Utilitarios), por esta razon el @cod_padre es NULL.
@@ -171,7 +149,7 @@ Partial Class Mater_principal
 
             Next i
 
-            Me.ltMenu.Text = html.ToString()
+            ltMenu.Text = html.ToString()
             ds.Dispose()
         Catch ex As Exception
             ltMenu.Text = "<ul><li>Error al crear el menú: " & ex.Message & "</li></ul>"
@@ -213,7 +191,6 @@ Partial Class Mater_principal
             gridView.CssClass = "table table-light table-sm table-striped table-hover table-bordered"
         End If
     End Sub
-
 #End Region
 
 #Region "CERRAR SESIÓN"
@@ -242,12 +219,9 @@ Partial Class Mater_principal
             End Using
 
         Catch ex As Exception
-            Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
             AlertifyErrorMessage(Me.Page, "Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.")
         End Try
     End Sub
-
 #End Region
 
 End Class

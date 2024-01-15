@@ -8,12 +8,9 @@
     <h1>Escritorio</h1>
 </asp:Content>
 
-<asp:Content ID="cUbicacion" ContentPlaceHolderID="cpUbicacion" runat="Server">
+<asp:Content ID="cUbicacion" ContentPlaceHolderID="cpUbicacion" runat="Server"></asp:Content>
 
-</asp:Content>
-
-<asp:Content ID="c2" ContentPlaceHolderID="CP1" runat="Server">
-
+<asp:Content ID="c2" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <div class="limited">
         <nav id="navegacion-panel">
             <div class="accordion" id="accordionExample">
@@ -21,9 +18,4 @@
             </div>
         </nav>
     </div>
-
-    <script>
-
-</script>
-
-</asp:Content>
+</asp:Content>S

@@ -16,13 +16,15 @@
 
     Sub Session_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Code that runs when a new session is started
+        Session("Timeout") = Session.Timeout
     End Sub
 
     Sub Session_End(ByVal sender As Object, ByVal e As EventArgs)
-        ' Code that runs when a session ends. 
+        ' Code that runs when a session ends.
         ' Note: The Session_End event is raised only when the sessionstate mode
-        ' is set to InProc in the Web.config file. If session mode is set to StateServer 
+        ' is set to InProc in the Web.config file. If session mode is set to StateServer
         ' or SQLServer, the event is not raised.
+        Response.Redirect("Login.aspx")
     End Sub
 
     'Sub Application_AuthenticateRequest(ByVal sender As Object, ByVal e As EventArgs)

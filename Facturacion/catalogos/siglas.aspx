@@ -15,8 +15,8 @@
     <a href="siglas.aspx">Catálogo de Siglas</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="CP1" runat="Server">
-
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
+    <asp:HiddenField ID="hdfCodigo" runat="server" />
     <div id="main-form">
         <div class="container-fluid">
             <div class="row mx-1 py-2 align-items-center justify-content-between">
@@ -30,7 +30,7 @@
 
                 <div class="col-4 d-flex">
                     <div class="input-group">
-                        <div> 
+                        <div>
                             <asp:TextBox ID="txtSearch" CssClass="form-control" runat="server"></asp:TextBox>
                             <label class="form-label">Buscar</label>
                         </div>
@@ -93,13 +93,10 @@
                                 <asp:AsyncPostBackTrigger ControlID="btnSearch" EventName="Click" />
                             </Triggers>
                         </asp:UpdatePanel>
-
                     </div>
                 </div>
             </div>
-
-        </div>
-        <asp:HiddenField ID="hdfCodigo" runat="server" />
+        </div>`
     </div>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -120,22 +117,15 @@
             </div>
         </div>
     </div>
-
 </asp:Content>
 
 <asp:Content ID="c5" ContentPlaceHolderID="cpScripts" runat="Server">
     <script>
-
-       
-
         const txtSearch = document.querySelector('#<%= txtSearch.ClientID %>');
 
         txtSearch.addEventListener("input", (e) => {
             __doPostBack('<%=btnSearch.UniqueID %>')
         });
-
-       
-
     </script>
 </asp:Content>
 
