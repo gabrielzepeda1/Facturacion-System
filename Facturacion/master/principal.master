@@ -71,16 +71,12 @@
                             &emsp;
                             Rol: <%= MyRol %>
                             &emsp;
-                            Puesto: <%=  %>
-                            &emsp;
                             </div>
 
                             <div class="affiliation second fw-semibold">
                                 Usuario: <%= MyUserName %>
                             &emsp;
                             Rol: <%= MyRol %>
-                            &emsp;
-                            Puesto: <%=  %>
                             &emsp;
                             </div>
                         </div>

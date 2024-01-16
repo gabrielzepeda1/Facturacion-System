@@ -51,14 +51,13 @@
                                 <asp:GridView ID="GridViewOne" runat="server" AutoGenerateColumns="False"
                                     CssClass="table table-light table-striped table-hover table-bordered align-middle"
                                     CellPadding="0" GridLines="None" AllowPaging="True"
-                                    PageSize="10" DataKeyNames="sigla" AllowSorting="True"
+                                    PageSize="10" DataKeyNames="cod_sigla, sigla" AllowSorting="True"
                                     Width="100%"
                                     OnPageIndexChanging="OnPaging" EmptyDataText="No se encontraron registros...">
-
                                     <HeaderStyle CssClass="table-header table-dark align-middle text-center " />
-
                                     <Columns>
-                                        <asp:TemplateField HeaderText="SIGLA" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="45%">
+                                        <asp:BoundField DataField="cod_sigla" HeaderText="Codigo" SortExpression="sigla" Visible="true"></asp:BoundField>
+                                        <asp:TemplateField HeaderText="Siglas" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="45%">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblSiglas" runat="server" Text='<%# Eval("sigla") %>'></asp:Label>
                                             </ItemTemplate>
@@ -79,9 +78,9 @@
 
                                     <PagerTemplate>
                                         <div class="pagination">
-                                            <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="1ra pág." CommandArgument="First" CssClass="primero" Text="1" formnovalidate />
+                                            <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="1ra pág." CommandArgument="First" CssClass="primero" Text="1" formnovalidate="true" />
                                             <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate="true" />
-                                            <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Siguiente" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidat="true" />
+                                            <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Siguiente" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate="true" />
                                             <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Última pág." CommandArgument="Last" CssClass="ultimo" Text="Ult." formnovalidate="true" />
                                             <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
                                         </div>
@@ -91,12 +90,14 @@
 
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="btnSearch" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="GridViewOne" EventName="RowUpdating" />
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>
                 </div>
             </div>
-        </div>`
+        </div>
+        `
     </div>
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

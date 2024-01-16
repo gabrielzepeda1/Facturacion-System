@@ -24,7 +24,6 @@
         ' Note: The Session_End event is raised only when the sessionstate mode
         ' is set to InProc in the Web.config file. If session mode is set to StateServer
         ' or SQLServer, the event is not raised.
-        Response.Redirect("Login.aspx")
     End Sub
 
     'Sub Application_AuthenticateRequest(ByVal sender As Object, ByVal e As EventArgs)
