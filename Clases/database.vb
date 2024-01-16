@@ -3,7 +3,7 @@ Imports System.Data.OleDb
 Imports AjaxControlToolkit
 
 Public Class database
-    Dim conn As New seguridad
+    ReadOnly conn As New seguridad
 
     ''' <summary>
     ''' CREA UNA COPIA DEL ARCHIVO QUE SERA ADJUNTO EN MEMORIA, Y LUEGO BORRA DICHA COPIA
@@ -52,7 +52,7 @@ Public Class database
             End Using
 
         Catch ex As Exception
-            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
+
         End Try
     End Function
     ''' <summary>
@@ -90,8 +90,7 @@ Public Class database
             End Using
 
         Catch ex As Exception
-            Throw New Exception(ex.Message)
-
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
         End Try
     End Function
     ''' <summary>
@@ -120,8 +119,7 @@ Public Class database
             dt.Dispose()
 
         Catch ex As Exception
-            Throw New Exception(ex.Message)
-
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
         End Try
     End Function
 
@@ -143,10 +141,8 @@ Public Class database
                 End Using
             End Using
         Catch ex As OleDbException
-            Console.WriteLine("Error en OleDB")
-
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
             Return Nothing
-
         End Try
     End Function
 
@@ -167,7 +163,7 @@ Public Class database
                 End Using
             End Using
         Catch ex As OleDbException
-            Console.WriteLine("Error en GetScalar")
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
             Return Nothing
         End Try
     End Function
@@ -179,39 +175,27 @@ Public Class database
     ''' <param name="campo">NOMBRE DEL CAMPO QUE SERA FILTRADO EN EL DATAREADER</param>
     ''' <returns>BOOLEAN</returns>
     ''' <remarks></remarks>
-    Public Function GetBoleano(ByVal Query As String, ByVal campo As String) As Boolean
-        Dim cnn As String = conn.conn
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
+    Public Function GetBoleano(Query As String, campo As String) As Boolean
         Try
-            If dbCon.State = ConnectionState.Closed Then
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
-            End If
 
-            Dim sql As String = "SET DATEFORMAT DMY "
+                Dim sql As String = "SET DATEFORMAT DMY "
+                sql = sql & vbCrLf & Query
 
-            sql = sql + vbCrLf + Query
-
-            Dim cmd As New System.Data.OleDb.OleDbCommand(sql, dbCon)
-            Dim dr As System.Data.OleDb.OleDbDataReader
-            dr = cmd.ExecuteReader
-
-            If dr.Read() Then
-                If dr.Item(campo).ToString() = "Si" Then
-                    Return True
-                Else
-                    Return False
-                End If
-            Else
-                Return False
-            End If
-
-            dr.Close()
-
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    Using dr As OleDbDataReader = cmd.ExecuteReader
+                        If dr.Read() Then
+                            Return dr.Item(campo)
+                        End If
+                    End Using
+                End Using
+            End Using
         Catch ex As Exception
-            Throw New Exception(ex.Message)
-            Return False
-
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
         End Try
+
+        Return False
     End Function
 
     ''' <summary>
@@ -246,9 +230,8 @@ Public Class database
             dr.Close()
 
         Catch ex As Exception
-            Throw New Exception(ex.Message)
+            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
             Return String.Empty
-
         End Try
     End Function
 
@@ -296,28 +279,4 @@ Public Class database
         Return ArrCodigoPuesto
     End Function
 
-    'Public Function GetDropdown(sql As String, knownCategoryValues As String, category As String) As CascadingDropDown
-    '    Using dbCon As New OleDbConnection(conn.conn)
-    '        dbCon.Open()
-
-    '        Using cmd As New OleDbCommand(sql, dbCon)
-    '            cmd.CommandTimeout = 9999
-    '            cmd.CommandType = CommandType.StoredProcedure
-    '            Dim dr As OleDbDataReader = cmd.ExecuteReader()
-
-    '            Dim values As New List(Of String)
-    '            Dim names As New List(Of String)
-
-    '            While dr.Read()
-    '                values.Add(dr.Item("Codigo").ToString())
-    '                names.Add(dr.Item("Nombre").ToString())
-    '            End While
-
-    '            Dim valuesArray As String() = values.ToArray()
-    '            Dim namesArray As String() = names.ToArray()
-
-    '            Return New CascadingDropDown(valuesArray, namesArray)
-    '        End Using
-    '    End Using
-    'End Function
 End Class

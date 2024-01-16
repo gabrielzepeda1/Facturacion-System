@@ -1,10 +1,8 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
-Imports System.Web.Configuration
 Imports AlertifyClass
 
 Partial Class Mater_principal
-
     Inherits MasterPage
 
     Dim _conn As New FACTURACION_CLASS.seguridad
@@ -12,48 +10,76 @@ Partial Class Mater_principal
 
     Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
     Public MyUserName As String = String.Empty
-    Public UserPais As String = String.Empty
-    Public UserEmpresa As String = String.Empty
-    Public UserPuesto As String = String.Empty
+    Public MyRol As String = String.Empty
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-
         Response.Cache.SetCacheability(HttpCacheability.NoCache)
-        'If Not Me.IsPostBack Then
-        '    Session("Reset") = True
-        '    Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~/web.Config")
-        '    Dim section As SessionStateSection = DirectCast(config.GetSection("system.web/sessionState"), SessionStateSection)
-        '    Dim timeout As Integer = CInt(section.Timeout.TotalMinutes) * 1000 * 60
-        '    ScriptManager.RegisterStartupScript(Me, [GetType](), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
-        'End If
 
+        Dim pageName As String = GetPageName()
 
-        'Pagina se carga por primera vez
         If Not Page.IsPostBack Then
             If Not Page.User.Identity.IsAuthenticated Then
                 FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
-            Dim pagina As String = GetPageName()
+            'Get the sessionTimeout value in minutes
+            Dim timeout As Integer = Session("Timeout")
+            'Se ejecuta la function JavaScript que inicializa el conteo del timeout.
+            ScriptManager.RegisterStartupScript(Me.Page, Page.GetType(), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
 
-            If pagina <> String.Empty And pagina <> "Default.aspx" Then
-                GetPermisos()
+            If pageName <> String.Empty AndAlso pageName <> "Default.aspx" Then
+                If HasPermission(pageName) = False Then
+                    Response.Redirect(ResolveClientUrl("~/Default.aspx"))
+                End If
             End If
 
             MyUserName = Session("Username")
-            UserPais = String.Empty
-            UserEmpresa = String.Empty
-            UserPuesto = String.Empty
-
+            MyRol = Session("CodigoRol")
             GetMenuEncabezado()
             GridViewStyles()
-            'Refresh_Session_Time()
-
-
         End If
-
     End Sub
 
+    ‘'' <summary> ‘’’ Verifica los permisos del usuario para entrar a la pagina actual.
+    ‘’’ El sistema crea opciones en el menu para cada usuario.
+    ''' Sin embargo, si el usuario escribe manualmente la dirección URL este entrara a la pagina.
+    ‘’’ Este procedimiento verifica si el usuario está en una pagina a la que tiene permiso en el menú.
+    ''' Si no tiene permiso, lo redirecciona a la ‘’’ pagina del perfil. ‘’’ </summary>
+    ''' <remarks></remarks>
+    Private Function HasPermission(pageName As String) As Boolean
+        Try
+            If Session("CodigoUser") IsNot Nothing Then
+
+                pageName = pageName.Split("?"c)(0)
+
+                Dim sql = $"EXEC sp_val_PermisoUsuario
+                        @CodigoRol = {Session("CodigoRol")},
+                        @pageName = '{pageName}'"
+
+                Return _database.GetBoleano(sql, "tienePermiso")
+            End If
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al intentar validar los permisos del usuario en la pagina maestra. " & ex.Message)
+        End Try
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Obtiene el nombre de la pagina web actual, junto con sus variables y codigos en la URL
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function GetPageName() As String
+        Try
+            Dim arrPath As String() = HttpContext.Current.Request.RawUrl.Split("/")
+            Return arrPath(arrPath.GetUpperBound(0))
+
+        Catch ex As Exception
+            Response.Write("Ocurrio un error al obtener el nombre de la página." & ex.Message)
+        End Try
+
+        Return String.Empty
+    End Function
     Private Sub Refresh_Session_Time()
         Try
             Using dbCon As New OleDbConnection(_conn.conn)
@@ -72,58 +98,7 @@ Partial Class Mater_principal
         End Try
     End Sub
 
-    ‘'' <summary> ‘’’ Verifica los permisos del usuario para entrar a la pagina actual.
-    ‘’’ El sistema crea opciones en el menu para cada usuario.
-    ''' Sin embargo, si el usuario escribe manualmente la dirección URL este entrara a la pagina.
-    ‘’’ Este procedimiento verifica si el usuario está en una pagina a la que tiene permiso en el menú.
-    ''' Si no tiene permiso, lo redirecciona a la ‘’’ pagina del perfil. ‘’’ </summary>
-    ''' <remarks></remarks>
-    Private Sub GetPermisos()
-        Try
-            Dim pagina As String
-            Dim posicion As Integer = InStr(GetPageName(), "?")
-
-            If posicion > 0 Then
-                pagina = GetPageName().Remove(posicion - 1)
-            Else
-                pagina = GetPageName()
-            End If
-
-            Dim sql As String
-            Dim tienePermiso As Boolean
-
-            If Session("CodigoUser") IsNot Nothing Then
-
-                sql = "EXEC sp_val_PermisoUsuario " &
-                          "@cod_usuario = " & Session("CodigoUser") & " ," &
-                          "@Pagina = '" & pagina & "' "
-
-                tienePermiso = _database.GetBoleano(sql, "TRUE")
-
-                If tienePermiso = False Then
-                    Response.Redirect(ResolveClientUrl("~/Default.aspx"))
-                End If
-
-            End If
-        Catch ex As Exception
-            Response.Write("Ocurrio un error al intentar validar los permisos del usuario en la pagina maestra. " & ex.Message)
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Obtiene el nombre de la pagina web actual, junto con sus variables y codigos en la URL
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPageName() As String
-
-        Dim arrPath() As String = HttpContext.Current.Request.RawUrl.Split("/")
-
-        Return arrPath(arrPath.GetUpperBound(0))
-    End Function
-
 #Region "CREAR EL MENU DE FORMA DINAMICA"
-
     Private Sub GetMenuEncabezado()
         Try
             'Este procedimiento se utiliza para obtener los encabezados del menu (Catalogos, Movimientos, Utilitarios), por esta razon el @cod_padre es NULL.
@@ -161,7 +136,7 @@ Partial Class Mater_principal
 
             Next i
 
-            Me.ltMenu.Text = html.ToString()
+            ltMenu.Text = html.ToString()
             ds.Dispose()
         Catch ex As Exception
             ltMenu.Text = "<ul><li>Error al crear el menú: " & ex.Message & "</li></ul>"
@@ -203,7 +178,6 @@ Partial Class Mater_principal
             gridView.CssClass = "table table-light table-sm table-striped table-hover table-bordered"
         End If
     End Sub
-
 #End Region
 
 #Region "CERRAR SESIÓN"
@@ -232,12 +206,9 @@ Partial Class Mater_principal
             End Using
 
         Catch ex As Exception
-            Dim msg = "alertify.error('Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.');"
-            ScriptManager.RegisterStartupScript(Me, Page.GetType, "msg", msg, True)
             AlertifyErrorMessage(Me.Page, "Ha ocurrido un error al cerrar sesión. Si el problema persiste, contacte con el administrador.")
         End Try
     End Sub
-
 #End Region
 
 End Class

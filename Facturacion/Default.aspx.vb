@@ -13,11 +13,6 @@ Partial Class [Default]
 
     End Sub
 
-    Private Sub AdjustSessionVariables()
-
-
-    End Sub
-
 #Region "CREAR EL MENU DE FORMA DINAMICA"
     Private Sub GetMenuEncabezado()
         Try

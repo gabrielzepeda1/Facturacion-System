@@ -1,4 +1,5 @@
-﻿Imports System.Data
+﻿Imports System.Activities.Expressions
+Imports System.Data
 Imports System.Data.SqlClient
 Imports AlertifyClass
 
@@ -63,7 +64,7 @@ Partial Class Catalogos_Siglas
 #Region "PROCESOS Y EVENTOS DEL GRIDVIEW"
     Private Sub LoadDataGridView()
         Try
-            Dim sql As String = "SELECT sigla FROM dbo.Siglas"
+            Dim sql As String = "SELECT cod_sigla, sigla FROM dbo.Siglas"
             If Not String.IsNullOrEmpty(txtSearch.Text.Trim()) Then
                 sql &= " WHERE sigla LIKE '%' + @SearchTerm + '%'"
                 sql &= " ORDER BY sigla ASC"
@@ -90,13 +91,13 @@ Partial Class Catalogos_Siglas
 
     Protected Sub Search(sender As Object, e As EventArgs)
         'En control txtSearch se define el evento OnTextChanged="Search"
-        'Cargar GridView con los parametros de Busqueda 
+        'Cargar GridView con los parametros de Busqueda
         Me.LoadDataGridView()
     End Sub
 
     Protected Sub OnPaging(sender As Object, e As GridViewPageEventArgs)
         'En control GridView se define el evento OnPageIndexChanging="OnPaging"
-        'Cargar GridView con los parametros de Busqueda 
+        'Cargar GridView con los parametros de Busqueda
         GridViewOne.PageIndex = e.NewPageIndex
         Me.LoadDataGridView()
     End Sub
@@ -118,9 +119,9 @@ Partial Class Catalogos_Siglas
                     dbCon.Open()
 
                     cmd.Parameters.AddWithValue("@accion", "INSERT")
+                    cmd.Parameters.AddWithValue("@cod_siglas", DBNull.Value)
                     cmd.Parameters.AddWithValue("@siglas", siglas)
-                    cmd.Parameters.AddWithValue("@codusuario", Session("CodigoUser"))
-                    cmd.Parameters.AddWithValue("@codusuarioUlt", Session("CodigoUser"))
+                    cmd.Parameters.AddWithValue("@CodigoUser", Session("CodigoUser"))
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim affectedRows = cmd.ExecuteNonQuery()
 
@@ -135,6 +136,82 @@ Partial Class Catalogos_Siglas
             AlertifyErrorMessage(Me, "Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.")
         End Try
     End Sub
+
+    Protected Sub GridViewOne_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridViewOne.RowEditing
+        Try
+            GridViewOne.EditIndex = e.NewEditIndex
+            LoadDataGridView()
+
+        Catch ex As Exception
+            AlertifyErrorMessage(Me, "Ocurrió un error al disparar el evento SelectedIndexChanged")
+        End Try
+    End Sub
+    Protected Sub GridViewOne_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridViewOne.RowUpdating
+
+        Dim siglaId As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
+        Dim row As GridViewRow = GridViewOne.Rows(e.RowIndex)
+        Dim name As String = DirectCast(row.FindControl("txtSiglas"), TextBox).Text
+
+        Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+            Using cmd As New SqlCommand("Cat_Siglas", dbCon)
+                dbCon.Open()
+                cmd.Parameters.AddWithValue("@accion", "UPDATE")
+                cmd.Parameters.AddWithValue("@cod_sigla", siglaId)
+                cmd.Parameters.AddWithValue("@siglas", name)
+                cmd.Parameters.AddWithValue("@CodigoUser", Session("CodigoUser"))
+                cmd.CommandType = CommandType.StoredProcedure
+
+                Dim affectedRows = cmd.ExecuteNonQuery()
+
+                If affectedRows > 0 Then
+                    AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
+                End If
+            End Using
+        End Using
+
+        GridViewOne.EditIndex = -1
+        LoadDataGridView()
+    End Sub
+
+    Protected Sub GridViewOne_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles GridViewOne.RowCancelingEdit
+        GridViewOne.EditIndex = -1
+        LoadDataGridView()
+    End Sub
+    Protected Sub GridViewOne_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles GridViewOne.RowDeleting
+        Try
+            Dim siglaId As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
+
+            Using dbCon As New SqlConnection(Seguridad.Sql_conn)
+                Using cmd As New SqlCommand("Cat_Siglas", dbCon)
+                    dbCon.Open()
+
+                    cmd.Parameters.AddWithValue("@accion", "DELETE")
+                    cmd.Parameters.AddWithValue("@cod_sigla", siglaId)
+                    cmd.Parameters.AddWithValue("@siglas", DBNull.Value)
+                    cmd.Parameters.AddWithValue("@codusuario", DBNull.Value)
+                    cmd.CommandType = CommandType.StoredProcedure
+
+                    Dim affectedRows = cmd.ExecuteNonQuery()
+
+                    If affectedRows > 0 Then
+                        AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
+                    End If
+                End Using
+            End Using
+
+        Catch ex As Exception
+            AlertifyErrorMessage(Me, "Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.")
+        End Try
+    End Sub
+
+    Private Sub GridViewOne_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewOne.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow AndAlso e.Row.RowIndex <> GridViewOne.EditIndex Then
+            TryCast(e.Row.Cells(3).Controls(0), LinkButton).Attributes("onclick") = "return confirm('Do you want to delete this row?');"
+        End If
+    End Sub
+
+#End Region
+
     'Protected Sub GridViewOne_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.DataBound
     '    Try
     '        If GridViewOne.Rows.Count > 0 Then
@@ -202,79 +279,6 @@ Partial Class Catalogos_Siglas
     '    End Try
     'End Sub
 
-    Protected Sub GridViewOne_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridViewOne.RowEditing
-        Try
-            GridViewOne.EditIndex = e.NewEditIndex
-            LoadDataGridView()
-
-        Catch ex As Exception
-            AlertifyErrorMessage(Me, "Ocurrió un error al disparar el evento SelectedIndexChanged")
-        End Try
-    End Sub
-    Protected Sub GridViewOne_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridViewOne.RowUpdating
-        Dim row As GridViewRow = GridViewOne.Rows(e.RowIndex)
-        Dim id As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
-        Dim name As String = (TryCast(row.FindControl("txtSiglas"), TextBox)).Text
-
-        Using dbCon As New SqlConnection(Seguridad.Sql_conn)
-            Using cmd As New SqlCommand("Cat_Siglas", dbCon)
-                dbCon.Open()
-                cmd.Parameters.AddWithValue("@accion", "UPDATE")
-                cmd.Parameters.AddWithValue("@siglas", name)
-                cmd.Parameters.AddWithValue("@codusuario", DBNull.Value)
-                cmd.Parameters.AddWithValue("@codusuarioUlt", Session("CodigoUser"))
-                cmd.CommandType = CommandType.StoredProcedure
-
-                Dim affectedRows = cmd.ExecuteNonQuery()
-
-                If affectedRows > 0 Then
-                    AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
-                End If
-            End Using
-        End Using
-
-        GridViewOne.EditIndex = -1
-        LoadDataGridView()
-    End Sub
-
-    Protected Sub GridViewOne_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles GridViewOne.RowCancelingEdit
-        Me.GridViewOne.EditIndex = -1
-        LoadDataGridView()
-    End Sub
-
-    Protected Sub GridViewOne_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles GridViewOne.RowDeleting
-        Try
-            Dim siglaId As String = GridViewOne.DataKeys(e.RowIndex).Values(0).ToString()
-
-            Using dbCon As New SqlConnection(Seguridad.Sql_conn)
-                Using cmd As New SqlCommand("Cat_Siglas", dbCon)
-                    dbCon.Open()
-                    cmd.Parameters.AddWithValue("@accion", "DELETE")
-                    cmd.Parameters.AddWithValue("@siglas", siglaId)
-                    cmd.Parameters.AddWithValue("@codusuario", DBNull.Value)
-                    cmd.Parameters.AddWithValue("@codusuarioUlt", DBNull.Value)
-                    cmd.CommandType = CommandType.StoredProcedure
-
-                    Dim affectedRows = cmd.ExecuteNonQuery()
-
-                    If affectedRows > 0 Then
-                        AlertifySuccessMessage(Me, "El registro ha sido guardado correctamente.")
-                    End If
-                End Using
-            End Using
-
-        Catch ex As Exception
-            AlertifyErrorMessage(Me, "Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador.")
-        End Try
-    End Sub
-
-    Private Sub GridViewOne_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewOne.RowDataBound
-        If e.Row.RowType = DataControlRowType.DataRow AndAlso e.Row.RowIndex <> GridViewOne.EditIndex Then
-            TryCast(e.Row.Cells(2).Controls(0), LinkButton).Attributes("onclick") = "return confirm('Do you want to delete this row?');"
-        End If
-    End Sub
-
-#End Region
     'Private Sub txtBuscar_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBuscar.TextChanged
     '    'BUSQUEDAD = "%" & UCase(Trim(txtBuscar.Text)) & "%"
     '    'If txtBuscar.Text <> "" Then

@@ -1,33 +1,23 @@
-﻿Imports System.Web
-Imports System.Web.Services
-Imports System.Web.Services.Protocols
-Imports System.Web.UI.HtmlTextWriter
+﻿Imports System.Web.Services
 Imports System.Data
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Collections.Specialized
-Imports System.ComponentModel
-Imports System.Web.Script.Services
 Imports AjaxControlToolkit
-Imports System.Xml
-Imports System.Web.Script.Serialization
 
 ' Para permitir que se llame a este servicio web desde un script, usando ASP.NET AJAX, quite la marca de comentario de la línea siguiente.
-' <System.Web.Script.Services.ScriptService()> _
-<WebService(Namespace:="http://tempuri.org/")> _
-<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)> _
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-<System.Web.Script.Services.ScriptService()> _
+<Script.Services.ScriptService()>
+<WebService(Namespace:="http://tempuri.org/")>
+<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)>
+<CompilerServices.DesignerGenerated()>
 Public Class SWDatos
-    Inherits System.Web.Services.WebService
-    Dim conn As New FACTURACION_CLASS.Seguridad
-    Dim Database As New FACTURACION_CLASS.database
+    Inherits WebService
 
-    <WebMethod()> _
-    Public Function GetOrigen(ByVal knownCategoryValues As String, _
+    Private ReadOnly Seguridad As New FACTURACION_CLASS.seguridad
+    Private ReadOnly Database As New FACTURACION_CLASS.database
+
+    <WebMethod()>
+    Public Function GetOrigen(ByVal knownCategoryValues As String,
                             ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(Seguridad.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -35,8 +25,8 @@ Public Class SWDatos
             End If
 
             Dim sql As String = String.Empty
-            sql = " EXEC CombosProductos " & _
-                  "@opcion = 1," & _
+            sql = " EXEC CombosProductos " &
+                  "@opcion = 1," &
                   "@codigo = null "
 
             Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
@@ -61,5 +51,11 @@ Public Class SWDatos
         End Try
     End Function
 
+
+    <WebMethod()>
+    Public Shared Function GetSessionTimeout()
+
+
+    End Function
 
 End Class
