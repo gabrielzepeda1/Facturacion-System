@@ -839,41 +839,29 @@ Public Class WSCatProductos
     End Function
 
     <WebMethod()>
-    Public Function GetCliente(ByVal knownCategoryValues As String,
-                              ByVal category As String) As CascadingDropDownNameValue()
-
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
-        Dim SampleSource As New List(Of CascadingDropDownNameValue)
+    Public Function GetCliente(knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
         Try
-            If dbCon.State = ConnectionState.Closed Then
-                dbCon.Open()
-            End If
+            Using dbCon As New OleDbConnection(conn.conn)
+                Dim SampleSource As New List(Of CascadingDropDownNameValue)
 
-            Dim vCPais As String = Context.Request.Cookies("CKSMFACTURA")("codPais")
-            Dim sql As String = String.Empty
-            sql = " EXEC CombosProductos " &
+                Dim sql = " EXEC CombosProductos " &
                   "@opcion = 16," &
-                  "@codigo = " & vCPais & " "
+                  "@codigo = " & Session("CodigoPais") & " "
 
-
-            Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-            Dim Reader As OleDb.OleDbDataReader = cmd.ExecuteReader
-
-            Do While Reader.Read
-                Dim CategoryName = Reader("cliente").ToString()
-                Dim CategoryValue = Reader("codcliente").ToString()
-                SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
-            Loop
-
-            Return SampleSource.ToArray()
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    Using Reader As OleDbDataReader = cmd.ExecuteReader()
+                        Do While Reader.Read
+                            Dim CategoryName = Reader("cliente").ToString()
+                            Dim CategoryValue = Reader("codcliente").ToString()
+                            SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
+                        Loop
+                        Return SampleSource.ToArray()
+                    End Using
+                End Using
+            End Using
 
         Catch ex As Exception
             Throw ex
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
         End Try
     End Function
 

@@ -35,6 +35,7 @@ Public Class database
 
         Try
             Using dbCon As New OleDbConnection(conn.conn)
+                dbCon.Open()
 
                 Dim sql = "SET DATEFORMAT DMY "
                 sql = sql & vbCrLf & query
@@ -44,7 +45,7 @@ Public Class database
                     cmd.CommandTimeout = 9999
                     Using da As New OleDbDataAdapter(cmd)
                         Using ds As New DataSet()
-                            da.Fill(ds, "DT0")
+                            da.Fill(ds)
                             Return ds
                         End Using
                     End Using
@@ -52,9 +53,42 @@ Public Class database
             End Using
 
         Catch ex As Exception
-
+            Throw ex
         End Try
+
+        Return Nothing
     End Function
+    ''' <summary>
+    ''' Retorna un DataTable
+    ''' </summary>
+    ''' <param name="query"></param>
+    ''' <returns>DataTable</returns>
+    ''' <remarks></remarks>
+    Public Function GetDataTable(query As String) As DataTable
+        Try
+            Using dbCon As New OleDbConnection(conn.conn)
+                dbCon.Open()
+
+                Dim sql As String = "SET DATEFORMAT DMY "
+                sql = sql & vbCrLf & query
+
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    cmd.CommandType = CommandType.Text
+                    Using da As New OleDbDataAdapter(sql, dbCon)
+                        Using dt As New DataTable("Factura")
+                            da.Fill(dt)
+                            Return dt
+                        End Using
+                    End Using
+                End Using
+            End Using
+
+        Catch ex As Exception
+            conn.PmsgBox("Error en clase database: " & ex.Message, "error")
+        End Try
+        Return Nothing
+    End Function
+
     ''' <summary>
     ''' DEVUELVE UN CONTROL DATATABLE
     ''' </summary>
@@ -93,35 +127,7 @@ Public Class database
             conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
         End Try
     End Function
-    ''' <summary>
-    ''' Retorna un DataTable
-    ''' </summary>
-    ''' <param name="query"></param>
-    ''' <returns>DataTable</returns>
-    ''' <remarks></remarks>
-    Public Function GetDataTable(query As String) As DataTable
-        Dim cnn As String = conn.conn
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(cnn)
-        Try
-            If dbCon.State = ConnectionState.Closed Then
-                dbCon.Open()
-            End If
 
-            Dim sql As String = "SET DATEFORMAT DMY "
-
-            sql = sql & vbCrLf & query
-
-            Dim daSrc As New System.Data.OleDb.OleDbDataAdapter(sql, dbCon)
-            Dim dt As New DataTable("Factura")
-            daSrc.Fill(dt)
-
-            Return dt
-            dt.Dispose()
-
-        Catch ex As Exception
-            conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
-        End Try
-    End Function
 
     ''' <summary>Esta función ejecuta un query de sql y retorna un OleDbDataReader</summary>
     ''' <param name="sql">sql query</param>

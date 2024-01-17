@@ -10,14 +10,14 @@ Imports AjaxControlToolkit
 Public Class SWDatos
     Inherits WebService
 
-    Private ReadOnly Seguridad As New FACTURACION_CLASS.seguridad
-    Private ReadOnly Database As New FACTURACION_CLASS.database
+    Private ReadOnly _seguridad As New FACTURACION_CLASS.seguridad
+    Private ReadOnly _database As New FACTURACION_CLASS.database
 
     <WebMethod()>
     Public Function GetOrigen(ByVal knownCategoryValues As String,
                             ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(Seguridad.conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(_seguridad.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -50,12 +50,4 @@ Public Class SWDatos
 
         End Try
     End Function
-
-
-    <WebMethod()>
-    Public Shared Function GetSessionTimeout()
-
-
-    End Function
-
 End Class

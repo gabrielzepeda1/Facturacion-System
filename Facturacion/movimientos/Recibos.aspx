@@ -2,15 +2,10 @@
 <%@ Register Src="~/usercontrol/menu_catalogos.ascx" TagPrefix="uc1" TagName="menu_catalogos" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-
- 
 <asp:Content ID="c1" ContentPlaceHolderID="head" Runat="Server">
-    <%--<script src="../js/jquery.min.js"></script>--%>
-    <%--<script src="../js/jquery-ui-1.12.1/jquery-ui.min.js"></script>--%>
     <link  rel="stylesheet" href= "../css/facturacion.css" />
     <link  rel="stylesheet" href= "../css/select2.css" />
     <link  rel="stylesheet" href= "../css/recibos.css" />
-
 
 </asp:Content>
 
@@ -24,10 +19,8 @@
     <a href="Recibos.aspx">Recibos</a>
 </asp:Content>
 
-
-
 <asp:Content ID="Content4" ContentPlaceHolderID="CP1" Runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+    <%--<asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>--%>
 
     <asp:Panel ID="pnlContent" runat="server" DefaultButton="BtnBuscar">
             <asp:UpdatePanel ID="upMensaje_popup" runat="server" UpdateMode="Conditional">
@@ -48,12 +41,12 @@
 
          <div class="container1">
     <!-- Vendedor Section -->
-    
+
     <div class="cel fleft" style="margin-right:10px;">
         <label for="ddlVendedor">Vendedor</label>
         <asp:DropDownList ID="ddlVendedor" runat="server" CssClass="SelectStyle SelectSearch" AutoPostBack="true"></asp:DropDownList>
     </div>
-    
+
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <div class="cel">
@@ -65,11 +58,11 @@
             <asp:AsyncPostBackTrigger ControlID="ddlVendedor" EventName="SelectedIndexChanged" />
         </Triggers>
     </asp:UpdatePanel>
-    
-    
+
+
 
     <!-- Cliente Section -->
-    <div class="ui-widget"> 
+    <div class="ui-widget">
         <fieldset>
             <legend>Cliente es:</legend>
             <asp:RadioButton ID="rdbExterno" CssClass="" GroupName="CondicionPago" Text="Externo" runat="server" AutoPostBack="true" />
@@ -82,13 +75,13 @@
         <ContentTemplate>
             <div class="cel">
                 <label for="ddlCliente">Nombre del Cliente</label>
-                <asp:DropDownList ID="ddlCliente" runat="server" CssClass="SelectStyle SelectSearch"></asp:DropDownList>
-                <%--<ajaxToolkit:CascadingDropDown 
-                    ID="ccCliente" 
-                    runat="server" 
-                    TargetControlID="ddlCliente" 
+                <asp:DropDownList ID="ddlCliente" runat="server" CssClass="SelectStyle SelectSearch" Enabled="false"></asp:DropDownList>
+                <%--<ajaxToolkit:CascadingDropDown
+                    ID="ccCliente"
+                    runat="server"
+                    TargetControlID="ddlCliente"
                     ServicePath="../services/WSCatProductos.asmx"
-                    ServiceMethod="GetCliente" 
+                    ServiceMethod="GetCliente"
                     Category="CategoryCliente"
                     PromptText="Seleccione Cliente...">
                 </ajaxToolkit:CascadingDropDown>--%>
@@ -131,7 +124,7 @@
 
               <%--  </ContentTemplate>
                        <Triggers>
-                        
+
                          <asp:AsyncPostBackTrigger ControlID="BtnBuscar" EventName="Click" />
                          <asp:AsyncPostBackTrigger ControlID="txtValor" EventName="TextChanged" />
                        </Triggers>
@@ -142,7 +135,7 @@
                          <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
 
                         <div style ="min-height:200px; overflow:scroll;">
-                            
+
                             <asp:GridView
                                 ID="GridViewOne"
                                 runat="server"
@@ -155,7 +148,7 @@
                                 AutoGenerateColumns="False"
                                 ShowHeaderWhenEmpty="true"
                                 DataKeyNames=""
-                                BorderColor="#993300" 
+                                BorderColor="#993300"
                                 DataSourceID="SqlDataSource1">
 
                                 <SelectedRowStyle CssClass="SelectedRowDelete" />
@@ -168,7 +161,7 @@
                                     <asp:BoundField DataField="Valor_pend" HeaderText="Pendiente" SortExpression="Pendiente" />
                                     <asp:BoundField DataField="Valor_aplicado" HeaderText="Aplicado" SortExpression="Aplicado" />
                                     <asp:BoundField DataField="Saldo" HeaderText="Saldo" SortExpression="Saldo" />
-                                    
+
                                     <asp:CommandField
                                         HeaderText="Suprimir"
                                         ButtonType="Button"
@@ -192,7 +185,7 @@
                                 </PagerTemplate>
                             </asp:GridView>
                             <asp:SqlDataSource runat="server" ID="SqlDataSource1"></asp:SqlDataSource>
-                            <asp:HiddenField ID="hdfCodigo" runat="server" />               
+                            <asp:HiddenField ID="hdfCodigo" runat="server" />
                             <%--<asp:SqlDataSource ID="FacturaTmp" runat="server" ConnectionString="<%$ ConnectionStrings:FacturacionConnectionString %>" SelectCommand="SELECT [no_factura] as NoFactura, [cod_producto] as Codigo, [desc_imprimir] as Producto, [cantidad] as Cantidad, [bultos] as Bultos, [precio_unidad] as Precio, [sub_total] as SubTotal, [valor_descuento] as Descuento, [valor_iva] as Iva FROM [TmpDetFact]"></asp:SqlDataSource>--%>
                         </div>
                      </ContentTemplate>
@@ -207,7 +200,7 @@
 
             <asp:UpdatePanel ID="upBanco" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <div class="flex small-container"> 
+                    <div class="flex small-container">
                         <div class="cel">
                            <label id="lblBanco" runat="server">Banco:</label>
                            <asp:DropDownList ID="ddlBanco" runat="server" CssClass="SelectStyle SelectSearch" AutoPostBack="true"  />
@@ -223,7 +216,7 @@
                     <asp:AsyncPostBackTrigger ControlID="ddlBanco" EventName="SelectedIndexChanged" />
                 </Triggers>
             </asp:UpdatePanel>
-   
+
 
                     <div class="flex small-container2 ">
 
@@ -244,23 +237,23 @@
 
                     </div>
 
-                <%--Buttons--%> 
-                <div class=""> 
-                  <asp:Button ID="btnAceptar2" runat="server" CssClass ="btnEditar" Text="Aceptar"/> 
+                <%--Buttons--%>
+                <div class="">
+                  <asp:Button ID="btnAceptar2" runat="server" CssClass ="btnEditar" Text="Aceptar"/>
                   <asp:Button ID="btnSalir" runat="server" CssClass ="btnEliminar" Text="Salir"/>
                   <asp:Button ID="btnReportes" runat="server" CssClass ="btnEditar" Text="Reportes"/>
                 </div>
-                  
+
 </asp:Content>
 
 <asp:Content ID="Content5" ContentPlaceHolderID="cpScripts" runat="server">
-    <script type="text/javascript"> 
+    <script type="text/javascript">
 
         $(document).ready(function () {
             $('.SelectSearch').select2();
             $("radio").checkboxradio();
             $("fieldset").controlgroup();
-            $(".ui-button").button(); 
+            $(".ui-button").button();
             $("#<%=txtCheque.ClientID%>").hide();
             $("#lblCheque").hide();
             console.log("Ready")
@@ -282,7 +275,7 @@
                     console.log("Hide")
                     $("#<%=txtCheque.ClientID%>").hide();
                     $("#lblCheque").hide();
-                }   
+                }
 
 
 

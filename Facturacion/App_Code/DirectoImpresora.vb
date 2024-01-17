@@ -9,8 +9,6 @@ Imports System.Drawing.Printing
 Imports System.Collections.Generic
 Imports System.Windows.Forms
 Imports Microsoft.Reporting.WebForms
-
-
 Public Class Impresion
     Implements IDisposable
     Private m_currentPageIndex As Integer

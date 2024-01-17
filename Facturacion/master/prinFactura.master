@@ -4,9 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
 
     <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
@@ -33,72 +32,89 @@
     <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
-
-   <%-- <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="Scripts/bootstrap.min.js"></script>
-    --%>
-    <asp:ContentPlaceHolder id="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
 </head>
 <body>
-    <header id="main-header">
-        <div class="table">
-            <div class="row">
-                <div id="logo" class="cel">
-                    <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="logo" src="<%= ResolveClientUrl("../img/logo.png")%>" />
+    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+
+    <%--Sidebar Toggle--%>
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <%--Sidebar--%>
+    <div id="sidr">
+        <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
+    </div>
+
+    <header>
+        <%--Topbar--%>
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <div class="container-fluid">
+                <div class="d-flex col-1 justify-content-center">
+                    <a id="homeButton" class="navbar-brand" href="../Default.aspx">
+                        <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
                 </div>
 
-                <div id="options" class="cel tright">
-                    <nav class="utilities">
-                        <ul>
-                            <li>
-                                <a class="user" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>"><i class="fas fa-user"></i> <%= MyUserName%></a>
-                            </li>
-                            <li>
-                                <a id="sidebar-menu" href="#sidr" title="Menú"><i class="fas fa-bars"></i></a>
-                            </li>
-                            <%--<li>
-                                <a title="Notificaciones"><i class="far fa-bell"></i></a>
-                            </li>--%>
-                            <%--<li>
-                                <a href="<%= ResolveClientUrl("../herramientas/administracion.aspx")%>" title="Herramientas"><i class="fas fa-cog"></i></a>
-                            </li>--%>
-
-                            <li>
-                                <a onclick="OnCerrar();" title="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <ul class="navbar">
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=MyUserName %></span>
+                            <img class="img-profile rounded-circle" src="https://images.unsplash.com/photo-1519648023493-d82b5f8d7b8a?w=300" />
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="perfil.html">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Perfil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Salir
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <div id="info-page">
-        <div class="table">
-            <div class="row">
-                <div class="cel">
-                    <asp:ContentPlaceHolder id="cpTitulo" runat="server">
-                    </asp:ContentPlaceHolder>
+    <div id="info-pag">
+        <div class="container-fluid bg-dark">
+            <div class="row text-white align-items-center px-2">
+                <div id="titulo" class="d-flex col-5 align-items-center justify-content-start">
+                    <asp:ContentPlaceHolder ID="cpTitulo" runat="server"></asp:ContentPlaceHolder>
                 </div>
-                <div class="cel tright resp-hide">
-                    <asp:ContentPlaceHolder id="cpUbicacion" runat="server">
-                    </asp:ContentPlaceHolder>
+                <div id="ubicacion" class="d-flex gap-2 col-7 align-items-center justify-content-end">
+                    <div class="affiliations-container py-2 mb-1">
+                        <div class="affiliation first fw-semibold">
+                            Usuario: <%= MyUserName %>
+                    &emsp;
+                    Rol: <%= MyRol %>
+                    &emsp;
+                        </div>
+
+                        <div class="affiliation second fw-semibold">
+                            Usuario: <%= MyUserName %>
+                    &emsp;
+                    Rol: <%= MyRol %>
+                    &emsp;
+                        </div>
+                    </div>
+                    <asp:ContentPlaceHolder ID="cpUbicacion" runat="server"></asp:ContentPlaceHolder>
                 </div>
             </div>
         </div>
     </div>
 
     <form id="form1" runat="server" enctype="multipart/form-data" method="post">
-        <asp:Button ID="btnCerrar" runat="server" Text="Cerrar sesion" Style="display:none;" formnovalidate/>
-        <asp:ContentPlaceHolder id="CP1" runat="server">
-        
-        </asp:ContentPlaceHolder>
+        <a href="../services/WSCatProductos.asmx">../services/WSCatProductos.asmx</a>
+        <asp:Button ID="btnCerrar" runat="server" Text="Cerrar sesion" Style="display: none;" />
+
+        <%--Content Page--%>
+        <asp:ContentPlaceHolder ID="CP1" runat="server"></asp:ContentPlaceHolder>
     </form>
 
-    <nav id="sidr">
-        <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
-    </nav>
 
 
     <script>
@@ -112,11 +128,9 @@
             }
         }
 
-        $(document).ready(function() 
-        {
+        $(document).ready(function () {
             $('.SelectSearch').select2();
-
-            $('#sidebar-menu').sidr({ side: 'right' });
+            $('#sidebarToggle').sidr({ side: 'left' });
 
             if (isMobile() == true) {
                 $('body').swipe({
@@ -140,7 +154,6 @@
         }
     </script>
 
-    <asp:ContentPlaceHolder id="cpScripts" runat="server">
-    </asp:ContentPlaceHolder>
+    <asp:ContentPlaceHolder ID="cpScripts" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>
