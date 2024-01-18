@@ -16,7 +16,7 @@
     <a href="ProductosMaestro.aspx">Catálogo de Maestro de Productos</a>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     <%--<div class="popup-scroll">--%>
     <div id="main-form">

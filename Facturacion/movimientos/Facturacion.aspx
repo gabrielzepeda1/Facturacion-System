@@ -23,7 +23,7 @@
 
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     
         <asp:UpdatePanel ID="upMensaje_popup" runat="server" UpdateMode="Conditional">

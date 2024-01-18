@@ -109,7 +109,7 @@
 
     <form id="form1" runat="server" enctype="multipart/form-data" method="post">
         <asp:Button ID="btnCerrar" runat="server" Text="Cerrar sesion" Style="display: none;" formnovalidate="1" />
-        <asp:ContentPlaceHolder ID="CP1" runat="server">
+        <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
         </asp:ContentPlaceHolder>
     </form>
 

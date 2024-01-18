@@ -12,11 +12,11 @@ Namespace FACTURACION_CLASS
         Private Shared ReadOnly _database As New database
         Private Shared ReadOnly _seguridad As New seguridad
 
-        Public Shared Sub BindDropDownListClientes(ddlCliente As DropDownList, rdbExterno As RadioButton)
+        Public Shared Sub BindDropDownListClientes(ddlCliente As DropDownList)
             Try
 
                 Dim sql = $"SELECT CodigoCliente, TRIM(Nombres) + ' ' +TRIM(Apellidos) AS NombreCompleto
-                    FROM Clientes WHERE Externo = {IIf(rdbExterno.Checked(), 1, 0)}"
+                    FROM Clientes WHERE Externo = {1}"
                 If MySession.Current.CodigoPais <> 0 Then
                     sql &= $" AND CodigoPais = {MySession.Current.CodigoEmpresa}"
                 End If

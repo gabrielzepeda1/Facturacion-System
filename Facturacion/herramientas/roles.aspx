@@ -14,7 +14,7 @@
     <a href="roles.aspx">Roles de Usuario</a>
 </asp:Content>
 
-<asp:Content ID="C4" ContentPlaceHolderID="CP1" runat="Server">
+<asp:Content ID="C4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form" class="container">

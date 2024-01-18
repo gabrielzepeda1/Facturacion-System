@@ -16,7 +16,7 @@
     <a href="usuarios.aspx">Usuarios del Sistema</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="CP1" runat="Server">
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
 
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 

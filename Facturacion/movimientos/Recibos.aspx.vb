@@ -55,7 +55,7 @@ Partial Class movimientos_Recibos
             txtNoRecibo.Text = "-SELECCIONE VENDEDOR-"
             txtNoRecibo.BackColor = Drawing.Color.WhiteSmoke
 
-            BindDropDownListClientes(ddlCliente, rdbExterno)
+            BindDropDownListClientes(ddlCliente)
             BindDropDownListVendedor(ddlVendedor)
             BindDropDownListFormaPago(ddlFormaPago)
             BindDropDownListMoneda(ddlMoneda)
@@ -157,11 +157,11 @@ Partial Class movimientos_Recibos
 #End Region
 
 #Region "RDB CHECKED CHANGED"
-    Private Sub rdbExterno_CheckedChanged(sender As Object, e As EventArgs) Handles rdbExterno.CheckedChanged
-        ddlCliente.Enabled = True
-        ddlCliente.BackColor = Drawing.Color.White
-        BindDropDownListClientes(ddlCliente, rdbExterno)
-    End Sub
+    'Private Sub rdbExterno_CheckedChanged(sender As Object, e As EventArgs) Handles rdbExterno.CheckedChanged
+    '    ddlCliente.Enabled = True
+    '    ddlCliente.BackColor = Drawing.Color.White
+    '    BindDropDownListClientes(ddlCliente, rdbExterno)
+    'End Sub
 
 #End Region
 

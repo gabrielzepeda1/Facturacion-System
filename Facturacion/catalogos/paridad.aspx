@@ -15,7 +15,7 @@
     <a href="paridad.aspx">Paridad</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
 
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 

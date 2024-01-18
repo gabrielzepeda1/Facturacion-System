@@ -18,7 +18,7 @@
     <a href="Factura.aspx">Facturación</a>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
 
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 

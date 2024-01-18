@@ -15,7 +15,7 @@
     <a href="puestos.aspx">Catálogo de Puestos</a>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">

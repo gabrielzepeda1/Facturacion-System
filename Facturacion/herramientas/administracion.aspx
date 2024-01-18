@@ -13,7 +13,7 @@
     <a href="administracion.aspx">Administración</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
     <div class="limited">
         <nav id="navegacion-panel">
             <asp:Literal ID="ltMenu" runat="server"></asp:Literal>

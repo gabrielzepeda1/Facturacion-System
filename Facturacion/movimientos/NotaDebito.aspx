@@ -5,12 +5,6 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <%--<script src="../js/jquery.min.js"></script>--%>
-    <%--<script src="../js/jquery-ui-1.12.1/jquery-ui.min.js"></script>--%>
-    <link rel="stylesheet" href="../css/facturacion.css" />
-    <link rel="stylesheet" href="../css/select2.css" />
-    <link rel="stylesheet" href="../css/recibos.css" />
-    <link rel="stylesheet" href="../css/nota-debito-styles.css" />
 </asp:Content>
 
 <asp:Content ID="c2" ContentPlaceHolderID="cpTitulo" runat="Server">
@@ -22,10 +16,7 @@
     <label>&gt;</label>
     <a href="NotaDebito.aspx">Nota de Debito</a>
 </asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
-
-
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <asp:UpdatePanel ID="upMensaje_popup" runat="server" UpdateMode="Conditional">
 
         <ContentTemplate>
@@ -38,63 +29,78 @@
         </Triggers>
     </asp:UpdatePanel>
 
-    <div class="nd-grid-container">
-        <div class="nd-flex-container nd-flex-start">
-            <div>
-                <label>Fecha</label>
-                <asp:TextBox runat="server" ID="txtFecha" CssClass="SelectStyle numero"></asp:TextBox>
-            </div>
-        </div>
-
-
-
-
-        <div class="nd-flex-container nd-flex-start">
-            <div class="widget">
-                <fieldset class="fd-container">
-                    <legend>Cliente es:</legend>
-                    <asp:RadioButton ID="rdbExterno" CssClass="" GroupName="CondicionPago" Text="Externo" runat="server" AutoPostBack="true" />
-                    <asp:RadioButton ID="rdbInterno" CssClass="" GroupName="CondicionPago" Text="Interno" runat="server" AutoPostBack="true" />
-                </fieldset>
-            </div>
-
-            <div>
-                <label>Cliente</label>
-                <asp:DropDownList runat="server" ID="ddlCliente" CssClass="SelectStyle SelectSearch"></asp:DropDownList>
-            </div>
-            <div>
-                <label>Nota Débito No.</label>
-                <asp:TextBox runat="server" ID="txtNotaDebito" CssClass="SelectStyle numero"></asp:TextBox>
-            </div>
-
-        </div>
-
-        <div class="nd-flex-container nd-flex-start">
-            <fieldset style="border: 1px solid black;">
-
-                <div class="nd-flex-container">
-                    <label>DEBITO A CUENTA $:</label>
-                    <asp:TextBox runat="server" ID="txtMonto" CssClass="SelectStyle nd-input-numero  "></asp:TextBox>
-                </div>
-
-
-                <div>
-                    <label>CONCEPTO:</label>
-                    <asp:TextBox runat="server" ID="txtConcepto" CssClass="SelectStyle nd-input-textarea" BackColor="WhiteSmoke" Height="150px" Width="450px"></asp:TextBox>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Fecha</label>
+                                <asp:TextBox runat="server" ID="txtFecha" CssClass="form-select"></asp:TextBox>
+                            </div>
+                            <div class="col">
+                                <label>Nota Débito No.</label>
+                                <asp:TextBox runat="server" ID="txtNotaDebito" CssClass="SelectStyle numero"></asp:TextBox>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
+            </div>
 
+            <div class="col-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="btn-group">
+                                <div class="form-check">
+                                    <asp:RadioButton ID="rdbExterno" CssClass="" GroupName="CondicionPago" Text="Externo" runat="server" AutoPostBack="true" />
+                                    <asp:RadioButton ID="rdbInterno" CssClass="" GroupName="CondicionPago" Text="Interno" runat="server" AutoPostBack="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Cliente</label>
+                                <asp:DropDownList runat="server" ID="ddlCliente" CssClass="SelectStyle SelectSearch"></asp:DropDownList>
+                            </div>
 
-            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
-        <div class="nd-flex-container nd-flex-start" style="width: 40%; justify-content: space-between !important">
+        <div class="row">
+            <div class="col-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
 
+                                <label class="form-label">DEBITO A CUENTA $:</label>
+                                <asp:TextBox runat="server" ID="txtMonto" CssClass="form-control"></asp:TextBox>
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">CONCEPTO:</label>
+                                <asp:TextBox runat="server" ID="txtConcepto" CssClass="form-control" BackColor="WhiteSmoke"></asp:TextBox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
             <div style="">
                 <asp:Button runat="server" ID="btnGuardar" Text="Guardar" CssClass="btn-submit" />
             </div>
-
             <div>
                 <asp:Button runat="server" ID="btnClear" Text="Eliminar" CssClass="btn-reset" />
             </div>
@@ -108,10 +114,6 @@
         $(document).Ready(function () {
             $('.SelectSearch').select2();
             $('radio').checkboxradio();
-
-
-
-
 
             var fecha = new Date();
             var dia = fecha.getDate();

@@ -59,17 +59,15 @@
         <div class="row">
 
             <%--Sidebar Toggle--%>
-            <div class="col-1 d-flex flex-column justify-content-center align-items-center">
-                <div>
+                <div class="col-1">
                     <a class=" rounded-0" id="sidebarToggle" href="#sidr">
                         <i class="fas fa-bars"></i>
                     </a>
                 </div>
 
-                <%--Sidebar--%>
-                <div id="sidr">
-                    <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
-                </div>
+            <%--Sidebar--%>
+            <div id="sidr">
+                <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
             </div>
             <div class="">
                 <header>
@@ -117,7 +115,7 @@
                     </nav>
                 </header>
 
-                <div class="container-fluid bg-dark">
+                <div class="container-fluid bg-dark mb-2">
                     <div class="row text-white align-items-center px-2">
                         <div id="titulo" class="d-flex col-5 align-items-center justify-content-start">
                             <asp:ContentPlaceHolder ID="cpTitulo" runat="server"></asp:ContentPlaceHolder>
@@ -149,7 +147,7 @@
                     <asp:Button ID="btnCerrar" runat="server" Text="Cerrar sesion" Style="display: none;" />
 
                     <%--Content Page--%>
-                    <asp:ContentPlaceHolder ID="CP1" runat="server"></asp:ContentPlaceHolder>
+                    <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
                 </form>
             </div>
         </div>

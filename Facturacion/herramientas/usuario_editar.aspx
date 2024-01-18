@@ -15,7 +15,7 @@
     <a href="usuario_editar.aspx">Actualizar Mi Información</a>
 </asp:Content>
 
-<asp:Content ID="c5" ContentPlaceHolderID="CP1" Runat="Server">
+<asp:Content ID="c5" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     
     <div id="main-form">

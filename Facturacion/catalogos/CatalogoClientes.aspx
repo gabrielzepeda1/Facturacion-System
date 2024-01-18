@@ -17,7 +17,7 @@
     <a class="text-white fs-5 text-decoration-none" href="CatalogoClientes.aspx">Clientes</a>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">

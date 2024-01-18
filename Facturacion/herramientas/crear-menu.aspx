@@ -15,7 +15,7 @@
     <a href="crear-menu.aspx">Gestionar Opciones del Menú</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="CP1" Runat="Server">    
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">    
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">

@@ -15,7 +15,7 @@
     <a href="ProductoPaisEmp.aspx">Catálogo de Productos Maestros/ Asignacion de producto al País</a>
 </asp:Content>
 
-<asp:Content ID="Content4" ContentPlaceHolderID="CP1" runat="Server">
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     <div id="main-form">
         <div id="main-form-content">
