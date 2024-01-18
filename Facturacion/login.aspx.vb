@@ -4,6 +4,7 @@ Imports System.Security.Cryptography
 Imports FACTURACION_CLASS
 Imports Microsoft.ReportingServices.DataProcessing
 Imports AlertifyClass
+Imports System.Data
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
@@ -47,8 +48,8 @@ Partial Class Login
     ''''<summary>Ejecuta el stored procedure "sp_sys_login" en SQL SERVER. Si el SWITCH case es ELSE, el usuario es valido.</summary>
     Protected Sub UserLogin()
 
-        Dim CodigoUser As Integer = 0
         Dim Username As String = txtUsuario.Text.ToString()
+        Dim CodigoUser As Integer = 0
         Dim CodigoRol As Integer = 0
         Dim browserData As String = Request.Browser.Browser & " " & Request.Browser.Version & " " & Request.Browser.Platform
 
@@ -57,7 +58,7 @@ Partial Class Login
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_sys_login", dbCon)
-                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.CommandType = Data.CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@Username", Username)
                     cmd.Parameters.AddWithValue("@Password", HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim())))
                     Dim dr As OleDbDataReader = cmd.ExecuteReader()
@@ -109,13 +110,33 @@ Partial Class Login
                             Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
                     End Select
                 Else
-                    'Usuario tiene una sesion activa 
+                    'Usuario tiene una sesion activa
                     AlertifyAlertMessage(Me, sessionData.Item("Status"))
                 End If
             End If
         Catch ex As Exception
             AlertifyErrorMessage(Me, ex.Message)
         End Try
+    End Sub
+
+    Private Sub SetSessionVariableArray()
+
+        If Session("CodigoPais") = 0 Then
+            Dim dt = _database.GetDataTable($"SELECT * FROM GetPaises({Session("CodigoUser")})")
+            Dim ArrCodigoPais As New List(Of Integer)
+
+            For Each row As DataRow In dt.Rows
+                ArrCodigoPais.Add(row("CodigoPais"))
+            Next
+
+            Session("CodigoPais") = ArrCodigoPais
+
+        End If
+        'Asignar al Session("CodigoPais") un array de todos los CodigoPais en la base de datos.
+        'Ex: Session("CodigoPais") = [1, 2, 3, 4],  En SQL se utilizaria así: "WHERE IN (1, 2, 3, 4)
+
+
+
     End Sub
 
     'Private Function GetCodigoPaisUser(CodigoUser As Integer) As Integer

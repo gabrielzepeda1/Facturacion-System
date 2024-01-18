@@ -4,8 +4,7 @@ Imports FACTURACION_CLASS
 Imports System.Data.SqlClient
 Imports AlertifyClass
 Imports System.Diagnostics
-
-
+Imports HelperClasses
 
 Namespace FACTURACION_CLASS
     Public Class DropdownsClass
@@ -13,29 +12,18 @@ Namespace FACTURACION_CLASS
         Private Shared ReadOnly _database As New database
         Private Shared ReadOnly _seguridad As New seguridad
 
-        Public Property CodigoPais As Integer
-
-            Get
-                Return HttpContext.Current.Session("CodigoPais")
-            End Get
-
-            Set(value As Integer)
-                HttpContext.Current.Session("CodigoPais") = value
-            End Set
-        End Property
-
-        Public Function GetCodigoPais() As Integer
-            Return CodigoPais
-        End Function
-
         Public Shared Sub BindDropDownListClientes(ddlCliente As DropDownList, rdbExterno As RadioButton)
-
             Try
+
                 Dim sql = $"SELECT CodigoCliente, TRIM(Nombres) + ' ' +TRIM(Apellidos) AS NombreCompleto
-                    FROM Clientes WHERE CodigoPais = {HttpContext.Current.Session("CodigoPais")}
-                    AND CodigoEmpresa = {HttpContext.Current.Session("CodigoEmpresa")}
-                    AND Externo = {IIf(rdbExterno.Checked(), 1, 0)}
-                    ORDER BY TRIM(Nombres)"
+                    FROM Clientes WHERE Externo = {IIf(rdbExterno.Checked(), 1, 0)}"
+                If MySession.Current.CodigoPais <> 0 Then
+                    sql &= $" AND CodigoPais = {MySession.Current.CodigoEmpresa}"
+                End If
+                If MySession.Current.CodigoEmpresa <> 0 Then
+                    sql &= $" AND CodigoEmpresa = {MySession.Current.CodigoEmpresa}"
+                End If
+                sql &= $" ORDER BY TRIM(Nombres)"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
 
@@ -55,11 +43,17 @@ Namespace FACTURACION_CLASS
         Public Shared Sub BindDropDownListVendedor(ddlVendedor As DropDownList)
             Try
                 Dim sql = $"SELECT cod_vendedor AS CodigoVendedor, TRIM(nombres) + ' ' +TRIM(apellidos) AS NombreCompleto
-                    FROM Vendedores
-                    WHERE cod_pais= {HttpContext.Current.Session("CodigoPais")}
-                    AND cod_pais= {HttpContext.Current.Session("CodigoEmpresa")}
-                    AND cod_empresa= {HttpContext.Current.Session("CodigoPais")}
-                    ORDER BY TRIM(Nombres)"
+                    FROM Vendedores"
+                If MySession.Current.CodigoPais <> 0 Then
+                    sql &= $" WHERE cod_pais= {MySession.Current.CodigoPais}"
+                End If
+                If MySession.Current.CodigoEmpresa <> 0 Then
+                    sql &= $" AND cod_pais= {MySession.Current.CodigoEmpresa}"
+                End If
+                If MySession.Current.CodigoPuesto <> 0 Then
+                    sql &= $" AND cod_empresa= {MySession.Current.CodigoSesion} "
+                End If
+                sql &= $" ORDER BY TRIM(Nombres)"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
 
