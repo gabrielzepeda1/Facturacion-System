@@ -50,9 +50,9 @@ Partial Class movimientos_Recibos
             ddlCliente.BackColor = Drawing.Color.WhiteSmoke
 
             ddlCuenta.Enabled = False
-            ddlCuenta.Items.Insert(0, New ListItem("-SELECCIONE BANCO-", "0"))
+            ddlCuenta.Items.Insert(0, New ListItem("", "0"))
             txtNoRecibo.Enabled = False
-            txtNoRecibo.Text = "-SELECCIONE VENDEDOR-"
+            'txtNoRecibo.Text = "-SELECCIONE VENDEDOR-"
             txtNoRecibo.BackColor = Drawing.Color.WhiteSmoke
 
             BindDropDownListClientes(ddlCliente)

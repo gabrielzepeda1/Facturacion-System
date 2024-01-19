@@ -70,11 +70,11 @@ Partial Class movimientos_NotaDebito
 
         Try
 
-            If rdbInterno.Checked Then
-                vext = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0' 
-            Else
-                vext = 1
-            End If
+            'If rdbInterno.Checked Then
+            '    vext = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0'
+            'Else
+            '    vext = 1
+            'End If
 
 
             Sql = "SELECT ltrim(rtrim(cod_cliente)) as codcliente," &
@@ -118,8 +118,8 @@ Partial Class movimientos_NotaDebito
     Private Sub ddlCliente_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCliente.SelectedIndexChanged
 
 
-        '' En este evento se debe traer el valor de txtNotaDebito de la base de datos SQL. 
-        '' Cuando se incrementa el INDEX de la tabla C_Not_De. Se debe hacer un UPDATE en la tabla 
+        '' En este evento se debe traer el valor de txtNotaDebito de la base de datos SQL.
+        '' Cuando se incrementa el INDEX de la tabla C_Not_De. Se debe hacer un UPDATE en la tabla
 
 
 
@@ -133,14 +133,14 @@ Partial Class movimientos_NotaDebito
         Dim allValidationsPassed As Boolean
         allValidationsPassed = False
 
-        '' IF RDB EXTERNO IS NOT CHECKED, THEN CHECK IF RDB INTERNO IS NOT CHECKED. IF BOTH ARE NOT CHECKED, THEN SHOW MESSAGE. IF ONE OF THEM IS CHECKED THEN CONTINUE 
+        '' IF RDB EXTERNO IS NOT CHECKED, THEN CHECK IF RDB INTERNO IS NOT CHECKED. IF BOTH ARE NOT CHECKED, THEN SHOW MESSAGE. IF ONE OF THEM IS CHECKED THEN CONTINUE
 
-        If rdbExterno.Checked = False And rdbInterno.Checked = False Then
-            MessageText = "alertify.alert('Seleccione si el cliente es EXTERNO o INTERNO.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", MessageText, True)
-            Return
+        'If rdbExterno.Checked = False And rdbInterno.Checked = False Then
+        '    MessageText = "alertify.alert('Seleccione si el cliente es EXTERNO o INTERNO.');"
+        '    ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Message", MessageText, True)
+        '    Return
 
-        End If
+        'End If
 
         If ddlCliente.Text = String.Empty Then
             MessageText = "alertify.alert('Seleccione el nombre del CLIENTE.');"
@@ -180,7 +180,7 @@ Partial Class movimientos_NotaDebito
 
     Private Sub InsertNotaDebito()
         Dim Message As String = String.Empty
-        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
         Dim query As String = String.Empty
         Dim ExternoInterno As Integer
 
@@ -190,11 +190,11 @@ Partial Class movimientos_NotaDebito
                 dbCon.Open()
             End If
 
-            If rdbInterno.Checked Then
-                ExternoInterno = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0' 
-            ElseIf rdbExterno.Checked Then
-                ExternoInterno = 1
-            End If
+            'If rdbInterno.Checked Then
+            '    ExternoInterno = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0'
+            'ElseIf rdbExterno.Checked Then
+            '    ExternoInterno = 1
+            'End If
 
             query = "SET DATEFORMAT DMY " & vbCrLf
 

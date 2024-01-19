@@ -30,83 +30,80 @@
     </asp:UpdatePanel>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-8">
                 <div class="card shadow mb-4">
-                    <div class="card-header"></div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <label class="form-label">Fecha</label>
-                                <asp:TextBox runat="server" ID="txtFecha" CssClass="form-select"></asp:TextBox>
-                            </div>
-                            <div class="col">
-                                <label>Nota Débito No.</label>
-                                <asp:TextBox runat="server" ID="txtNotaDebito" CssClass="SelectStyle numero"></asp:TextBox>
-                            </div>
-                        </div>
+                    <div class="card-header py-6 bg-primary">
+                        <h5 class="m-0 font-weight-bold text-white">Nota de Débito</h5>
                     </div>
-
-                </div>
-            </div>
-
-            <div class="col-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header"></div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="btn-group">
-                                <div class="form-check">
-                                    <asp:RadioButton ID="rdbExterno" CssClass="" GroupName="CondicionPago" Text="Externo" runat="server" AutoPostBack="true" />
-                                    <asp:RadioButton ID="rdbInterno" CssClass="" GroupName="CondicionPago" Text="Interno" runat="server" AutoPostBack="true" />
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="far fa-calendar"></i>&nbsp;Fecha</span>
+                                    <asp:TextBox runat="server" ID="txtFecha" CssClass="form-control"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="far fa-file-alt"></i>&nbsp;No. Nota Débito</span>
+                                    <asp:TextBox runat="server" ID="txtNotaDebito" CssClass="form-control" Enabled="false"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+
+                        <div class="row mb-4 align-items-center">
                             <div class="col">
-                                <label>Cliente</label>
-                                <asp:DropDownList runat="server" ID="ddlCliente" CssClass="SelectStyle SelectSearch"></asp:DropDownList>
+                                <div class="input-group">
+                                    <span class="input-group-text">Cliente</span>
+                                    <asp:DropDownList runat="server" ID="ddlCliente" CssClass="form-select"></asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 col-6">
+                                <div class="btn-group">
+                                    <input type="radio" class="btn-check" name="options" id="rdbExterno" />
+                                    <label class="btn btn-outline-secondary" for="rdbExterno">Externo</label>
+                                    <input type="radio" class="btn-check" name="options" id="rdbInterno" />
+                                    <label class="btn btn-outline-secondary" for="rdbInterno">Interno</label>
+                                </div>
+                                <%-- <asp:RadioButton ID="rdbExterno" CssClass="" GroupName="CondicionPago" Text="Externo" runat="server" AutoPostBack="true" />
+                        <asp:RadioButton ID="rdbInterno" CssClass="" GroupName="CondicionPago" Text="Interno" runat="server" AutoPostBack="true" />--%>
                             </div>
 
                         </div>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">Débito a Cuenta C$</span>
+                                    <asp:TextBox runat="server" ID="txtMonto" CssClass="form-control"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col">
+                                <div class="input-group">
+                                    <span class="input-group-text">Concepto</span>
+                                    <asp:TextBox runat="server" ID="txtConcepto" CssClass="form-control" Style="height: 100px"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-end">
+                            <div class="col d-grid gap-2 col-3">
+                                <asp:Button runat="server" ID="btnGuardar" Text="Guardar" CssClass="btn btn-success" />
+                                <asp:Button runat="server" ID="btnClear" Text="Limpiar" CssClass="btn btn-secondary" />
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-        </div>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header"></div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-
-                                <label class="form-label">DEBITO A CUENTA $:</label>
-                                <asp:TextBox runat="server" ID="txtMonto" CssClass="form-control"></asp:TextBox>
-                            </div>
-
-                            <div class="col">
-                                <label class="form-label">CONCEPTO:</label>
-                                <asp:TextBox runat="server" ID="txtConcepto" CssClass="form-control" BackColor="WhiteSmoke"></asp:TextBox>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div style="">
-                <asp:Button runat="server" ID="btnGuardar" Text="Guardar" CssClass="btn-submit" />
-            </div>
-            <div>
-                <asp:Button runat="server" ID="btnClear" Text="Eliminar" CssClass="btn-reset" />
-            </div>
         </div>
     </div>
-
 </asp:Content>
 <asp:Content ID="Content5" ContentPlaceHolderID="cpScripts" runat="Server">
     <script type="text/javascript">
