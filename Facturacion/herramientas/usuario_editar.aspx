@@ -2,93 +2,127 @@
 
 <%@ Register Src="~/usercontrol/menu_tools.ascx" TagPrefix="uc1" TagName="menu_tools" %>
 
-<asp:Content ID="c1" ContentPlaceHolderID="head" Runat="Server">
-</asp:Content>
+<asp:Content ID="c1" ContentPlaceHolderID="head" runat="Server"></asp:Content>
 
-<asp:Content ID="c3" ContentPlaceHolderID="cpTitulo" Runat="Server">
+<asp:Content ID="c3" ContentPlaceHolderID="cpTitulo" runat="Server">
     <h1>Actualizar Mi Información</h1>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="cpUbicacion" Runat="Server">
+<asp:Content ID="c4" ContentPlaceHolderID="cpUbicacion" runat="Server">
     <a href="../Default.aspx">Escritorio</a>
     <label>&gt;</label>
     <a href="usuario_editar.aspx">Actualizar Mi Información</a>
 </asp:Content>
 
-<asp:Content ID="c5" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
-    
-    <div id="main-form">
-        <div id="main-form-content">
-            
-            <uc1:menu_tools runat="server" ID="menu_tools" />
+<asp:Content ID="c5" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
+    <div id="container-fluid">
+        <div class="row p-2">
 
-            <div id="main-form-content-field" style="padding-top:22px;">
+            <%--<uc1:menu_tools runat="server" ID="menu_tools" />--%>
+            <asp:UpdatePanel ID="upMensaje" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click" />
+                    <asp:AsyncPostBackTrigger ControlID="btnGuardarPassword" EventName="Click" />
+                </Triggers>
+            </asp:UpdatePanel>
 
-                <asp:UpdatePanel ID="upMensaje" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnGuardar" EventName="Click" />
-                        <asp:AsyncPostBackTrigger ControlID="btnGuardarPassword" EventName="Click" />
-                    </Triggers>
-                </asp:UpdatePanel>
-
-                <div class="form-no-popup">
-                    <h3 style="margin-bottom:22px;">Información General</h3>
-
-                    <asp:TextBox ID="txtUsuario" runat="server" AutoCompleteType="None" Enabled="false"></asp:TextBox>
-
-                    <div id="colaborador">
-                        <asp:TextBox ID="txtCedula" runat="server" AutoCompleteType="None" MaxLength="20" Enabled="false"></asp:TextBox> 
-
-                        <asp:TextBox ID="txtNombre" runat="server" AutoCompleteType="None" MaxLength="50" Enabled="false"></asp:TextBox>
-
-                        <asp:TextBox ID="txtTelefono" runat="server" AutoCompleteType="None" MaxLength="20" TextMode="Phone"></asp:TextBox>
-
-                        <asp:TextBox ID="txtCorreo" runat="server" AutoCompleteType="None" MaxLength="100" TextMode="Email"></asp:TextBox>
-
-                        <asp:TextBox ID="txtDireccion" runat="server" AutoCompleteType="None" MaxLength="500" TextMode="MultiLine"></asp:TextBox>
+            <div class="col-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-6 bg-primary">
+                        <h6 class="m-0 font-weight-bold text-white">Mis Datos</h6>
                     </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <label class="form-label">Usuario</label>
+                                <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" Enabled="false"></asp:TextBox>
+                            </div>
+                            <div class="col mb-2">
+                                <label class="form-label">Correo</label>
+                                <asp:TextBox ID="txtCorreo" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="100" TextMode="Email"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <label class="form-label">Nombre</label>
+                                <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="50"></asp:TextBox>
+                            </div>
+                            <div class="col mb-2">
+                                <label class="form-label">Apellido</label>
+                                <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="50"></asp:TextBox>
 
-                    <h3>Actualizar Contraseña</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <label class="form-label">Rol</label>
+                                <asp:TextBox ID="txtRol" runat="server" CssClass="form-control form-control-sm" Enabled="false" />
+                            </div>
 
-                    <asp:TextBox ID="txtPasswordActual" runat="server" TextMode="Password" AutoCompleteType="None" MaxLength="30" ></asp:TextBox>
-
-                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" AutoCompleteType="None" MaxLength="30"  CssClass="nomarignb"></asp:TextBox>
-                    <label class="nota marginb11"><strong><i class="fas fa-exclamation-triangle"></i> Advertencia:</strong> La contraseña debe tener un máximo de 30 caracteres. La contraseña debe llevar mayúscula, minúscula, número y al menos un carácter especial.</label>
-
-                    <asp:TextBox ID="txtConfirmarPassword" runat="server" TextMode="Password" AutoCompleteType="None" MaxLength="30"></asp:TextBox>
-
+                            <div class="col mb-2">
+                                <label class="form-label">Cedula</label>
+                                <asp:TextBox ID="txtCedula" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="20"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-2">
+                                <label class="form-label">Dirección</label>
+                                <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="500" TextMode="MultiLine"></asp:TextBox>
+                            </div>
+                            <div class="col mb-2">
+                                <label class="form-label">Teléfono</label>
+                                <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control form-control-sm" AutoCompleteType="None" MaxLength="20" TextMode="Phone"></asp:TextBox>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-6 d-grid mx-auto">
+                                <asp:LinkButton ID="btnGuardar" runat="server" CssClass="btn btn-success btn-sm" Text="Guardar"></asp:LinkButton>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div id="Control">
-                    <asp:LinkButton ID="btnGuardar" runat="server" CssClass="new">
-                        <i class="fas fa-plus-circle"></i><label>Guardar</label>
-                    </asp:LinkButton>
-
-                    <asp:LinkButton ID="btnGuardarPassword" runat="server" CssClass="edit">
-                        <i class="fas fa-sync-alt"></i><label>Actualizar Contraseña</label>
-                    </asp:LinkButton>
+            <div class="col-3">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-6 bg-primary">
+                        <h6 class="m-0 font-weight-bold text-white">Cambiar Contraseña</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row d-flex flex-column">
+                            <div class="col mb-2">
+                                <label class="form-label">Contraseña Actual</label>
+                                <asp:TextBox ID="txtPasswordActual" runat="server" CssClass="form-control form-control-sm" TextMode="Password" AutoCompleteType="None" MaxLength="30"></asp:TextBox>
+                            </div>
+                            <div class="col mb-2">
+                                <label class="form-label">Nueva Contraseña</label>
+                                <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control form-control-sm" TextMode="Password" AutoCompleteType="None" MaxLength="30"></asp:TextBox>
+                            </div>
+                            <div class="col mb-4">
+                                <label class="form-label">Confirmar Contraseña</label>
+                                <asp:TextBox ID="txtConfirmarPassword" runat="server" CssClass="form-control form-control-sm" TextMode="Password" AutoCompleteType="None" MaxLength="30"></asp:TextBox>
+                            </div>
+                            <hr />
+                            <div class="col d-grid mx-auto">
+                                <asp:LinkButton ID="btnGuardarPassword" runat="server" CssClass="btn btn-success btn-sm">Guardar Cambios</asp:LinkButton>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-
-
-            </div><!-- #main-form-content-field -->
-
-            <div class="clear"></div>
-
-
-
-        </div><!-- =========== #main-form-content ====================================================================== -->
-    </div><!-- =========== #main-form ====================================================================== -->
+        </div>
+    </div>
 
     <asp:UpdateProgress ID="uprLoad" runat="server">
         <ProgressTemplate>
             <div class="loader">
                 <div>
-                    <img alt="Cargando" src="../img/load.gif"/>
+                    <img alt="Cargando" src="../img/load.gif" />
                     <p>Cargando...</p>
                 </div>
             </div>
@@ -96,6 +130,5 @@
     </asp:UpdateProgress>
 </asp:Content>
 
-<asp:Content ID="c6" ContentPlaceHolderID="cpScripts" Runat="Server">
-</asp:Content>
+<asp:Content ID="c6" ContentPlaceHolderID="cpScripts" runat="server"></asp:Content>
 
