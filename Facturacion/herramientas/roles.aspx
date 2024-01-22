@@ -15,9 +15,8 @@
 </asp:Content>
 
 <asp:Content ID="C4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
-    <div id="main-form" class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-3 bg-dark py-3 mx-2 vh-100">
                 <div class="mt-1 d-flex justify-content-start" role="group" aria-label="Control Buttons">
@@ -27,14 +26,6 @@
                 <div class="mt-3 d-flex flex-column justify-content-center">
                     <label id="card-label" class="px-1 fs-6 text-white">Seleccione rol a modificar: </label>
                     <asp:DropDownList ID="ddlRol" CssClass="form-select my-1" runat="server" AutoPostBack="true" />
-                    <ajaxToolkit:CascadingDropDown
-                        ID="CRol"
-                        runat="server"
-                        TargetControlID="ddlRol"
-                        ServicePath="../services/WSCatProductos.asmx"
-                        ServiceMethod="GetRol"
-                        Category="CategoryRol"
-                        PromptText="Seleccione..."></ajaxToolkit:CascadingDropDown>
                 </div>
 
             </div>
@@ -53,6 +44,8 @@
                                     <ParentNodeStyle CssClass="fw-bold" />
                                     <SelectedNodeStyle BackColor="#B5B5B5" Font-Underline="False" HorizontalPadding="0px" VerticalPadding="0px" />
                                 </asp:TreeView>
+
+                                <asp:HiddenField ID="hdfCodigo" runat="server" />
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="ddlRol" EventName="SelectedIndexChanged" />
@@ -83,15 +76,6 @@
             </div>
         </div>
     </div>
-
-    <asp:UpdatePanel ID="upTable" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <asp:HiddenField ID="hdfCodigo" runat="server" />
-        </ContentTemplate>
-        <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="ddlRol" EventName="SelectedIndexChanged" />
-        </Triggers>
-    </asp:UpdatePanel>
 
     <asp:UpdateProgress ID="uprGrid" runat="server">
         <ProgressTemplate>
