@@ -67,20 +67,18 @@ Public Class database
     Public Function GetDataTable(query As String) As DataTable
         Try
             Using dbCon As New OleDbConnection(conn.conn)
+                Dim dt As New DataTable()
                 dbCon.Open()
 
-                Dim sql As String = "SET DATEFORMAT DMY "
-                sql = sql & vbCrLf & query
-
-                Using cmd As New OleDbCommand(sql, dbCon)
-                    cmd.CommandType = CommandType.Text
-                    Using da As New OleDbDataAdapter(sql, dbCon)
-                        Using dt As New DataTable("Factura")
-                            da.Fill(dt)
-                            Return dt
-                        End Using
+                Using cmd As New OleDbCommand(query, dbCon)
+                    Using da As New OleDbDataAdapter()
+                        cmd.CommandType = CommandType.Text
+                        cmd.Connection = dbCon
+                        da.SelectCommand = cmd
+                        da.Fill(dt)
                     End Using
                 End Using
+                Return dt
             End Using
 
         Catch ex As Exception
@@ -128,7 +126,6 @@ Public Class database
         End Try
     End Function
 
-
     ''' <summary>Esta función ejecuta un query de sql y retorna un OleDbDataReader</summary>
     ''' <param name="sql">sql query</param>
     ''' <returns>OleDbDataReader</returns>
@@ -141,9 +138,7 @@ Public Class database
                 Using cmd As New OleDbCommand(sql, dbCon)
                     cmd.CommandTimeout = 9999
                     Dim dr As OleDbDataReader = cmd.ExecuteReader()
-
                     Return dr
-                    dr.Close()
                 End Using
             End Using
         Catch ex As OleDbException
@@ -238,6 +233,29 @@ Public Class database
         Catch ex As Exception
             conn.PmsgBox("Error en clase de database: " & ex.Message, "error")
             Return String.Empty
+        End Try
+    End Function
+
+    Public Function SaveToDatabase(sql As String) As Boolean
+
+        Try
+            Using dbCon As New OleDbConnection(conn.conn)
+                dbCon.Open()
+
+                Using cmd As New OleDbCommand(sql, dbCon)
+                    Dim affectedRows = cmd.ExecuteNonQuery()
+
+                    If affectedRows > 0 Then
+                        Return True
+                    End If
+
+                    Return False
+
+                End Using
+            End Using
+
+        Catch ex As Exception
+            Throw ex
         End Try
     End Function
 
