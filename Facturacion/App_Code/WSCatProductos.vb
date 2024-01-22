@@ -419,7 +419,7 @@ Public Class WSCatProductos
 
             Dim sql As String = " EXEC CombosProductos " &
                                 "@opcion = 24," &
-                                "@codigo = null "
+                                "@codigo = NULL"
 
             Dim cmd As New OleDbCommand(sql, dbCon)
             Dim Reader As OleDbDataReader = cmd.ExecuteReader()
