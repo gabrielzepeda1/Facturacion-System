@@ -16,8 +16,6 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
-
     <div id="main-form">
             <div class="container-fluid">
                 <div class="row mx-1 py-2 align-items-center justify-content-between">
