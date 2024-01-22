@@ -32,7 +32,7 @@ Namespace FACTURACION_CLASS
                     ddlCliente.DataTextField = "NombreCompleto"
                     ddlCliente.DataValueField = "CodigoCliente"
                     ddlCliente.DataBind()
-                    ddlCliente.Items.Insert(0, New ListItem("--Seleccione Cliente--", "0"))
+                    ddlCliente.Items.Insert(0, New ListItem("", "0"))
                 End If
 
             Catch ex As Exception
@@ -62,7 +62,7 @@ Namespace FACTURACION_CLASS
                     ddlVendedor.DataTextField = "NombreCompleto"
                     ddlVendedor.DataValueField = "CodigoVendedor"
                     ddlVendedor.DataBind()
-                    ddlVendedor.Items.Insert(0, New ListItem("--Seleccione Vendedor--", "0"))
+                    ddlVendedor.Items.Insert(0, New ListItem("", "0"))
                 End If
 
             Catch ex As Exception
@@ -158,6 +158,26 @@ Namespace FACTURACION_CLASS
             Catch ex As Exception
                 Throw ex
             End Try
+        End Sub
+
+        Public Shared Sub BindDropDownListRol(ddl As DropDownList)
+            Try
+                Dim sql = $"EXEC CombosProductos @opcion = 24, @codigo = NULL"
+                Dim dt As DataTable = _database.GetDataTable(sql)
+
+                If dt.Rows.Count > 0 Then
+                    ddl.DataSource = dt
+                    ddl.DataTextField = "Rol"
+                    ddl.DataValueField = "CodigoRol"
+                    ddl.DataBind()
+                    ddl.Items.Insert(0, New ListItem("", "0"))
+                End If
+
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
         End Sub
 
         Public Sub BindDropDownList(ddl As DropDownList, sqlQuery As String, valueField As String, textField As String)
