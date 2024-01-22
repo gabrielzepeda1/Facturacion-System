@@ -27,10 +27,8 @@ Partial Class Mater_principal
             'Se ejecuta la function JavaScript que inicializa el conteo del timeout.
             ScriptManager.RegisterStartupScript(Me.Page, Page.GetType(), "SessionAlert", "SessionExpireAlert(" & timeout & ");", True)
 
-            If pageName <> String.Empty AndAlso pageName <> "Default.aspx" Then
-                If HasPermission(pageName) = False Then
-                    Response.Redirect(ResolveClientUrl("~/Default.aspx"))
-                End If
+            If pageName <> String.Empty AndAlso pageName <> "Default.aspx" AndAlso HasPermission(pageName) = False Then
+                Response.Redirect(ResolveClientUrl("~/Default.aspx"))
             End If
 
             MyUserName = Session("Username")
