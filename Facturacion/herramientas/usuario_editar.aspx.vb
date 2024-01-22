@@ -1,16 +1,13 @@
 ﻿Imports System.Data
-Imports System.Globalization
-Imports System.Threading
-Imports System.Net
 Imports System.IO
-Imports System.Text
 Imports System.Security.Cryptography
-Imports IpPublicKnowledge
+Imports AlertifyClass
+Imports FACTURACION_CLASS
 
 Partial Class herramientas_usuario_editar
-    Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
-    Dim DataBase As New FACTURACION_CLASS.database
+    Inherits Page
+    Dim conn As New seguridad
+    Dim DataBase As New database
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -48,83 +45,73 @@ Partial Class herramientas_usuario_editar
             'Form.DefaultButton = Me.btnBuscarGrid.FindControl("btnGuardar").UniqueID
 
             Attributes_Text()
-
             Load_Usuario_Data()
         End If
     End Sub
 
     Private Sub Attributes_Text()
-        Me.txtUsuario.Attributes.Add("placeholder", "Nombre de Usuario")
-        Me.txtUsuario.Attributes.Add("autocomplete", "off")
+        txtUsuario.Attributes.Add("autocomplete", "off")
 
-        Me.txtPasswordActual.Attributes.Add("placeholder", "Contraseña Actual")
-        Me.txtPasswordActual.Attributes.Add("required", "required")
-        Me.txtPasswordActual.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
-        Me.txtPasswordActual.Attributes.Add("autocomplete", "off")
+        txtPasswordActual.Attributes.Add("required", "required")
+        txtPasswordActual.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
+        txtPasswordActual.Attributes.Add("autocomplete", "off")
 
-        Me.txtPassword.Attributes.Add("placeholder", "Nueva Contraseña")
-        Me.txtPassword.Attributes.Add("required", "required")
-        Me.txtPassword.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
-        Me.txtPassword.Attributes.Add("autocomplete", "off")
+        txtPassword.Attributes.Add("required", "required")
+        txtPassword.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
+        txtPassword.Attributes.Add("autocomplete", "off")
 
-        Me.txtConfirmarPassword.Attributes.Add("placeholder", "Confirmar Contraseña")
-        Me.txtConfirmarPassword.Attributes.Add("required", "required")
-        Me.txtConfirmarPassword.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
-        Me.txtConfirmarPassword.Attributes.Add("autocomplete", "off")
+        txtConfirmarPassword.Attributes.Add("required", "required")
+        txtConfirmarPassword.Attributes.Add("pattern", "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$")
+        txtConfirmarPassword.Attributes.Add("autocomplete", "off")
 
+        txtCedula.Attributes.Add("autocomplete", "off")
 
-        Me.txtCedula.Attributes.Add("placeholder", "Escriba el numero de Cedula")
-        Me.txtCedula.Attributes.Add("autocomplete", "off")
+        txtNombre.Attributes.Add("autocomplete", "off")
 
-        Me.txtNombre.Attributes.Add("placeholder", "Nombre de la persona")
-        Me.txtNombre.Attributes.Add("autocomplete", "off")
+        txtApellido.Attributes.Add("autocomplete", "off")
 
-        Me.txtTelefono.Attributes.Add("placeholder", "Teléfono de la persona")
-        Me.txtTelefono.Attributes.Add("autocomplete", "off")
+        txtTelefono.Attributes.Add("autocomplete", "off")
 
-        Me.txtCorreo.Attributes.Add("placeholder", "Correo de la persona")
-        Me.txtCorreo.Attributes.Add("autocomplete", "off")
+        txtCorreo.Attributes.Add("autocomplete", "off")
 
-        Me.txtDireccion.Attributes.Add("placeholder", "Dirección de la persona")
-        Me.txtDireccion.Attributes.Add("autocomplete", "off")
+        txtDireccion.Attributes.Add("autocomplete", "off")
     End Sub
 
     Private Sub Load_Usuario_Data()
         Try
-            Me.ltMensaje.Text = String.Empty
+            Dim sql = " EXEC sp_usuario " &
+                  "@consecutivo_usuario = " & Session("CodigoUser") & "," &
+                  "@cuenta = null," &
+                  "@contrasenia = null," &
+                  "@cedula = NULL," &
+                  "@nombre = NULL," &
+                  "@apellido = NULL," &
+                  "@telefono = NULL," &
+                  "@correo = NULL," &
+                  "@direccion = NULL," &
+                  "@cod_rol = NULL," &
+                  "@tipo = 'READ' "
 
-            Dim SQL As String = String.Empty
-            SQL = " EXEC sp_usuario " & _
-                      "@consecutivo = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
-                      "@cuenta = null," & _
-                      "@contrasenia = null," & _
-                      "@cedula = NULL," & _
-                      "@nombre = NULL," & _
-                      "@apellido = NULL," & _
-                      "@telefono = NULL," & _
-                      "@correo = NULL," & _
-                      "@direccion = NULL," & _
-                      "@tipo = 'READ' "
+            Using dt As DataTable = DataBase.GetDataTable(sql)
+                If dt.Rows.Count > 0 Then
+                    ' Accessing the first row of the DataTable
+                    Dim row As DataRow = dt.Rows(0)
 
-            Dim dr As System.Data.OleDb.OleDbDataReader = DataBase.GetDataReader(SQL)
-            If dr.Read() Then
-                'dr.Item("").ToString()
-                Me.txtUsuario.Text = dr.Item("USUARIO").ToString()
-                Me.txtCedula.Text = dr.Item("Cedula").ToString()
-                Me.txtNombre.Text = dr.Item("NOMBRE").ToString()
-                Me.txtTelefono.Text = dr.Item("TELEFONO").ToString()
-                Me.txtCorreo.Text = dr.Item("CORREO").ToString()
-                Me.txtDireccion.Text = dr.Item("direccion").ToString()
-            End If
-
-            dr.Close()
-
+                    ' Accessing data from columns in the DataRow
+                    txtUsuario.Text = row("Username").ToString()
+                    txtCedula.Text = row("cedula").ToString()
+                    txtNombre.Text = row("nombre").ToString()
+                    txtApellido.Text = row("apellido").ToString()
+                    txtRol.Text = row("Rol").ToString()
+                    txtTelefono.Text = row("telefono").ToString()
+                    txtCorreo.Text = row("email").ToString()
+                    txtDireccion.Text = row("direccion").ToString()
+                End If
+            End Using
         Catch ex As Exception
-            Me.ltMensaje.Text = conn.PmsgBox(ex.Message, "error")
-
+            Throw ex
         End Try
     End Sub
-
 
 #Region "PROCESO DE ENCRIPTACIÓN"
     Private Function Encrypt(clearText As String) As String
@@ -133,8 +120,8 @@ Partial Class herramientas_usuario_editar
         Dim clearBytes As Byte() = Encoding.Unicode.GetBytes(clearText)
 
         Using encryptor As Aes = Aes.Create()
-            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, _
-             &H65, &H64, &H76, &H65, &H64, &H65, _
+            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D,
+             &H65, &H64, &H76, &H65, &H64, &H65,
              &H76})
             encryptor.Key = pdb.GetBytes(32)
             encryptor.IV = pdb.GetBytes(16)
@@ -161,8 +148,8 @@ Partial Class herramientas_usuario_editar
         Dim cipherBytes As Byte() = Convert.FromBase64String(cipherText)
 
         Using encryptor As Aes = Aes.Create()
-            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, _
-             &H65, &H64, &H76, &H65, &H64, &H65, _
+            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D,
+             &H65, &H64, &H76, &H65, &H64, &H65,
              &H76})
 
             encryptor.Key = pdb.GetBytes(32)
@@ -185,114 +172,89 @@ Partial Class herramientas_usuario_editar
     End Function
 #End Region
 
-
 #Region "ENVIAR DATOS A SQL SERVER"
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
-        Dim MessegeText As String = String.Empty
 
-        If Me.txtCorreo.Text.Trim = String.Empty Then
-            MessegeText = "alertify.alert('El proceso no puede continuar. La dirección de correo es un campo requerido.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-            Exit Sub
+        If txtCorreo.Text.Trim = String.Empty Then
+            AlertifyErrorMessage(Me, "El proceso no puede continuar. La dirección de correo es un campo requerido.")
+            Return
         End If
 
-        If Me.txtTelefono.Text.Trim = String.Empty Then
-            MessegeText = "alertify.alert('El proceso no puede continuar. Debe ingresar un numero de contacto.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-            Exit Sub
+        If txtTelefono.Text.Trim = String.Empty Then
+            AlertifyErrorMessage(Me, "El proceso no puede continuar. La dirección de correo es un campo requerido.")
+            Return
         End If
 
-        Dim sql As String = String.Empty
-        sql = " EXEC sp_usuario " & _
-              "@consecutivo = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
-              "@cuenta = null," & _
-              "@contrasenia = null," & _
-              "@cedula = null," & _
-              "@nombre = null," & _
-              "@apellido = null," & _
-              "@telefono = " & IIf(Me.txtTelefono.Text = String.Empty, "NULL", "'" & Me.txtTelefono.Text.Trim & "'") & "," & _
-              "@correo = " & IIf(Me.txtCorreo.Text = String.Empty, "NULL", "'" & Me.txtCorreo.Text.Trim & "'") & "," & _
-              "@direccion = " & IIf(Me.txtDireccion.Text = String.Empty, "NULL", "'" & Me.txtDireccion.Text.Trim & "'") & "," & _
-              "@tipo = 'ACTUALIZAR' "
+        Dim sql = $"EXEC sp_usuario
+                @consecutivo_usuario = {Session("CodigoUser")},
+                @cuenta = null,
+                @contrasenia = null,
+                @cedula = {(If(txtCedula.Text = String.Empty, "NULL", $"'{txtCedula.Text.Trim()}'"))},
+                @nombre = {(If(txtNombre.Text = String.Empty, "NULL", $"'{txtNombre.Text.Trim()}'"))},
+                @apellido = {(If(txtApellido.Text = String.Empty, "NULL", $"'{txtApellido.Text.Trim()}'"))},
+                @telefono = {(If(txtTelefono.Text = String.Empty, "NULL", $"'{txtTelefono.Text.Trim()}'"))},
+                @correo = {(If(txtCorreo.Text = String.Empty, "NULL", $"'{txtCorreo.Text.Trim()}'"))},
+                @direccion = {(If(txtDireccion.Text = String.Empty, "NULL", $"'{txtDireccion.Text.Trim()}'"))},
+                @cod_rol = null,
+                @tipo = 'ACTUALIZAR'"
 
-        Guardar(sql)
+        Dim Guardar = DataBase.SaveToDatabase(sql)
+
+        If Guardar Then
+            AlertifySuccessMessage(Me, "Cambios Guardados Correctamente")
+        Else
+            AlertifyErrorMessage(Me, "Ocurrió un error al guardar los cambios. Verifique la información o contacte con un administrador.")
+        End If
 
     End Sub
 
     Protected Sub btnGuardarPassword_Click(sender As Object, e As EventArgs) Handles btnGuardarPassword.Click
-        Dim MessegeText As String = String.Empty
-
-        If Me.txtPasswordActual.Text.Trim = String.Empty Then
-            MessegeText = "alertify.alert('El proceso no puede continuar. La contraseña Actual es un campo requerido.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+        If txtPasswordActual.Text.Trim = String.Empty Then
+            AlertifyErrorMessage(Me, "El proceso no puede continuar.  La contraseña Actual es un campo requerido.")
             Exit Sub
         End If
 
-        If Me.txtPassword.Text.Trim = String.Empty Then
-            MessegeText = "alertify.alert('La contraseña no puede estar vacía.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+        If txtPassword.Text.Trim = String.Empty Then
+            AlertifyErrorMessage(Me, "El proceso no puede continuar. La contraseña no puede estar vacía.")
             Exit Sub
         End If
 
-        If Not Me.txtPassword.Text.Trim = Me.txtConfirmarPassword.Text.Trim Then
-            MessegeText = "alertify.alert('La contraseña no coincide,  verifique la información.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+        If txtPassword.Text.Trim <> txtConfirmarPassword.Text.Trim Then
+            AlertifyErrorMessage(Me, "El proceso no puede continuar. Las contraseñas no coinciden.")
             Exit Sub
         End If
 
-        Dim password_encript As String = HttpUtility.UrlEncode(Encrypt(Me.txtPasswordActual.Text.Trim))
+        Dim password_encript As String = HttpUtility.UrlEncode(Encrypt(txtPasswordActual.Text.Trim()))
 
-        If DataBase.GetBoleano("EXEC sp_user_passsword @codusuario = " & Request.Cookies("CKGEIN")("cod_usuario") & ", @password = '" & password_encript & "' ", "Usuario") = False Then
-            MessegeText = "alertify.alert('La contraseña ingresada no coincide con los datos actuales. Por favor Inténtelo nuevamente.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+        If DataBase.GetBoleano("EXEC sp_user_passsword @codusuario = " & Session("CodigoUser") & ", @password = '" & password_encript & "' ", "Usuario") = False Then
+            AlertifyErrorMessage(Me, "La contraseña ingresada no coincide con los datos actuales. Por favor Inténtelo nuevamente.")
             Exit Sub
         End If
-
-        Dim sql As String = String.Empty
 
         password_encript = HttpUtility.UrlEncode(Encrypt(Me.txtPassword.Text.Trim))
 
-        sql = " EXEC sp_usuario " & _
-              "@consecutivo = " & Request.Cookies("CKSMFACTURA")("cod_usuario") & "," & _
-              "@cuenta = null," & _
-              "@contrasenia = '" & password_encript & "'," & _
-              "@cedula = null," & _
-              "@nombre = null," & _
-              "@apellido = null," & _
-              "@telefono = null," & _
-              "@correo = null," & _
-              "@direccion = null," & _
+        Dim sql = " EXEC sp_usuario " &
+              "@consecutivo_usuario = " & Session("CodigoUser") & "," &
+              "@cuenta = null," &
+              "@contrasenia = '" & password_encript & "'," &
+              "@cedula = null," &
+              "@nombre = null," &
+              "@apellido = null," &
+              "@telefono = null," &
+              "@correo = null," &
+              "@direccion = null," &
+              "@cod_rol = null," &
               "@tipo = 'CHANGE PASSWORD' "
 
-        Guardar(sql)
+        Dim Guardar = DataBase.SaveToDatabase(sql) 'GUARDA LOS DATOS EN LA BASE DE DATOS
+
+        If Guardar Then
+            AlertifySuccessMessage(Me, "Cambios Guardados Correctamente")
+        Else
+            AlertifyErrorMessage(Me, "Ocurrió un error al guardar los cambios. Verifique la información o contacte con un administrador.")
+        End If
 
     End Sub
 
-    Private Sub Guardar(query As String)
-        Dim MessegeText As String = String.Empty
-
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
-        Try
-            If dbCon.State = ConnectionState.Closed Then
-                dbCon.Open()
-            End If
-
-            Dim cmd As New OleDb.OleDbCommand(query, dbCon)
-            cmd.ExecuteNonQuery()
-
-            MessegeText = "alertify.success('El registro ha sido guardado de forma correcta.');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-        Catch ex As Exception
-            MessegeText = "alertify.error('Ha ocurrido un error al intentar guardar los datos. Si el problema persiste, contacte con el administrador. " & ex.Message & "');"
-            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
-
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
-        End Try
-    End Sub
 #End Region
 End Class
