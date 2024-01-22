@@ -1,4 +1,4 @@
-﻿c<%@ Master Language="VB" CodeFile="principal.master.vb" Inherits="Mater_principal" %>
+﻿<%@ Master Language="VB" CodeFile="principal.master.vb" Inherits="Mater_principal" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
@@ -27,11 +27,11 @@
 <body>
     <form id="form1" runat="server" enctype="multipart/form-data" method="post">
         <asp:ScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
-        <%--<asp:HiddenField ID="hdfRefresh" runat="server"/>--%>
-        <asp:Button ID="btnHidden" runat="server"  Visible="false"/>
+        <asp:Button ID="btnHidden" runat="server" Visible="false" />
         <header>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
                 <div class="container-fluid">
+
                     <div class="d-flex col-1 justify-content-center">
                         <a id="homeButton" class="navbar-brand" href="../Default.aspx">
                             <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
@@ -43,17 +43,29 @@
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+                            <div class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
                                 <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-6 px-5 justify-content-end align-items-center">
+                        <div class="nav-item dropdown">
+                            <a class="btn btn-outline-primary dropdown-toggle text-center align-middle" data-bs-toggle="dropdown" role="button">
+                                <i class="fas fa-user"></i>&nbsp;<%= MyUserName%>
+                            </a>
+                            <ul class="dropdown-menu animate slideIn">
+                                <li>
+                                    <a class="dropdown-item rounded text-decoration-none a-default fs-6" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>">
+                                        <i class="fas fa-user"></i>&nbsp;Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <asp:LinkButton ID="btnCerrar" CssClass="dropdown-item rounded text-decoration-none a-default fs-6" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
+                                </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="d-flex col-6 align-items-center justify-content-end column-gap-2 px-3">
-                        <a class="btn btn-success text-center align-middle" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>" role="button">
-                            <i class="fas fa-user"></i>&nbsp <%= MyUserName%>
-                        </a>
-                        <asp:LinkButton ID="btnCerrar" CssClass="btn btn-danger" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
-                    </div>
+
                 </div>
             </nav>
         </header>
@@ -96,7 +108,7 @@
     <script src="<%= ResolveClientUrl("~/js/settings/alertifySettings.js") %>"></script>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", () => {
-            console.log("This is running");
+            console.log("principal.master is running");
             ubicacionStyles();
             tituloStyles();
             btnNewStyles();
@@ -107,11 +119,15 @@
             setFloatingLabel();
             //tableActive();
 
-            //$('.SelectSearch').select2({
-            //    theme: "classic",
-            //    placeholder: "Escribe para filtrar",
-            //    allowClear: false
-            //});
+            $('#sidebarToggle').sidr({ side: 'left' });
+
+            $(function () {
+                $("select").select2({
+                    theme: "bootstrap-5",
+
+                });
+            });
+
 
 
             //$('#sidebar-menu').sidr({ side: 'right' });
@@ -248,9 +264,6 @@
     </script>
 
     <asp:ContentPlaceHolder ID="cpScripts" runat="server">
-
-
-
     </asp:ContentPlaceHolder>
 </body>
 </html>
