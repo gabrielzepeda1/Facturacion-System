@@ -1,13 +1,12 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
-Imports AlertifyClass
-Imports Microsoft.Ajax.Utilities 'Importar la clase AlertifyClass para poder utilizar los metodos de la clase.
+Imports AlertifyClass 'Importar la clase AlertifyClass para poder utilizar los metodos de la clase.
+Imports FACTURACION_CLASS.DropdownsClass
 
 Partial Class herramientas_roles
     Inherits Page
     Dim _conn As New FACTURACION_CLASS.seguridad
     Dim _dataBase As New FACTURACION_CLASS.database
-    Public NombreRol As String = String.Empty
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -46,23 +45,24 @@ Partial Class herramientas_roles
         trvMenu.Attributes.Add("onclick", "checkBoxPostBack()")
 
         If Not Page.IsPostBack Then
+            BindDropDownListRol(ddlRol)
             ddlRol.Focus()
         End If
-
     End Sub
 
     Protected Sub ddlRol_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRol.SelectedIndexChanged
 
-        NombreRol = ddlRol.SelectedItem.Text.ToString()
         hdfCodigo.Value = ddlRol.SelectedValue.ToString()
 
         trvMenu.Nodes.Clear()
 
-        Dim dt As DataTable = Me.GetData("SELECT cod_menu, etiqueta FROM sys_menu_web_parent")
+        'Obtener un DataTable con los nodos padre desde la tabla sys_menu_web_parent. 
+        Dim dt As DataTable = _dataBase.GetDataTable("SELECT cod_menu, etiqueta FROM sys_menu_web_parent")
+
+        'Llenar los nodos padres con los elementos del menu en el siguiente procedimiento: 
         LoadTreeView(dt, 0, Nothing)
 
         trvMenu.CollapseAll()
-
     End Sub
     Private Sub trvMenu_TreeNodeCheckChanged(sender As Object, e As TreeNodeEventArgs) Handles trvMenu.TreeNodeCheckChanged
 
@@ -102,21 +102,20 @@ Partial Class herramientas_roles
     End Sub
 
 #Region "CARGAR DATOS DEL MENÚ"
-
     Private Sub LoadTreeView(dtParent As DataTable, parentId As Integer, treeNode As TreeNode)
 
         For Each row As DataRow In dtParent.Rows
+
             Dim child As New TreeNode With {
                     .Text = row("etiqueta").ToString(),
                     .Value = row("cod_menu").ToString()
                     }
             If parentId = 0 Then
                 trvMenu.Nodes.Add(child)
-                Dim dtChild As DataTable = Me.GetData("SELECT cod_menu, cod_padre, etiqueta, posicion FROM sys_menu_web WHERE cod_padre = " & child.Value)
+                Dim dtChild As DataTable = _dataBase.GetDataTable("SELECT cod_menu, cod_padre, etiqueta, posicion FROM sys_menu_web WHERE cod_padre = " & child.Value)
                 LoadTreeView(dtChild, Integer.Parse(child.Value), child)
             Else
                 treeNode.ChildNodes.Add(child)
-
                 GetCheckedNode(child)
 
             End If
@@ -126,44 +125,17 @@ Partial Class herramientas_roles
 
     End Sub
     Private Sub GetCheckedNode(child As TreeNode)
-        'Este metodo se encarga de activar el checkbox de los nodos hijos si el cod_menu existe en la tabla sys_menu_permisos_roles
+        'Este metodo se encarga de activar el checkbox de los nodos hijos
+        'si el cod_menu existe en la tabla sys_menu_permisos_roles
 
-        Dim query = "SELECT 1 FROM sys_menu_permisos_roles WHERE cod_rol = " & hdfCodigo.Value & " AND cod_menu = " & child.Value
+        Dim query = $"SELECT 1 FROM sys_menu_permisos_roles WHERE cod_rol = {hdfCodigo.Value} AND cod_menu = {child.Value}"
 
-        Using dbCon As New OleDbConnection(_conn.conn)
-            dbCon.Open()
+        Dim dt As DataTable = _dataBase.GetDataTable(query)
 
-            Using cmd As New OleDbCommand(query, dbCon)
-                cmd.CommandType = CommandType.Text
-                cmd.CommandText = query
-                Dim reader As OleDbDataReader = cmd.ExecuteReader()
-
-                If reader.HasRows Then
-                    child.Checked = True
-                End If
-
-            End Using
-        End Using
-
+        If dt.Rows.Count > 0 Then
+            child.Checked = True
+        End If
     End Sub
-
-    Private Function GetData(query As String) As DataTable
-        'Metodo para obtener un datatable de la base de datos. 
-        Dim dt As New DataTable()
-
-        Using dbCon As New OleDbConnection(_conn.conn)
-            Using cmd As New OleDbCommand(query)
-                Using da As New OleDbDataAdapter()
-                    cmd.CommandType = CommandType.Text
-                    cmd.Connection = dbCon
-                    da.SelectCommand = cmd
-                    da.Fill(dt)
-                End Using
-            End Using
-            Return dt
-        End Using
-    End Function
-
     'Private Sub GetMenu()
     '    Try
     '        trvMenu.Nodes.Clear()
