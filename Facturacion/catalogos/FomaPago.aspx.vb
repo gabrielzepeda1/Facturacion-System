@@ -99,6 +99,12 @@ Partial Class catalogos_FomaPago
             Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
 
         End Try
+
+
+
+        
+
+
     End Sub
 
     Protected Sub GridViewOne_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.DataBound

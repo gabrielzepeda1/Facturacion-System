@@ -30,7 +30,7 @@
     <a href="Empresas.aspx">Catálogo de Empresas</a>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+    <%--<asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>--%>
 
     <div id="main-form">
         <div id="main-form-content">

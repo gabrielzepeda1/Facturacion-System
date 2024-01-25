@@ -1,18 +1,19 @@
 ﻿Imports System.Data
 Imports System.Globalization
 Imports System.Threading
-Imports FACTURACION_CLASS.Seguridad
+Imports FACTURACION_CLASS.seguridad
 Imports FACTURACION_CLASS.database
+Imports System
 
 Partial Class catalogos_Calidades
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.Seguridad
+    Dim conn As New FACTURACION_CLASS.seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
 #Region "PROPIEDADES DEL FORMULARIO"
-    
+
     Private Property dtTabla() As DataTable
         Get
             Return ViewState("dtTabla")
@@ -222,7 +223,7 @@ Partial Class catalogos_Calidades
     Private Sub Guardar()
         Dim MessegeText As String = String.Empty
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -267,7 +268,7 @@ Partial Class catalogos_Calidades
 
     Private Sub Eliminar()
         Dim MessegeText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -305,7 +306,7 @@ Partial Class catalogos_Calidades
 
     Private Sub Actualizar(Codigo As String, Descripcio As String)
         Dim MessegeText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -430,7 +431,7 @@ Partial Class catalogos_Calidades
     End Sub
 
 #End Region
-   
+
     Protected Sub GridViewOne_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridViewOne.SelectedIndexChanged
 
         'Try
@@ -461,10 +462,10 @@ Partial Class catalogos_Calidades
     ''' OBTIENE LOS DATOS DEL REGISTRO SELECCIONADO Y LOS CARGA EN EL FORMULARIO.
     ''' </summary>
     ''' <remarks></remarks>
-    
+
     Private Sub GetRegClientes()
         Try
-            
+
             Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
             sql &= "EXEC Cat_CalidadesProductos @opcion=4," & _
                   "@codigo =  " & Me.hdfCodigo.Value & "," & _
@@ -475,8 +476,8 @@ Partial Class catalogos_Calidades
 
             Dim dr As System.Data.OleDb.OleDbDataReader = DataBase.GetDataReader(sql)
 
-         
-          
+
+
             If dr.Read() Then
                 Me.txtDescripcion.Text = dr.Item("Descripcion").ToString
                 dr.Close()

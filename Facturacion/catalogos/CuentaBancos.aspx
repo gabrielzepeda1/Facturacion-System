@@ -12,7 +12,7 @@
      <a href="CuentaBancos.aspx">Catálogo de Cuentas de Bancos</a>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
-     <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
+     <%--<asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>--%>
     <div id="main-form">
         <div id="main-form-content">
              

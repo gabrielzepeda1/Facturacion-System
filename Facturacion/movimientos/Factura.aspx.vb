@@ -147,7 +147,7 @@ Partial Class movimientos_Factura
 
         Dim sql As String
         sql = " SET DATEFORMAT DMY " + "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("cod_pais") & "  " &
-              " and cod_empresa= " & Session("cod_empresa") & " " &
+              " and cod_empresa= " &  Session("CodigoEmpresa")& " " &
              " and cod_puesto= " & Session("cod_puesto") & " "
 
         'The next line declares a SQL query that will be used to retrieve the next invoice number for a particular user, company, and location. The query selects the "no_factura" field from a database table called "puestos" and adds 1 to it to generate the next invoice number. It also selects a field called "verificar_inventario" from the same table and assigns it to a variable called "INV". The SQL query uses the values of three Session variables called "cod_pais", "cod_empresa", and "cod_puesto" to filter the results.
@@ -173,7 +173,7 @@ Partial Class movimientos_Factura
         'Sql = "SELECT Paridad FROM Paridad  WHERE cod_Pais= '" & Session("cod_pais") & "'"
         Sql = "EXEC Cat_FormaPago @opcion=5," &
                   "@codigoPais =  " & Session("cod_pais") & " ," &
-                  "@codigoEmpresa =  " & Session("cod_empresa") & " ," &
+                  "@codigoEmpresa =  " &  Session("CodigoEmpresa")& " ," &
                   "@codigoPuesto =  " & Session("cod_puesto") & " ," &
                   "@codigoFormaPago =  '0' ," &
                   "@descripcion =  '0' ," &
@@ -327,7 +327,7 @@ Partial Class movimientos_Factura
             '                             "ltrim(rtrim(nombre_comercial)) AS cliente" & _
             '                            " FROM Clientes WHERE cod_pais= " & Session("cod_pais") & " " & _
             '                           " AND cod_pais= " & Session("cod_pais") & " " & _
-            '                          " AND cod_empresa= " & Session("cod_empresa") & " " & _
+            '                          " AND cod_empresa= " &  Session("CodigoEmpresa")& " " & _
             '                         " order by ltrim(rtrim(nombre_comercial)) ")
             '
             '" and  (externo=0 or cod_cliente='0')  " & _
@@ -340,7 +340,7 @@ Partial Class movimientos_Factura
                                       "ltrim(rtrim(nombre_comercial)) AS cliente,externo" &
                                       " FROM Clientes WHERE cod_pais= " & Session("cod_pais") & " " &
                                       " AND cod_pais= " & Session("cod_pais") & " " &
-                                      " AND cod_empresa= " & Session("cod_empresa") & " " &
+                                      " AND cod_empresa= " &  Session("CodigoEmpresa")& " " &
                                       " order by ltrim(rtrim(nombre_comercial)) "
 
             Dim dt As New DataTable
@@ -466,7 +466,7 @@ Partial Class movimientos_Factura
                 'Dim SQL As String = String.Empty
                 'SQL = "EXEC VerifiInventario @opcion=1," & _
                 '      "@codigoPais =  " & Session("cod_pais") & "  ," & _
-                '      "@codigoEmpresa =  " & Session("cod_empresa") & "  ," & _
+                '      "@codigoEmpresa =  " &  Session("CodigoEmpresa")& "  ," & _
                 '      "@codigoPuesto =  " & Session("cod_puesto") & " "
 
                 'Dim dt As DataTable
@@ -833,7 +833,7 @@ Partial Class movimientos_Factura
             sql &= "EXEC Factura @opcion=4," &
                   "@codigoPais = " & Session("cod_pais") & "," &
                   "@codigoPuesto = " & Session("cod_puesto") & "," &
-                  "@codigoEmpresa = " & Session("cod_empresa") & "," &
+                  "@codigoEmpresa = " &  Session("CodigoEmpresa")& "," &
                   "@no_factura = " & txtNoFac.Text.Trim & "," &
                   "@fecha = '01/01/1900'," &
                   "@cod_producto = '" & ProductoCodProd & "'," &
@@ -955,7 +955,7 @@ Partial Class movimientos_Factura
             sql &= "EXEC Factura @opcion=1," &
                   "@codigoPais = " & Session("cod_pais") & "," &
                   "@codigoPuesto = " & Session("cod_puesto") & "," &
-                  "@codigoEmpresa = " & Session("cod_empresa") & "," &
+                  "@codigoEmpresa = " &  Session("CodigoEmpresa")& "," &
                   "@no_factura = " & txtNoFac.Text.Trim & "," &
                   "@fecha = '01/01/1900'," &
                   "@cod_producto = '" & Me.ddlProducto.SelectedValue & "'," &
@@ -1048,7 +1048,7 @@ Partial Class movimientos_Factura
                 Dim Sql As String
                 Sql = "EXEC VerifiInventario @opcion=1," &
                           "@codigoPais =  " & Session("cod_pais") & "  ," &
-                          "@codigoEmpresa =  " & Session("cod_empresa") & "  ," &
+                          "@codigoEmpresa =  " &  Session("CodigoEmpresa")& "  ," &
                           "@codigoPuesto =  " & Session("cod_puesto") & " "
 
                 Dim dt As New DataTable
@@ -1098,7 +1098,7 @@ Partial Class movimientos_Factura
 
             Dim Sql As String
             Sql = "SELECT cod_sector_mercado,cod_producto,precio FROM Precios  WHERE cod_pais= " & Session("cod_pais") & "  " &
-                                           " and cod_empresa= " & Session("cod_empresa") & " " &
+                                           " and cod_empresa= " &  Session("CodigoEmpresa")& " " &
                                            " and cod_puesto= " & Session("cod_puesto") & " "
 
             Dim dt As New DataTable
@@ -1337,7 +1337,7 @@ Partial Class movimientos_Factura
                 Sql &= "EXEC Factura @opcion=2," &
                       "@codigoPais = " & Session("cod_pais") & "," &
                       "@codigoPuesto = " & Session("cod_puesto") & "," &
-                      "@codigoEmpresa = " & Session("cod_empresa") & "," &
+                      "@codigoEmpresa = " &  Session("CodigoEmpresa")& "," &
                       "@no_factura = " & txtNoFac.Text.Trim & "," &
                       "@fecha = '01/01/1900'," &
                       "@cod_producto = '" & Me.ddlProducto.SelectedValue & "'," &
@@ -1404,7 +1404,7 @@ Partial Class movimientos_Factura
             Sql = "select  sub_total as Valor " &
                 " FROM  factura_enc  WHERE cod_pais= " & Session("cod_pais") & " " &
                                     " AND cod_pais= " & Session("cod_pais") & " " &
-                                    " AND cod_empresa= " & Session("cod_empresa") & " " &
+                                    " AND cod_empresa= " &  Session("CodigoEmpresa")& " " &
                                     " and no_factura= " & txtNoFac.Text.Trim & " "
 
 
@@ -1421,7 +1421,7 @@ Partial Class movimientos_Factura
             Sql = "select  isnull(sum(sub_total),0) as Valor " &
                   " FROM  TmpDetFact  WHERE cod_pais= " & Session("cod_pais") & " " &
                                       " AND cod_pais= " & Session("cod_pais") & " " &
-                                      " AND cod_empresa= " & Session("cod_empresa") & " " &
+                                      " AND cod_empresa= " &  Session("CodigoEmpresa")& " " &
                                       " and no_factura= " & txtNoFac.Text.Trim & " "
 
 
@@ -1522,7 +1522,7 @@ Partial Class movimientos_Factura
                 Sql &= "EXEC GuardarFomaPago @opcion=1," &
                       "@codigoPais = " & Session("cod_pais") & "," &
                       "@codigoPuesto = " & Session("cod_puesto") & "," &
-                      "@codigoEmpresa = " & Session("cod_empresa") & "," &
+                      "@codigoEmpresa = " &  Session("CodigoEmpresa")& "," &
                       "@no_factura = " & Convert.ToString(row("No_Factura")) & "," &
                       "@Fecha_Factura = '01/01/1900'," &
                       "@cod_ForPago = '" & Convert.ToString(row("cod_FormaPago")) & "'," &
@@ -1841,7 +1841,7 @@ Partial Class movimientos_Factura
             'Sql = "select sum(valorRecibidoCor) as Valor " & _
             '      " FROM Distribucion_Pago WHERE cod_pais= " & Session("cod_pais") & " " & _
             '                          " AND cod_pais= " & Session("cod_pais") & " " & _
-            '                          " AND cod_empresa= " & Session("cod_empresa") & " " & _
+            '                          " AND cod_empresa= " &  Session("CodigoEmpresa")& " " & _
             '                          " and no_factura= " & txtNoFac.Text.Trim & " "
 
 

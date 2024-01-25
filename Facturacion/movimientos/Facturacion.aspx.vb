@@ -139,14 +139,14 @@ Partial Public Class movimientos_Factura
             If Session("INV") Then
                 Dim Sql As String
                 Sql = "EXEC VerifiInventario @opcion=1," &
-                          "@codigoPais =  " & Session("cod_pais") & "  ," &
+                          "@codigoPais =  " & Session("CodigoPais") & "  ," &
                           "@codigoEmpresa =  " & Session("cod_empresa") & "  ," &
                           "@codigoPuesto =  " & Session("cod_puesto") & " "
 
                 Dim dt As New DataTable
                 dt = DataBase.GetDataTableProc(Sql)
 
-                If Sql.Contains(Session("cod_pais")) AndAlso Sql.Contains(Session("cod_empresa")) AndAlso Sql.Contains(Session("cod_puesto")) Then
+                If Sql.Contains(Session("CodigoPais")) AndAlso Sql.Contains(Session("cod_empresa")) AndAlso Sql.Contains(Session("cod_puesto")) Then
 
                     If dt.Rows.Count >= 1 Then
                         Dim DR As DataRow
@@ -176,7 +176,7 @@ Partial Public Class movimientos_Factura
         'The first line of the sub-routine declares a variable called "vCcod_usuario" And assigns it the value of a cookie called "CKSMFACTURA" that contains a "cod_usuario" field. This line of code assumes that the cookie has already been set elsewhere in the application.
 
         Dim sql As String
-        sql = " SET DATEFORMAT DMY " & "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("cod_pais") & "  " &
+        sql = " SET DATEFORMAT DMY " & "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("CodigoPais") & "  " &
               " and cod_empresa= " & Session("cod_empresa") & " " &
              " and cod_puesto= " & Session("cod_puesto") & " "
 
@@ -211,7 +211,7 @@ Partial Public Class movimientos_Factura
 
             dataSet = DataBase.GetDataSet(" EXEC CombosProductos " &
                   "@opcion = 10," &
-                  "@codigo = " & Session("cod_pais") & " ")
+                  "@codigo = " & Session("CodigoPais") & " ")
 
             'The third line of code uses the "DataBase.GetDataSet" method to retrieve a dataset containing the list of vendors from a database stored procedure called "CombosProductos". The stored procedure takes two input parameters: "opcion" and "codigo". The value of "opcion" is set to 10, and the value of "codigo" is taken from a Session variable called "cod_pais". This code assumes that the "CombosProductos" stored procedure exists and returns a dataset containing a table with columns called "Vendedor" and "codVendedor".
 
@@ -257,8 +257,8 @@ Partial Public Class movimientos_Factura
 
             Sql = "SELECT ltrim(rtrim(cod_cliente)) as codcliente," &
                                       "ltrim(rtrim(nombre_comercial)) AS cliente, externo" &
-                                      " FROM Clientes WHERE cod_pais= " & Session("cod_pais") & " " &
-                                      " AND cod_pais= " & Session("cod_pais") & " " &
+                                      " FROM Clientes WHERE cod_pais= " & Session("CodigoPais") & " " &
+                                      " AND cod_pais= " & Session("CodigoPais") & " " &
                                       " AND cod_empresa= " & Session("cod_empresa") & " " &
                                       " AND externo = " & vext & " " &
                                        " order by ltrim(rtrim(nombre_comercial)) "
@@ -460,7 +460,7 @@ Partial Public Class movimientos_Factura
 
             sql = " EXEC CombosProductos " &
                   "@opcion = 17," &
-                  "@codigo = " & Session("cod_pais") & " "
+                  "@codigo = " & Session("CodigoPais") & " "
 
             dataSet = DataBase.GetDataSet(sql)
 
@@ -490,7 +490,7 @@ Partial Public Class movimientos_Factura
         Try
 
             Dim Sql As String
-            Sql = "SELECT cod_sector_mercado,cod_producto,precio FROM Precios  WHERE cod_pais= " & Session("cod_pais") & "  " &
+            Sql = "SELECT cod_sector_mercado,cod_producto,precio FROM Precios  WHERE cod_pais= " & Session("CodigoPais") & "  " &
                                            " and cod_empresa= " & Session("cod_empresa") & " " &
                                            " and cod_puesto= " & Session("cod_puesto") & " "
 
@@ -516,7 +516,7 @@ Partial Public Class movimientos_Factura
 
     '        Try
     '            Dim Sql As String
-    '            Sql = "SELECT cod_sector_mercado,cod_producto,precio FROM Precios  WHERE cod_pais= " & Session("cod_pais") & "  " &
+    '            Sql = "SELECT cod_sector_mercado,cod_producto,precio FROM Precios  WHERE cod_pais= " & Session("CodigoPais") & "  " &
     '                                           " and cod_empresa= " & Session("cod_empresa") & " " &
     '                                           " and cod_puesto= " & Session("cod_puesto") & " "
 
@@ -540,7 +540,7 @@ Partial Public Class movimientos_Factura
             Dim dataSet As New DataSet
             dataSet = DataBase.GetDataSet(" EXEC CombosProductos " &
                   "@opcion = 21," &
-                  "@codigo = " & Session("cod_pais") & " ")
+                  "@codigo = " & Session("CodigoPais") & " ")
 
             If dataSet.Tables(0).Rows.Count > 0 Then
                 ddlFormaPago.DataSource = dataSet.Tables(0)
@@ -565,8 +565,13 @@ Partial Public Class movimientos_Factura
         Dim MessageText As String
         Dim fr As OleDb.OleDbDataReader
 
+          Session("cod_empresa")=
+                  "@codigoPuesto =  " & Session("cod_puesto") & " ," &
+
+
+
         Sql = "EXEC Cat_FormaPago @opcion=5," &
-                  "@codigoPais =  " & Session("cod_pais") & " ," &
+                  "@codigoPais =  " & Session("CodigoPais") & " ," &
                   "@codigoEmpresa =  " & Session("cod_empresa") & " ," &
                   "@codigoPuesto =  " & Session("cod_puesto") & " ," &
                   "@codigoFormaPago =  '0' ," &
@@ -677,11 +682,11 @@ Partial Public Class movimientos_Factura
         Try
             If Session("INV") = "True" Then
                 Dim SQL As String = "EXEC VerifiInventario @opcion=1," &
-                                "@codigoPais = " & Session("cod_pais") & "," &
+                                "@codigoPais = " & Session("CodigoPais") & "," &
                                 "@codigoEmpresa = " & Session("cod_empresa") & "," &
                                 "@codigoPuesto = " & Session("cod_puesto")
 
-                If SQL.Contains(Session("cod_pais")) AndAlso SQL.Contains(Session("cod_empresa")) AndAlso SQL.Contains(Session("cod_puesto")) Then
+                If SQL.Contains(Session("CodigoPais")) AndAlso SQL.Contains(Session("cod_empresa")) AndAlso SQL.Contains(Session("cod_puesto")) Then
                     Dim dt As DataTable = DataBase.GetDataSet(SQL).Tables(0)
                     Dim v_producto As String = Me.ddlProducto.SelectedValue
                     Dim busca_Producto As DataRow()
@@ -732,11 +737,11 @@ Partial Public Class movimientos_Factura
 
     '            Dim SQL As String = String.Empty
     '            SQL = "EXEC VerifiInventario @opcion=1," &
-    '                  "@codigoPais =  " & Session("cod_pais") & "  ," &
+    '                  "@codigoPais =  " & Session("CodigoPais") & "  ," &
     '                  "@codigoEmpresa =  " & Session("cod_empresa") & "  ," &
     '                  "@codigoPuesto =  " & Session("cod_puesto") & " "
 
-    '            If SQL.Contains(Session("cod_pais")) AndAlso SQL.Contains(Session("cod_empresa")) AndAlso SQL.Contains(Session("cod_puesto")) Then
+    '            If SQL.Contains(Session("CodigoPais")) AndAlso SQL.Contains(Session("cod_empresa")) AndAlso SQL.Contains(Session("cod_puesto")) Then
 
     '                Dim dt As DataTable
     '                dt = DataBase.GetDataSet(SQL).Tables(0)
@@ -837,8 +842,8 @@ Partial Public Class movimientos_Factura
         'ddlProducto.SelectedIndex = 0
         TextCantidad.Text = 0
         TextBultos.Text = 0
-        TextPrecio.Text = 0.00
-        TextTotal.Text = 0.00
+        TextPrecio.Text = 0.0
+        TextTotal.Text = 0.0
         Session("Imtos") = 0
         Session("desimprimir") = ""
         Session("Unidad") = ""
@@ -858,7 +863,7 @@ Partial Public Class movimientos_Factura
 
             sql = "SELECT cod_cliente, nombre_comercial As nombre, cedula_ruc FROM Clientes WHERE cod_cliente = " & codCliente & " " &
                "AND cod_empresa = " & Session("cod_empresa") & " " &
-               "And cod_pais = " & Session("cod_pais") & " "
+               "And cod_pais = " & Session("CodigoPais") & " "
 
             db = DataBase.GetDataReader(sql)
 
@@ -1056,7 +1061,7 @@ Partial Public Class movimientos_Factura
             Session("NoFactura") = txtNoFactura.Text
             Dim sql As String
             sql = " SET DATEFORMAT DMY EXEC Factura @opcion= 1," &
-                  "@codigoPais = " & MyBase.Session("cod_pais") & "," &
+                  "@codigoPais = " & MyBase.Session("CodigoPais") & "," &
                   "@codigoPuesto = " & MyBase.Session("cod_puesto") & "," &
                   "@codigoEmpresa = " & MyBase.Session("cod_empresa") & "," &
                   "@no_factura = " & txtNoFactura.Text.Trim & "," &
@@ -1161,7 +1166,7 @@ Partial Public Class movimientos_Factura
             Dim sql As String = "SET DATEFORMAT DMY " &
                                 "EXEC Factura " &
                                 "@opcion = 1, " &
-                                "@codigoPais = " & MyBase.Session("cod_pais") & ", " &
+                                "@codigoPais = " & MyBase.Session("CodigoPais") & ", " &
                                 "@codigoPuesto = " & MyBase.Session("cod_puesto") & ", " &
                                 "@codigoEmpresa = " & MyBase.Session("cod_empresa") & ", " &
                                 "@no_factura = " & txtNoFactura.Text.Trim & ", " &
@@ -1279,7 +1284,7 @@ Partial Public Class movimientos_Factura
 
             Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
             sql &= "EXEC Factura @opcion=4," &
-                  "@codigoPais = " & MyBase.Session("cod_pais") & "," &
+                  "@codigoPais = " & MyBase.Session("CodigoPais") & "," &
                   "@codigoPuesto = " & MyBase.Session("cod_puesto") & "," &
                   "@codigoEmpresa = " & MyBase.Session("cod_empresa") & "," &
                   "@no_factura = " & txtNoFactura.Text.Trim & "," &
@@ -1592,7 +1597,7 @@ Partial Public Class movimientos_Factura
     End Sub
     Protected Sub ddlMoneda_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlMoneda.SelectedIndexChanged
 
-        TextCordobasRec.Text = 0.00
+        TextCordobasRec.Text = 0.0
         'If ddlMoneda.Text.ToString = "CORDOBAS" OrElse ddlMoneda.SelectedValue() = 1 Then
 
         '    lblCordobasRec.Visible = True
@@ -1721,8 +1726,8 @@ Partial Public Class movimientos_Factura
             Try
 
                 Sql = "SELECT  sub_total as Valor " &
-                    " FROM  factura_enc  WHERE cod_pais= " & Session("cod_pais") & " " &
-                                        " AND cod_pais= " & Session("cod_pais") & " " &
+                    " FROM  factura_enc  WHERE cod_pais= " & Session("CodigoPais") & " " &
+                                        " AND cod_pais= " & Session("CodigoPais") & " " &
                                         " AND cod_empresa= " & Session("cod_empresa") & " " &
                                         " and no_factura= " & txtNoFactura.Text.Trim & " "
 
@@ -1740,8 +1745,8 @@ Partial Public Class movimientos_Factura
 
 
                 Sql = "SELECT  isnull(sum(sub_total),0) as Valor " &
-                      " FROM  TmpDetFact  WHERE cod_pais= " & Session("cod_pais") & " " &
-                                          " AND cod_pais= " & Session("cod_pais") & " " &
+                      " FROM  TmpDetFact  WHERE cod_pais= " & Session("CodigoPais") & " " &
+                                          " AND cod_pais= " & Session("CodigoPais") & " " &
                                           " AND cod_empresa= " & Session("cod_empresa") & " " &
                                           " and no_factura= " & txtNoFactura.Text.Trim & " "
 
@@ -1860,7 +1865,7 @@ Partial Public Class movimientos_Factura
 
             '    Dim row As DataRow = dt.NewRow()
             '    row("No_Factura") = txtNoFactura.Text.Trim
-            '    row("Cod_Pais") = Session("cod_pais")
+            '    row("Cod_Pais") = Session("CodigoPais")
             '    row("Cod_Empresa") = Session("cod_empresa")
             '    row("Cod_Puesto") = Session("cod_puesto")
 
@@ -2021,7 +2026,7 @@ Partial Public Class movimientos_Factura
             Session("Cod_Moneda") = codMoneda
 
             row("No_Factura") = txtNoFactura.Text.Trim
-            row("Cod_Pais") = Session("cod_pais")
+            row("Cod_Pais") = Session("CodigoPais")
             row("Cod_Empresa") = Session("cod_empresa")
             row("Cod_Puesto") = Session("cod_puesto")
 
@@ -2040,11 +2045,11 @@ Partial Public Class movimientos_Factura
             If ddlMoneda.SelectedValue = 1 Then
 
                 row("ValorRecibidoCor") = CDec(TextCordobasRec.Text)
-                row("ValorRecibidoDol") = 0.00
+                row("ValorRecibidoDol") = 0.0
 
             ElseIf ddlMoneda.SelectedValue = 2 Then
 
-                row("ValorRecibidoCor") = 0.00
+                row("ValorRecibidoCor") = 0.0
                 row("ValorRecibidoDol") = CDec(TextCordobasRec.Text)
 
             End If
@@ -2229,7 +2234,7 @@ Partial Public Class movimientos_Factura
                 Sql = "SET DATEFORMAT DMY " & vbCrLf
 
                 Sql &= "EXEC GuardarFomaPago @opcion=1," &
-                      "@codigoPais = " & Session("cod_pais") & "," &
+                      "@codigoPais = " & Session("CodigoPais") & "," &
                       "@codigoPuesto = " & Session("cod_puesto") & "," &
                       "@codigoEmpresa = " & Session("cod_empresa") & "," &
                       "@no_factura = " & Convert.ToString(row("No_Factura")) & "," &
@@ -2292,7 +2297,7 @@ Partial Public Class movimientos_Factura
             If Session("Continuar") = 1 Then
                 Sql = "SET DATEFORMAT DMY " & vbCrLf
                 Sql &= "EXEC Factura @opcion=2," &
-                      "@codigoPais = " & Session("cod_pais") & "," &
+                      "@codigoPais = " & Session("CodigoPais") & "," &
                       "@codigoPuesto = " & Session("cod_puesto") & "," &
                       "@codigoEmpresa = " & Session("cod_empresa") & "," &
                       "@no_factura = " & txtNoFactura.Text.Trim & "," &

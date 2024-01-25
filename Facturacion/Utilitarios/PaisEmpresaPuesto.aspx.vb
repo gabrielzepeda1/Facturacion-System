@@ -2,6 +2,7 @@
 Imports System.Data.OleDb
 Imports System.Diagnostics
 Imports FACTURACION_CLASS
+Imports System.Web.UI
 
 Partial Class Utilitarios_PaisEmpresaPuesto
     Inherits Page
@@ -111,7 +112,7 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     Private Function GetPaisesUsuario() As List(Of Integer)
 
         Dim sql = $"SELECT * FROM GetDistinctPaisesUsuario({Session("CodigoUser")})"
-        Dim reader = _database.GetDataReader(sql)
+        Dim reader = _database.GetDataReader(Sql)
         Dim ArrCodigoPais As New List(Of Integer)
 
         Do While reader.Read()
@@ -127,7 +128,7 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     Private Function GetEmpresasUsuario() As List(Of Integer)
 
         Dim sql = $"SELECT * FROM GetDistinctEmpresasUsuario({Session("CodigoUser")})"
-        Dim reader = _database.GetDataReader(sql)
+        Dim reader = _database.GetDataReader(Sql)
         Dim ArrCodigoEmpresa As New List(Of Integer)
 
         Do While reader.Read()
@@ -141,7 +142,7 @@ Partial Class Utilitarios_PaisEmpresaPuesto
     Private Function GetPuestosUsuario() As List(Of Integer)
 
         Dim sql = $"SELECT * FROM GetDistinctPuestosUsuario({Session("CodigoUser")})"
-        Dim reader = _database.GetDataReader(sql)
+        Dim reader = _database.GetDataReader(Sql)
         Dim ArrCodigoPuesto As New List(Of Integer)
 
         Do While reader.Read()
