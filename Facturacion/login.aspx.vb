@@ -5,6 +5,8 @@ Imports FACTURACION_CLASS
 Imports Microsoft.ReportingServices.DataProcessing
 Imports AlertifyClass
 Imports System.Data
+Imports CommandType = System.Data.CommandType
+Imports SM.Data
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
@@ -58,9 +60,10 @@ Partial Class Login
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_sys_login", dbCon)
-                    cmd.CommandType = Data.CommandType.StoredProcedure
+                    cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@Username", Username)
-                    cmd.Parameters.AddWithValue("@Password", HttpUtility.UrlEncode(Encrypt(Me.txtPass.Text.Trim())))
+                    cmd.Parameters.AddWithValue("@Password", HttpUtility.UrlEncode(Encrypt(txtPass.Text.Trim())))
+
                     Dim dr As OleDbDataReader = cmd.ExecuteReader()
                     If dr.Read() Then
                         CodigoUser = Convert.ToInt32(dr("CodigoUser"))
@@ -87,33 +90,52 @@ Partial Class Login
             AlertifyErrorMessage(Me, ex.Message)
         End Try
     End Sub
+    ''' <summary>
+    ''' REGISTRA LOS DATOS DE UN INICIO DE SESIÓN
+    ''' </summary>
+    ''' <param name="username">NOMBRE DE USUARIO</param>
+    ''' <param name="browserData">NOMBRE DE HOST</param>
+    ''' <remarks></remarks>
+
     Protected Sub HandleUserSession(username As String, browserData As String)
         'Maneja la sesion del usuario ya autenticado.
-        Dim sessionData As Dictionary(Of String, Object) = _conn.ControlarSesion(username, ObtenerIp_Publica(), browserData)
 
         Try
-            If sessionData IsNot Nothing Then
-                If sessionData.ContainsKey("Status") AndAlso sessionData.Item("Status") = "SESION INICIADA" Then
+            Using dbCon As New OleDbConnection(_conn.conn)
+                dbCon.Open()
 
-                    Session("CodigoSesion") = sessionData.Item("CodigoSesion").ToString()
-                    Session("Username") = sessionData.Item("Username").ToString()
-                    Session("Password") = sessionData.Item("Password").ToString()
-                    Session("CodigoPais") = Convert.ToInt32(sessionData.Item("CodigoPais"))
-                    Session("CodigoEmpresa") = Convert.ToInt32(sessionData.Item("CodigoEmpresa"))
-                    Session("CodigoPuesto") = Convert.ToInt32(sessionData.Item("CodigoPuesto"))
+                Using cmd As New OleDbCommand("sp_sys_Abrir_Sesion", dbCon)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("@Username", username)
+                    cmd.Parameters.AddWithValue("@IpConexion", ObtenerIp_Publica())
+                    cmd.Parameters.AddWithValue("@Nombre_Host", browserData)
 
-                    Select Case Session("CodigoRol")
-                        'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
-                        Case 1, 2, 3, 4
-                            FormsAuthentication.RedirectFromLoginPage(Session("Username"), False)
-                        Case Else
-                            Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
-                    End Select
-                Else
-                    'Usuario tiene una sesion activa
-                    AlertifyAlertMessage(Me, sessionData.Item("Status"))
-                End If
-            End If
+                    Dim dr As OleDbDataReader = cmd.ExecuteReader()
+
+                    If dr.Read() Then
+                        If dr.Item("Status") = "SESION INICIADA" Then
+                            Session("CodigoSesion") = dr.Item("CodigoSesion")
+                            Session("CodigoUser") = dr.Item("CodigoUser")
+                            Session("Username") = dr.Item("Username")
+                            Session("Password") = dr.Item("Password")
+                            Session("CodigoRol") = dr.Item("CodigoRol")
+                            Session("Status") = dr.Item("Status")
+                            Session("CodigoPais") = dr.Item("CodigoPais")
+                            Session("CodigoEmpresa") = dr.Item("CodigoEmpresa")
+                            Session("CodigoPuesto") = dr.Item("CodigoPuesto")
+
+                            Select Case Session("CodigoRol") 'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
+                                Case 1, 2, 3, 4
+                                    FormsAuthentication.RedirectFromLoginPage(Session("Username"), False)
+                                Case Else
+                                    Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
+                            End Select
+                        Else
+                            AlertifyAlertMessage(Me, dr("Status"))
+                        End If
+                    End If
+                End Using
+            End Using
         Catch ex As Exception
             AlertifyErrorMessage(Me, ex.Message)
         End Try
@@ -134,8 +156,6 @@ Partial Class Login
         End If
         'Asignar al Session("CodigoPais") un array de todos los CodigoPais en la base de datos.
         'Ex: Session("CodigoPais") = [1, 2, 3, 4],  En SQL se utilizaria así: "WHERE IN (1, 2, 3, 4)
-
-
 
     End Sub
 
