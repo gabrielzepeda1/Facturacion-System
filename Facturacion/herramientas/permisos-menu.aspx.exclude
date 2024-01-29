@@ -17,7 +17,6 @@
 </asp:Content>
 
 <asp:Content ID="C4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form" class="px-2">
         <div class="container">

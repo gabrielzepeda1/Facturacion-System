@@ -1,10 +1,6 @@
 ﻿Imports System.Data
-Imports System.Web
-Imports FACTURACION_CLASS
 Imports System.Data.SqlClient
-Imports AlertifyClass
 Imports System.Diagnostics
-Imports HelperClasses
 
 Namespace FACTURACION_CLASS
     Public Class DropdownsClass
@@ -17,11 +13,11 @@ Namespace FACTURACION_CLASS
 
                 Dim sql = $"SELECT CodigoCliente, TRIM(Nombres) + ' ' +TRIM(Apellidos) AS NombreCompleto
                     FROM Clientes WHERE Externo = {1}"
-                If MySession.Current.CodigoPais <> 0 Then
-                    sql &= $" AND CodigoPais = {MySession.Current.CodigoEmpresa}"
+                If HttpContext.Current.Session("CodigoPais") <> 0 Then
+                    sql &= $" AND CodigoPais = {HttpContext.Current.Session("CodigoPais")}"
                 End If
-                If MySession.Current.CodigoEmpresa <> 0 Then
-                    sql &= $" AND CodigoEmpresa = {MySession.Current.CodigoEmpresa}"
+                If HttpContext.Current.Session("CodigoEmpresa") <> 0 Then
+                    sql &= $" AND CodigoEmpresa = {HttpContext.Current.Session("CodigoEmpresa")}"
                 End If
                 sql &= $" ORDER BY TRIM(Nombres)"
 
@@ -44,14 +40,14 @@ Namespace FACTURACION_CLASS
             Try
                 Dim sql = $"SELECT cod_vendedor AS CodigoVendedor, TRIM(nombres) + ' ' +TRIM(apellidos) AS NombreCompleto
                     FROM Vendedores"
-                If MySession.Current.CodigoPais <> 0 Then
-                    sql &= $" WHERE cod_pais= {MySession.Current.CodigoPais}"
+                If HttpContext.Current.Session("CodigoPais") <> 0 Then
+                    sql &= $" WHERE cod_pais= {HttpContext.Current.Session("CodigoPais")}"
                 End If
-                If MySession.Current.CodigoEmpresa <> 0 Then
-                    sql &= $" AND cod_pais= {MySession.Current.CodigoEmpresa}"
+                If HttpContext.Current.Session("CodigoEmpresa") <> 0 Then
+                    sql &= $" AND cod_pais= {HttpContext.Current.Session("CodigoEmpresa")}"
                 End If
-                If MySession.Current.CodigoPuesto <> 0 Then
-                    sql &= $" AND cod_empresa= {MySession.Current.CodigoSesion} "
+                If HttpContext.Current.Session("CodigoPuesto") <> 0 Then
+                    sql &= $" AND cod_empresa= {HttpContext.Current.Session("CodigoPuesto")} "
                 End If
                 sql &= $" ORDER BY TRIM(Nombres)"
 
@@ -180,7 +176,7 @@ Namespace FACTURACION_CLASS
 
         End Sub
 
-        Public Sub BindDropDownList(ddl As DropDownList, sqlQuery As String, valueField As String, textField As String)
+        Public Shared Sub BindDropDownList(ddl As DropDownList, sqlQuery As String, valueField As String, textField As String, defaultText As String)
             Try
                 Using connection As New SqlConnection(_seguridad.Sql_conn)
                     connection.Open()
@@ -194,7 +190,11 @@ Namespace FACTURACION_CLASS
                                 listItem.Value = dr(valueField).ToString()
                                 listItem.Text = dr(textField).ToString()
                                 ddl.Items.Add(listItem)
+
                             End While
+
+                            ddl.Items.Insert(0, New ListItem(defaultText, "0"))
+
                         End Using
                     End Using
                 End Using
@@ -202,6 +202,7 @@ Namespace FACTURACION_CLASS
                 ' Handle the exception, log, or throw it as needed
                 ' For example: Console.WriteLine(ex.Message)
                 Throw ex
+                Debug.WriteLine(ex.Message)
             End Try
         End Sub
 

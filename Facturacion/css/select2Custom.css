@@ -1,0 +1,14 @@
+﻿/*Estos estilos de css permiten utilizar el .input-group de boostrap5 junto con el plugin select2. */
+/*Importar estos estilos en el caso de usar el .input-group y .input-group-text con controles asp:DropdownList que utilicen SELECT2. */
+
+.input-group > .select2-container--bootstrap {
+    width: auto;
+    flex: 1 1 auto;
+
+}
+
+    .input-group > .select2-container--bootstrap .select2-selection--single {
+        height: 100%;
+        line-height: inherit;
+        padding: 0.5rem 1rem;
+    }

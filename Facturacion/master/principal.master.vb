@@ -12,39 +12,55 @@ Partial Class Mater_principal
     Private WithEvents DropdownsClass As New DropdownsClass()
 
     Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
-    Public MyUserName As String = String.Empty
+    Public MyUserName As String
     Public Pais As String
     Public Empresa As String
     Public Puesto As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Response.Cache.SetCacheability(HttpCacheability.NoCache)
 
+        Response.Cache.SetCacheability(HttpCacheability.NoCache)
+        MyUserName = IIf(Session("Username") IsNot Nothing, Session("Username"), String.Empty)
         Dim pageName As String = GetPageName()
 
-        If Session("Username") IsNot Nothing Then
-            MyUserName = Session("Username")
-        End If
+        SidebarEncabezados()
+        GridViewStyles()
 
         If Not Page.IsPostBack Then
-
             If Not Page.User.Identity.IsAuthenticated Then
                 FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
-            If pageName <> String.Empty AndAlso pageName <> "Default.aspx" AndAlso HasPermission(pageName) = False Then
+            'Si el usuario accede a cualquier página desde "Default.aspx" se valida si el usuario tiene permiso para acceder a la página.
+            If String.IsNullOrWhiteSpace(pageName) AndAlso pageName <> "Default.aspx" AndAlso HasPermission(pageName) = False Then
+                AlertifyClass.AlertifyAlertMessage(Me.Page, "No tiene permiso para acceder a esta página.")
                 Response.Redirect(ResolveClientUrl("~/Default.aspx"))
+                'Agarrar el return url y poner el script dentro de la alerta.
             End If
 
-            SidebarEncabezados()
-            GridViewStyles()
+            If HasPermission(pageName) = True Then
+                If Session("CodigoPais") Is Nothing OrElse Session("CodigoEmpresa") Is Nothing OrElse Session("CodigoPuesto") Is Nothing Then
+                    Response.Redirect(ResolveClientUrl("~/Default.aspx"))
 
-            DropdownsClass.BindDropDownList(ddlPais, $"SELECT * FROM GetPaisesAccesoUsuario({Session("CodigoUser")})", "CodigoPais", "Descripcion", "Seleccione País")
-            ddlEmpresa.Enabled = False
-            ddlPuesto.Enabled = False
-            ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
-            ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
+                    'AlertifyClass.AlertifyAlertMessage(HttpContext.Current.CurrentHandler, "Debe seleccionar un País.")
+                End If
+            End If
 
+            'Verificamos si existe la variable de sesion CodigoUser. 
+            If Session("CodigoUser") IsNot Nothing Then
+                DropdownsClass.BindDropDownList(ddlPais, $"SELECT * FROM GetPaisesAccesoUsuario({Session("CodigoUser")})", "CodigoPais", "Descripcion", "Seleccione País")
+                ddlEmpresa.Enabled = False
+                ddlPuesto.Enabled = False
+                ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
+                ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
+            End If
+
+            If pageName = "Default.aspx" Then
+
+            End If
+
+            'La variable de Sesion CodigoPais es el pais por defecto que está asignado a cada usuario. 
+            'El ddlPais.SelectedValue ya tiene por defecto seleccionado este valor. 
             If Session("CodigoPais") IsNot Nothing Then
                 ddlPais.SelectedValue = Session("CodigoPais")
                 ddlPais_SelectedIndexChanged(ddlPais, EventArgs.Empty)
@@ -61,14 +77,15 @@ Partial Class Mater_principal
             End If
 
         End If
-
     End Sub
 
     Protected Sub ddlPais_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlPais.SelectedIndexChanged
         ddlEmpresa.Enabled = False
         ddlPuesto.Enabled = False
         ddlEmpresa.Items.Clear()
+        Session("CodigoEmpresa") = Nothing
         ddlPuesto.Items.Clear()
+        Session("CodigoPuesto") = Nothing
         ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
         ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
 
@@ -81,13 +98,15 @@ Partial Class Mater_principal
             DropdownsClass.BindDropDownList(ddlEmpresa, $"SELECT * FROM GetEmpresasAccesoUsuario({Session("CodigoUser")}, {CodigoPais})", "CodigoEmpresa", "Descripcion", "Seleccione Empresa")
             ddlEmpresa.Enabled = True
 
-        End If
+            AlertifyClass.AlertifySuccessMessage(Me.Page, "Pais seleccionado correctamente.")
 
+        End If
     End Sub
 
     Protected Sub ddlEmpresa_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlEmpresa.SelectedIndexChanged
         ddlPuesto.Enabled = False
         ddlPuesto.Items.Clear()
+        Session("CodigoPuesto") = Nothing
         ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
 
         Dim CodigoEmpresa As Integer = Integer.Parse(ddlEmpresa.SelectedItem.Value)
@@ -195,7 +214,7 @@ Partial Class Mater_principal
                     ' Start a dropdown item
                     html.AppendLine("<li class=""nav-item dropdown"">")
                     html.AppendLine("<a class=""btn btn-outline-dark dropdown-toggle text-white"" href=""#"" role=""button"" data-bs-toggle=""dropdown"" aria-expanded=""false"">" & etiquetaPadre & "</a>")
-                    html.AppendLine("<ul class=""dropdown-menu animate bg-white slideIn"">")
+                    html.AppendLine("<ul class=""dropdown-menu bg-white shadow animate slideIn"">")
 
                     ' Append the menu items for this header
                     html.AppendLine(GetMenuDetalle(codigoMenuPadre, ds))
@@ -255,10 +274,7 @@ Partial Class Mater_principal
 #Region "SIDEBAR"
     Private Sub SidebarEncabezados()
         Try
-            Dim sql = "EXEC sp_menu_accesos " &
-                  "@cod_usuario = " & Session("CodigoUser") & "," &
-                  "@cod_padre = NULL"
-
+            Dim sql = $"EXEC sp_menu_accesos @cod_usuario = {Session("CodigoUser")}, @cod_padre = NULL"
 
             Using ds As DataSet = _database.GetDataSet(sql)
 

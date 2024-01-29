@@ -30,7 +30,6 @@
     <a href="Empresas.aspx">Catálogo de Empresas</a>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
         <div id="main-form-content">
@@ -275,37 +274,37 @@
 
                 $("#<%=hdfCodigo.ClientID%>").val("");
 
-                  $("#<%=TextEmpresa.ClientID%>").val("");
-                  $("#<%=TextEmpresa.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextEmpresa.ClientID%>").val("");
+                $("#<%=TextEmpresa.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextImpuesto.ClientID%>").val("");
-                  $("#<%=TextImpuesto.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextImpuesto.ClientID%>").val("");
+                $("#<%=TextImpuesto.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextPorcImpuesto.ClientID%>").val("");
-                  $("#<%=TextPorcImpuesto.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextPorcImpuesto.ClientID%>").val("");
+                $("#<%=TextPorcImpuesto.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextDescripCorta.ClientID%>").val("");
-                  $("#<%=TextDescripCorta.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextDescripCorta.ClientID%>").val("");
+                $("#<%=TextDescripCorta.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextCedulaRuc.ClientID%>").val("");
-                  $("#<%=TextCedulaRuc.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextCedulaRuc.ClientID%>").val("");
+                $("#<%=TextCedulaRuc.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextDireccion.ClientID%>").val("");
-                  $("#<%=TextDireccion.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextDireccion.ClientID%>").val("");
+                $("#<%=TextDireccion.ClientID%>").prev().removeClass('visible');
 
-                  $("#<%=TextAutorizMifin.ClientID%>").val("");
-                  $("#<%=TextAutorizMifin.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextAutorizMifin.ClientID%>").val("");
+                $("#<%=TextAutorizMifin.ClientID%>").prev().removeClass('visible');
 
-                  $("#popuptittle").text('Agregar Empresa');
+                $("#popuptittle").text('Agregar Empresa');
 
-                  open_popup();
+                open_popup();
 
-              });
+            });
 
-              $(".Close").click(function () {
-                  $('#popup-form').bPopup().close();
-              });
-          });
+            $(".Close").click(function () {
+                $('#popup-form').bPopup().close();
+            });
+        });
 
         function open_popup() {
             $('#popup-form').bPopup({
@@ -330,12 +329,12 @@
             alertify.success(msg);
 
             $("#<%=TextEmpresa.ClientID%>").val("");
-              $("#<%=TextImpuesto.ClientID%>").val("");
-              $("#<%=TextPorcImpuesto.ClientID%>").val("");
-              $("#<%=TextDescripCorta.ClientID%>").val("");
-              $("#<%=TextCedulaRuc.ClientID%>").val("");
-              $("#<%=TextDireccion.ClientID%>").val("");
-              $("#<%=TextAutorizMifin.ClientID%>").val("");
+            $("#<%=TextImpuesto.ClientID%>").val("");
+            $("#<%=TextPorcImpuesto.ClientID%>").val("");
+            $("#<%=TextDescripCorta.ClientID%>").val("");
+            $("#<%=TextCedulaRuc.ClientID%>").val("");
+            $("#<%=TextDireccion.ClientID%>").val("");
+            $("#<%=TextAutorizMifin.ClientID%>").val("");
         }
     </script>
 </asp:Content>

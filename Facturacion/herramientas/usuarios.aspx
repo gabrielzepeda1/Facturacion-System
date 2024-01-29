@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Usuarios del Sistema | Facturación" EnableEventValidation="false" Language="VB" MasterPageFile="~/master/principal.master" AutoEventWireup="false" CodeFile="usuarios.aspx.vb" Inherits="herramientas_usuarios" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
 
@@ -18,7 +19,6 @@
 
 <asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
 
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
         <div id="main-form-content">

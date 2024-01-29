@@ -15,11 +15,10 @@
     <a href="Calidades.aspx">Catálogo de Origen</a>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
         <div id="main-form-content">
-             
+
             <div id="main-form-content-field">
 
                 <div id="Control">
@@ -68,57 +67,57 @@
 
                             <div class="table-responsive">
 
-                            <asp:GridView
-                                ID="GridViewOne"
-                                runat="server"
-                                CssClass="table table-light table-sm table-striped table-hover table-bordered"
-                                CellPadding="0"
-                                GridLines="None"
-                                AllowPaging="True"
-                                AllowSorting="True"
-                                PageSize="10"
-                                DataKeyNames="codigo"
-                                AutoGenerateColumns="False">
+                                <asp:GridView
+                                    ID="GridViewOne"
+                                    runat="server"
+                                    CssClass="table table-light table-sm table-striped table-hover table-bordered"
+                                    CellPadding="0"
+                                    GridLines="None"
+                                    AllowPaging="True"
+                                    AllowSorting="True"
+                                    PageSize="10"
+                                    DataKeyNames="codigo"
+                                    AutoGenerateColumns="False">
 
 
-                                <HeaderStyle CssClass="table-header table-dark align-middle text-center" />
-                               
-
-                                <Columns>
-                                    <asp:BoundField HeaderText="Codigo" DataField="codigo" SortExpression="codigo" ReadOnly="true" ItemStyle-CssClass="align-middle" />
-                                    <asp:BoundField HeaderText="Nombre" DataField="Descripcion" SortExpression="Descripcion" ItemStyle-CssClass="align-middle" />
-
-                                    <asp:CommandField
-                                        HeaderText="Editar"
-                                        ButtonType="Button"
-                                        SelectText="Actualizar"
-                                        ShowSelectButton="true"
-                                        HeaderStyle-Width="120">
-                                        <ControlStyle CssClass="btn btn-success align-middle" />
-                                    </asp:CommandField>
-
-                                    <asp:CommandField
-                                        HeaderText="Suprimir"
-                                        ButtonType="Button"
-                                        DeleteText="Eliminar"
-                                        ShowDeleteButton="true"
-                                        HeaderStyle-Width="120">
-                                        <ControlStyle CssClass="btn btn-danger align-middle" />
-                                    </asp:CommandField>
-
-                                </Columns>
+                                    <HeaderStyle CssClass="table-header table-dark align-middle text-center" />
 
 
-                                <PagerTemplate>
-                                    <div class="pagination">
-                                        <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag" CommandArgument="First" CssClass="primero" Text="Primera" formnovalidate />
-                                        <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate />
-                                        <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate />
-                                        <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate />
-                                        <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
-                                    </div>
-                                </PagerTemplate>
-                            </asp:GridView>
+                                    <Columns>
+                                        <asp:BoundField HeaderText="Codigo" DataField="codigo" SortExpression="codigo" ReadOnly="true" ItemStyle-CssClass="align-middle" />
+                                        <asp:BoundField HeaderText="Nombre" DataField="Descripcion" SortExpression="Descripcion" ItemStyle-CssClass="align-middle" />
+
+                                        <asp:CommandField
+                                            HeaderText="Editar"
+                                            ButtonType="Button"
+                                            SelectText="Actualizar"
+                                            ShowSelectButton="true"
+                                            HeaderStyle-Width="120">
+                                            <ControlStyle CssClass="btn btn-success align-middle" />
+                                        </asp:CommandField>
+
+                                        <asp:CommandField
+                                            HeaderText="Suprimir"
+                                            ButtonType="Button"
+                                            DeleteText="Eliminar"
+                                            ShowDeleteButton="true"
+                                            HeaderStyle-Width="120">
+                                            <ControlStyle CssClass="btn btn-danger align-middle" />
+                                        </asp:CommandField>
+
+                                    </Columns>
+
+
+                                    <PagerTemplate>
+                                        <div class="pagination">
+                                            <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag" CommandArgument="First" CssClass="primero" Text="Primera" formnovalidate />
+                                            <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate />
+                                            <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate />
+                                            <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate />
+                                            <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
+                                        </div>
+                                    </PagerTemplate>
+                                </asp:GridView>
                             </div>
                         </div>
 

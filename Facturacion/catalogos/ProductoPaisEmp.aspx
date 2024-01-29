@@ -16,7 +16,6 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     <div id="main-form">
         <div id="main-form-content">
 
@@ -213,9 +212,9 @@
 <asp:Content ID="Content5" ContentPlaceHolderID="cpScripts" runat="Server">
     <script>
         $(document).ready(function () {
-            //$('.datagird').basictable();
+        //$('.datagird').basictable();
 
-            //$("#PonerCodig").click(function () {
+        //$("#PonerCodig").click(function () {
 
 <%--            var grd = document.getElementById("<%=PonerCodig.ClientID%>");
             grd.click();--%>

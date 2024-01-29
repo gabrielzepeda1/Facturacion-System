@@ -1,27 +1,9 @@
 ﻿Imports System.Data
-Imports System.Globalization
-Imports System.Threading
-
-Imports System.Collections.Generic
-Imports System.Linq
-Imports System.Web
-Imports System.Web.UI
-Imports System.Web.UI.WebControls
-Imports System.Data.SqlClient
-Imports System.Configuration
-Imports System.Activities.Expressions
-Imports System.ComponentModel.Design
-Imports System.Drawing
-Imports System.Web.UI.WebControls.Expressions
 Imports System.Data.OleDb
-Imports System.Security
-Imports Microsoft.Data.Edm
-Imports AjaxControlToolkit
-Imports Microsoft.Ajax.Utilities
 
 Partial Public Class movimientos_Factura
 
-    Inherits System.Web.UI.Page
+    Inherits Page
 
     Dim conn As New FACTURACION_CLASS.Seguridad
     Dim DataBase As New FACTURACION_CLASS.database
@@ -76,7 +58,7 @@ Partial Public Class movimientos_Factura
 
             System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("en-US")
 
-            Paridad()
+            'Paridad()
             CboFormaPago()
             CboProductos()
             CboCliente()
@@ -176,9 +158,9 @@ Partial Public Class movimientos_Factura
         'The first line of the sub-routine declares a variable called "vCcod_usuario" And assigns it the value of a cookie called "CKSMFACTURA" that contains a "cod_usuario" field. This line of code assumes that the cookie has already been set elsewhere in the application.
 
         Dim sql As String
-        sql = " SET DATEFORMAT DMY " & "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("cod_pais") & "  " &
-              " and cod_empresa= " & Session("cod_empresa") & " " &
-             " and cod_puesto= " & Session("cod_puesto") & " "
+        sql = " SET DATEFORMAT DMY " & "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("CodigoPais") & "  " &
+              " and cod_empresa= " & Session("CodigoEmpresa") & " " &
+             " and cod_puesto= " & Session("CodigoPuesto") & " "
 
         'The next line declares a SQL query that will be used to retrieve the next invoice number for a particular user, company, and location. The query selects the "no_factura" field from a database table called "puestos" and adds 1 to it to generate the next invoice number. It also selects a field called "verificar_inventario" from the same table and assigns it to a variable called "INV". The SQL query uses the values of three Session variables called "cod_pais", "cod_empresa", and "cod_puesto" to filter the results.
 
@@ -250,7 +232,7 @@ Partial Public Class movimientos_Factura
         Try
 
             If rdbInterno.Checked Then
-                vext = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0' 
+                vext = 0 'SI RADIO BUTTON EXTERNO NO ESTA SELECCTIONADO, variable vext = 0'
             Else
                 vext = 1
             End If
@@ -563,12 +545,12 @@ Partial Public Class movimientos_Factura
     Private Sub Paridad()
         Dim Sql As String
         Dim MessageText As String
-        Dim fr As OleDb.OleDbDataReader
+        Dim fr As OleDbDataReader
 
         Sql = "EXEC Cat_FormaPago @opcion=5," &
-                  "@codigoPais =  " & Session("cod_pais") & " ," &
-                  "@codigoEmpresa =  " & Session("cod_empresa") & " ," &
-                  "@codigoPuesto =  " & Session("cod_puesto") & " ," &
+                  "@codigoPais =  " & Session("CodigoPais") & " ," &
+                  "@codigoEmpresa =  " & Session("CodigoEmpresa") & " ," &
+                  "@codigoPuesto =  " & Session("CodigoPuesto") & " ," &
                   "@codigoFormaPago =  '0' ," &
                   "@descripcion =  '0' ," &
                   "@BUSQUEDAD = '0'  ," &
@@ -985,7 +967,7 @@ Partial Public Class movimientos_Factura
 
 
     Private Sub GuardarTmpFact()
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -1004,7 +986,7 @@ Partial Public Class movimientos_Factura
             decPorcDesc = CDec(TextPorDesc.Text)
             decValorDesc = decTotalProd * (decPorcDesc / 100)
 
-            If Session("Imtos") Then   ''variable se llena desde el inventario 
+            If Session("Imtos") Then   ''variable se llena desde el inventario
                 decIva = (decTotalProd - decValorDesc) * (Session("porcImp") / 100)
             Else
                 decIva = 0
@@ -1133,7 +1115,7 @@ Partial Public Class movimientos_Factura
 
     Private Sub GuardarTmpFact2()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
 
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -1145,7 +1127,7 @@ Partial Public Class movimientos_Factura
             Dim porcentajeDescuento As Decimal = If(String.IsNullOrEmpty(TextPorDesc.Text), 0, CDec(TextPorDesc.Text))
             Dim valorDescuento As Decimal = CDec(TextTotal.Text) * (porcentajeDescuento / 100)
             Dim iva As Decimal = If(Session("Imtos"), (CDec(TextTotal.Text) - valorDescuento) * (Session("porcImp") / 100), 0)
-            'Dim subTotal As Decimal = 
+            'Dim subTotal As Decimal =
 
             ' User and payment information
             Dim usuario As String = Context.Request.Cookies("CKSMFACTURA")("cod_usuario")
@@ -1245,7 +1227,7 @@ Partial Public Class movimientos_Factura
     Private Sub Eliminar(ProductoCodProd As String)
 
         Dim MessageText As String = String.Empty
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -1491,7 +1473,7 @@ Partial Public Class movimientos_Factura
     Protected Sub GridViewOne_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridViewOne.SelectedIndexChanged
 
         Try
-            '"cod_pais,cod_empresa,cod_puesto,no_factura,fecha,cod_producto"  
+            '"cod_pais,cod_empresa,cod_puesto,no_factura,fecha,cod_producto"
             Me.hdfCodigo.Value = Me.GridViewOne.SelectedValue.ToString
             ProdusctoCodpais = GridViewOne.SelectedDataKey.Values(0)
             ProductoEmpre = GridViewOne.SelectedDataKey.Values(1)
@@ -2208,7 +2190,7 @@ Partial Public Class movimientos_Factura
 
         Dim MessageText As String
         Dim Sql As String
-        Dim dbCon As New OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -2272,7 +2254,7 @@ Partial Public Class movimientos_Factura
 
         Dim MessageText As String
         Dim Sql As String
-        Dim dbCon As New OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -2535,7 +2517,7 @@ Partial Public Class movimientos_Factura
 
     Protected Sub GridViewpop_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewpop.SelectedIndexChanged
         Try
-            ''"cod_pais,cod_empresa,cod_puesto,no_factura,fecha,cod_producto"  
+            ''"cod_pais,cod_empresa,cod_puesto,no_factura,fecha,cod_producto"
             'Me.HiddenField2.Value = Me.GridViewpop.SelectedValue.ToString
             'EliminarFormaPago = GridViewpop.SelectedDataKey.Values(0)
             ''ProductoEmpre = GridViewpop.SelectedDataKey.Values(1)

@@ -1,20 +1,20 @@
 ﻿Imports System.Data
+Imports FACTURACION_CLASS
 
 Partial Class [Default]
     Inherits Page
-    Dim _conn As New FACTURACION_CLASS.Seguridad
-    Dim _database As New FACTURACION_CLASS.database
+    Dim _conn As New seguridad
+    Dim _database As New database
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         If Not Page.IsPostBack Then
-            GetMenuEncabezado()
         End If
 
     End Sub
 
 #Region "CREAR EL MENU DE FORMA DINAMICA"
-    Private Sub GetMenuEncabezado()
+    Private Sub GetMenuEncabezadoSIDEBAR()
         Try
 
             Dim sql = "EXEC sp_menu_accesos " &

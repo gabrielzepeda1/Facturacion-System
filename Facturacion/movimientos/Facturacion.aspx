@@ -4,9 +4,6 @@
 <%@ Register Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI" TagPrefix="asp" %>
 <%@ Register Src="~/usercontrol/menu_catalogos.ascx" TagPrefix="uc1" TagName="menu_catalogos" %>
 
-
-
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <link  rel="stylesheet" href= "../css/facturacion.css" />
     <link  rel="stylesheet" href= "../css/select2.css" />
@@ -24,8 +21,6 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
-    
         <asp:UpdatePanel ID="upMensaje_popup" runat="server" UpdateMode="Conditional">
 
         <ContentTemplate>
@@ -57,7 +52,7 @@
                     </div> <!--RADIO-CONTAINER -->
             </div> <!--FORM-CONTAINER-2 -->
 
-              
+
             <div class="form-container-3">
                 <div>
                     <label for="nombre-cliente">Nombre del Cliente</label>
@@ -82,9 +77,9 @@
                         </div>
                     </div>
                 </div> <!-- FORM-CONTAINER-4 -->
-           
 
-            </div> <!-- GRID-CONTAINER --> 
+
+            </div> <!-- GRID-CONTAINER -->
 
 
         <asp:UpdatePanel ID="upDatosFactura" runat="server" UpdateMode="Conditional" class="grid-container-2">
@@ -124,15 +119,15 @@
                 <div class="number">
                     <label for="total">Total:</label>
                     <asp:TextBox ID="TextTotal" runat="server" CssClass="text" Text="0.00" AutoPostBack="true" ReadOnly="true"></asp:TextBox>
-                </div>  
+                </div>
 
                 <div class="form-container-5">
                     <asp:Button ID="BtnAdicionar" runat="server" Text="Adicionar" CssClass="btn-submit" class="btnEditar" Enabled="true"  />
                     <%--<asp:Button ID="BtnGuardar" runat="server" Text="Eliminar" CssClass="btn-reset" class="btn-reset"  />--%>
-                </div> <!--FORM CONTAINER- 5 --> 
+                </div> <!--FORM CONTAINER- 5 -->
             </ContentTemplate>
-        <Triggers> 
-            <asp:AsyncPostBackTrigger ControlID="TextCantidad" EventName="TextChanged" /> 
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="TextCantidad" EventName="TextChanged" />
             <asp:AsyncPostBackTrigger ControlID="BtnAdicionar" EventName="Click"/>
             <asp:AsyncPostBackTrigger ControlID="ddlProducto" EventName="SelectedIndexChanged" />
             </Triggers>
@@ -153,11 +148,11 @@
                 AllowPaging="True"
                 AllowSorting="True"
                 AutoGenerateColumns="false"
-                ViewStateMode="Enabled" 
+                ViewStateMode="Enabled"
                 DataKeyNames="cod_pais,cod_empresa,cod_puesto,no_factura,fecha,cod_producto">
 
                 <SelectedRowStyle CssClass="SelectedRowDelete"/>
-                
+
                 <Columns>
                                     <asp:BoundField HeaderText="Codigo Producto" DataField="cod_producto" SortExpression="cod_producto" Visible="true"/>
                                     <asp:BoundField DataField="Producto" HeaderText="Producto" SortExpression="Producto" Visible="false"/>
@@ -168,16 +163,16 @@
                                     <asp:BoundField DataField="Descuento" HeaderText="Descuento" SortExpression="Descuento" />
                                     <asp:BoundField DataField="IVA" HeaderText="IVA" SortExpression="IVA" />
                                     <%--<asp:BoundField DataField="Total" HeaderText="Total" SortExpression="Total" />--%>
-                                    
-                                    
-                                    <asp:CommandField 
+
+
+                                    <asp:CommandField
                                         HeaderText="Suprimir"
-                                        ButtonType="Button" 
-                                        SelectText="Eliminar" 
-                                        ShowDeleteButton="false" 
+                                        ButtonType="Button"
+                                        SelectText="Eliminar"
+                                        ShowDeleteButton="false"
                                         ShowSelectButton="true"
                                         HeaderStyle-Width="120"
-                                        > 
+                                        >
                                     <ControlStyle CssClass="btnEliminar" />
                                     </asp:CommandField>
 
@@ -207,7 +202,7 @@
         </Triggers>
         </asp:UpdatePanel>
 
-        <asp:UpdatePanel ID="upPiePagina" runat="server" UpdateMode="Conditional"> 
+        <asp:UpdatePanel ID="upPiePagina" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
 
             <div class="grid-container-3 ">
@@ -256,8 +251,8 @@
 
 
                 <asp:Button  ID="btnDatosComp" runat="server" Text="Guardar Factura" CssClass="btn-dc" />
-       
-    <div id ="form-container-6 " class="">  <!--- DATOS COMPLEMENTARIOS DE FACTURAS --> 
+
+    <div id ="form-container-6 " class="">  <!--- DATOS COMPLEMENTARIOS DE FACTURAS -->
 
                     <div id ="popup-form" class="white-popup-block mfp-hide popupFactura">
 
@@ -282,7 +277,7 @@
                                 <asp:DropDownList ID="ddlFormaPago" runat="server" CssClass="" AutoPostBack="true"/>
                             </div>
 
-                            
+
                                 <div>
                                     <label>Saldo Factura C$</label>
                                     <asp:TextBox ID="TextSaldoFact" runat="server" Enabled="false" Text="0.00"  onkeypress="formatNumber(this, 2)" AutoPostBack="true" ></asp:TextBox>
@@ -301,18 +296,18 @@
                             </div>
 
 
-                            
-                            
+
+
 <%--'////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--%>
                             <div>
                                     <label>Moneda</label>
                                     <asp:DropDownList ID="ddlMoneda" runat="server" CssClass="" AutoPostBack="true"/>
-                                    <ajaxToolkit:CascadingDropDown 
-                                    ID="CMoneda" 
-                                    runat="server" 
-                                    TargetControlID  ="ddlMoneda" 
+                                    <ajaxToolkit:CascadingDropDown
+                                    ID="CMoneda"
+                                    runat="server"
+                                    TargetControlID  ="ddlMoneda"
                                     ServicePath ="../services/WSCatProductos.asmx"
-                                    ServiceMethod="GetMoneda" 
+                                    ServiceMethod="GetMoneda"
                                     Category="CategoryName">
                                     </ajaxToolkit:CascadingDropDown>
                             </div>
@@ -320,31 +315,31 @@
                             <div>
                                 <label id="lblTarjeta" runat="server">Tarjeta</label>
                                 <asp:DropDownList ID="ddlTarjeta" runat="server" CssClass="" AutoPostBack="true"/>
-                                <ajaxToolkit:CascadingDropDown 
+                                <ajaxToolkit:CascadingDropDown
                                     ID="Ctarjeta"
                                     runat="server"
                                     TargetControlID="ddlTarjeta"
                                     ServicePath="../services/WSCatProductos.asmx"
                                     ServiceMethod="GetTarjeta"
                                     Category="CategoryName"/>
-                                <%--<ajaxToolkit:CascadingDropDown 
-                                    ID="Ctarjeta" 
-                                    runat="server" 
-                                    TargetControlID="ddlTarjeta" 
-                                    ServicePath="../services/WSCatProductos.asmx" 
-                                    ServiceMethod="GetTarjeta" 
-                                    Category="CategoryName"></            
+                                <%--<ajaxToolkit:CascadingDropDown
+                                    ID="Ctarjeta"
+                                    runat="server"
+                                    TargetControlID="ddlTarjeta"
+                                    ServicePath="../services/WSCatProductos.asmx"
+                                    ServiceMethod="GetTarjeta"
+                                    Category="CategoryName"></
                                     ajaxToolkit:CascadingDropDown>--%>
                             </div>
                             <div class="cel">
                                     <label id="lblBanco" runat="server">Banco</label>
                                     <asp:DropDownList ID="ddlBanco" runat="server" CssClass=""/>
-                                    <ajaxToolkit:CascadingDropDown 
-                                    ID="Cbanco" 
-                                    runat="server" 
-                                    TargetControlID ="ddlBanco" 
+                                    <ajaxToolkit:CascadingDropDown
+                                    ID="Cbanco"
+                                    runat="server"
+                                    TargetControlID ="ddlBanco"
                                     ServicePath ="../services/WSCatProductos.asmx"
-                                    ServiceMethod="GetBanco" 
+                                    ServiceMethod="GetBanco"
                                     Category="CategoryName">
                                     </ajaxToolkit:CascadingDropDown>
                             </div>
@@ -354,9 +349,9 @@
                           <%--//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////--%>
 
                                 <div>
-                                    <label id ="lblCordobasRec" runat="server">Valor Recibido C$/US$</label>       
-                                    <asp:TextBox ID="TextCordobasRec" runat="server" MaxLength="100" Text="0.00" onkeypress="formatNumber(this, 2)" AutoPostBack="true"></asp:TextBox>   
-                                </div> 
+                                    <label id ="lblCordobasRec" runat="server">Valor Recibido C$/US$</label>
+                                    <asp:TextBox ID="TextCordobasRec" runat="server" MaxLength="100" Text="0.00" onkeypress="formatNumber(this, 2)" AutoPostBack="true"></asp:TextBox>
+                                </div>
 
 <%--                                <div>
                                     <label id="lblDolar" runat="server" visible="false">Valor Recibido $</label>
@@ -364,7 +359,7 @@
                                 </div>--%>
 
                                <%-- <div>
-                                    <label id="lblConverDolACor" runat="server" visible="true">Conversión de $ a C$</label>       
+                                    <label id="lblConverDolACor" runat="server" visible="true">Conversión de $ a C$</label>
                                     <asp:TextBox ID="TextConverDolACor" runat="server" MaxLength="100" Text="0.00" onkeypress="formatNumber(this, 2)" Visible="true" Enabled="false"></asp:TextBox>
                                 </div>--%>
 
@@ -378,18 +373,18 @@
                     <%--      <div>
                                     <label>Vendedor</label>
                             <asp:DropDownList ID="ddVendedor" runat="server" CssClass=" "/>
-                                    <ajaxToolkit:CascadingDropDown 
-                                    ID="Cvendedor" 
-                                    runat="server" 
-                                    TargetControlID= "ddVendedor" 
+                                    <ajaxToolkit:CascadingDropDown
+                                    ID="Cvendedor"
+                                    runat="server"
+                                    TargetControlID= "ddVendedor"
                                     ServicePath ="../services/WSCatProductos.asmx"
-                                    ServiceMethod="GetVendedor" 
+                                    ServiceMethod="GetVendedor"
                                     Category="CategoryName">
                                     </ajaxToolkit:CascadingDropDown>
                             </div>--%>
 
                             </div> <!-- GRID CONTAINER DC -->
-                    
+
                                            </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnDatosComp" EventName="Click"/>
@@ -399,37 +394,37 @@
                     <%--<asp:AsyncPostBackTrigger ControlID="TextDolar" EventName="TextChanged"/>--%>
                     <asp:AsyncPostBackTrigger ControlID="TextSaldoFact" EventName="TextChanged"/>
                     <asp:AsyncPostBackTrigger ControlID="GridViewpop" EventName="RowDeleting"/>
-                    <asp:AsyncPostBackTrigger ControlID="BtnPopupImpGuar" EventName="Click"/> 
+                    <asp:AsyncPostBackTrigger ControlID="BtnPopupImpGuar" EventName="Click"/>
                     <asp:AsyncPostBackTrigger ControlID="TextNeto" EventName="TextChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="TextCordobasRec" EventName="TextChanged"/>    
+                    <asp:AsyncPostBackTrigger ControlID="TextCordobasRec" EventName="TextChanged"/>
                 </Triggers>
             </asp:UpdatePanel>
                             <div class="btnGuarda">
                         <asp:Button ID="BtnAdiciFormaPago" runat="server" Text="Aceptar Forma de Pago" class="BtnAdiciFormaPago"/>
                              </div>
 
-                         <!-- GRIDVIEW DC --> 
-        
+                         <!-- GRIDVIEW DC -->
+
         <asp:UpdatePanel ID="upGridPop" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <asp:Literal ID="LiteralGridpop" runat="server"></asp:Literal>
 
                     <div style ="min-height:200px; overflow:scroll;">
                         <asp:GridView ShowHeaderWhenEmpty="true"
-                            ID="GridViewpop" 
-                            runat="server" 
-                            CssClass="table table-light table-sm table-striped table-hover table-bordered" 
+                            ID="GridViewpop"
+                            runat="server"
+                            CssClass="table table-light table-sm table-striped table-hover table-bordered"
                             CellPadding="0"
-                            GridLines="None" 
+                            GridLines="None"
                             AllowPaging="True"
                             AllowSorting ="True"
-                            PageSize="5" 
+                            PageSize="5"
                             autogeneratecolumns="false"
-                            DataKeyNames="cod_FormaPago,No_Factura" 
+                            DataKeyNames="cod_FormaPago,No_Factura"
                             BorderColor="#993300"
                             OnRowDeleting="GridViewpop_RowDeleting"
                             >
-                                
+
                             <SelectedRowStyle CssClass="SelectedRowDelete"/>
 
                             <Columns>
@@ -445,13 +440,13 @@
                                  <asp:BoundField DataField="SaldoFacturaCor" HeaderText="Saldo Factura C$" SortExpression="SaldoFacturaCor" />
                                 <asp:BoundField DataField="SaldoFacturaDol" HeaderText="Saldo Factura US$" SortExpression="SaldoFacturaDol" />
 
-                                <asp:CommandField 
+                                <asp:CommandField
                                         HeaderText="Suprimir"
-                                        ButtonType="Button" 
-                                        SelectText="Eliminar" 
-                                        ShowDeleteButton="true" 
+                                        ButtonType="Button"
+                                        SelectText="Eliminar"
+                                        ShowDeleteButton="true"
                                         ShowSelectButton="false"
-                                        HeaderStyle-Width="120"> 
+                                        HeaderStyle-Width="120">
                                     <ControlStyle CssClass="btnEliminar"/>
                                     </asp:CommandField>
 
@@ -477,9 +472,9 @@
                     <asp:AsyncPostBackTrigger ControlID="BtnAdiciFormaPago" EventName="Click"/>
                     <asp:AsyncPostBackTrigger ControlID="btnDatosComp" EventName="Click" />
                     <asp:AsyncPostBackTrigger ControlID="ddlMoneda" EventName="SelectedIndexChanged"/>
-                    <%--<asp:AsyncPostBackTrigger ControlID="TextDolar" EventName="TextChanged"/>--%> 
-                    <asp:AsyncPostBackTrigger ControlID="TextSaldoFact" EventName="TextChanged"/>         
-                    
+                    <%--<asp:AsyncPostBackTrigger ControlID="TextDolar" EventName="TextChanged"/>--%>
+                    <asp:AsyncPostBackTrigger ControlID="TextSaldoFact" EventName="TextChanged"/>
+
                 </Triggers>
             </asp:UpdatePanel>
 
@@ -490,15 +485,15 @@
 
              <!-- GRIDVIEW DC -->
 
-                       
 
-               </div> <!-- PantallaPopUp  --> 
-              </div>    <!-- #popup-form  --> 
-                        
- 
-        </div> <!--- END DATOS COMPLEMENTARIOS DE FACTURAS --> 
-             
-    </div><!-- MAIN-CONTAINER -->             
+
+               </div> <!-- PantallaPopUp  -->
+              </div>    <!-- #popup-form  -->
+
+
+        </div> <!--- END DATOS COMPLEMENTARIOS DE FACTURAS -->
+
+    </div><!-- MAIN-CONTAINER -->
 </asp:Content>
 
 <asp:Content ID="Content5" ContentPlaceHolderID="cpScripts" Runat="Server">
@@ -512,14 +507,14 @@
             }
         };
 
-        function formatNum(event) { 
+        function formatNum(event) {
             let txtNumber = event.target;
-            let number = txtNumber.value; 
-            txtNumber.value = numberWithCommas(number); 
+            let number = txtNumber.value;
+            txtNumber.value = numberWithCommas(number);
         }
 
 
-        function numberWithCommas(x) { 
+        function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
@@ -557,13 +552,13 @@
 
                      $("#<%=ddlTarjeta.ClientID%>").val("");
                      $("#<%=ddlTarjeta.ClientID%>").prev().removeClass('visible');
-                   
+
                      $("#<%=GridViewpop.ClientID%>").val("");
                      $("#<%=GridViewpop.ClientID%>").prev().removeClass('visible');
-                 
-                    
+
+
                //}
-                
+
                  $("#popuptittle").text('Distribucion de pago');
                  open_popup();
 

@@ -2,28 +2,27 @@
 
 <%@ Register Src="~/usercontrol/menu_catalogos.ascx" TagPrefix="uc1" TagName="menu_catalogos" %>
 
-<asp:Content ID="c1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="c1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 
-<asp:Content ID="c2" ContentPlaceHolderID="cpTitulo" Runat="Server">
+<asp:Content ID="c2" ContentPlaceHolderID="cpTitulo" runat="Server">
     <h1>Paridad</h1>
 </asp:Content>
 
-<asp:Content ID="c3" ContentPlaceHolderID="cpUbicacion" Runat="Server">
+<asp:Content ID="c3" ContentPlaceHolderID="cpUbicacion" runat="Server">
     <a href="../Default.aspx">Escritorio</a>
     <label>&gt;</label>
     <a href="paridad.aspx">Paridad</a>
 </asp:Content>
 
-<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" Runat="Server">
+<asp:Content ID="c4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
 
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
 
     <div id="main-form">
         <div id="main-form-content">
-            
-             
+
+
 
             <div id="main-form-content-field">
 
@@ -70,38 +69,38 @@
                             <asp:Literal ID="ltMensajeGrid" runat="server"></asp:Literal>
 
 
-                            <div class="table-responsive />
-                            <asp:GridView 
-                                ID="GridViewOne" 
-                                runat="server" 
-                                CssClass="table table-light table-sm table-striped table-hover table-bordered" 
+                            <div class="table-responsive" />
+                            <asp:GridView
+                                ID="GridViewOne"
+                                runat="server"
+                                CssClass="table table-light table-sm table-striped table-hover table-bordered"
                                 CellPadding="0"
-                                GridLines="None" 
+                                GridLines="None"
                                 AllowPaging="True"
-                                AllowSorting ="True"
-                                PageSize="16" 
-                                DataKeyNames="Fecha" 
+                                AllowSorting="True"
+                                PageSize="16"
+                                DataKeyNames="Fecha"
                                 AutoGenerateColumns="False">
 
                                 <Columns>
                                     <asp:BoundField HeaderText="FECHA" DataField="FECHA" ItemStyle-CssClass="align-middle" />
                                     <asp:BoundField HeaderText="VALOR" DataField="VALOR" ItemStyle-CssClass="align-middle" />
-                                    <asp:BoundField HeaderText="AÑO" DataField="ANO"/>
+                                    <asp:BoundField HeaderText="AÑO" DataField="ANO" />
                                     <asp:BoundField HeaderText="MES" DataField="MES" Visible="false" ItemStyle-CssClass="align-middle" />
                                     <asp:BoundField HeaderText="DIA" DataField="DIA" Visible="false" ItemStyle-CssClass="align-middle" />
                                 </Columns>
 
                                 <PagerTemplate>
                                     <div class="pagination">
-                                        <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag"  CommandArgument="First" CssClass="primero" Text="Primera"  formnovalidate/>
-                                        <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior"  CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate/>
-                                        <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate/>
-                                        <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag"  CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate/>
-                                        <asp:label id="CurrentPageLabel" runat="server" CssClass = "PagerLabel"/>
+                                        <asp:Button ID="B1" runat="server" CommandName="Page" ToolTip="Prim. Pag" CommandArgument="First" CssClass="primero" Text="Primera" formnovalidate />
+                                        <asp:Button ID="B2" runat="server" CommandName="Page" ToolTip="Pág. anterior" CommandArgument="Prev" CssClass="anterior" Text="&larr;" formnovalidate />
+                                        <asp:Button ID="B3" runat="server" CommandName="Page" ToolTip="Sig. página" CommandArgument="Next" CssClass="siguiente" Text="&rarr;" formnovalidate />
+                                        <asp:Button ID="B4" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last" CssClass="ultimo" Text="Ultima" formnovalidate />
+                                        <asp:Label ID="CurrentPageLabel" runat="server" CssClass="PagerLabel" />
                                     </div>
                                 </PagerTemplate>
                             </asp:GridView>
-                            </div>
+                        </div>
                         </div>
                         <asp:HiddenField ID="hdfCodigo" runat="server" />
 
@@ -111,42 +110,47 @@
                     </Triggers>
                 </asp:UpdatePanel>
 
-            </div><!-- #main-form-content-field -->
+            </div>
+            <!-- #main-form-content-field -->
 
             <div class="clear"></div>
 
-        </div><!-- =========== #main-form-content ====================================================================== -->
-    </div><!-- =========== #main-form ====================================================================== -->
-       
-    
-     
+        </div>
+        <!-- =========== #main-form-content ====================================================================== -->
+    </div>
+    <!-- =========== #main-form ====================================================================== -->
+
+
+
     <div id="popup-form" class="white-popup-block mfp-hide">
         <div class="bstt-form">
             <i class="fas fa-times-circle Close"></i>
 
             <h2 class="center-color">Tasa de Cambio</h2>
 
-            <asp:TextBox ID="txtFecha" runat="server" AutoCompleteType="None" ></asp:TextBox>
+            <asp:TextBox ID="txtFecha" runat="server" AutoCompleteType="None"></asp:TextBox>
 
             <asp:TextBox ID="txtDescripcion" runat="server" MaxLength="100"></asp:TextBox>
 
-            <div class="btnGuarda" >
-                  <div class="izq">
-                      <asp:Button ID="BtnGuardar" runat="server" Text="Guardar"  class="btnEditar" />
-                  </div>
+            <div class="btnGuarda">
+                <div class="izq">
+                    <asp:Button ID="BtnGuardar" runat="server" Text="Guardar" class="btnEditar" />
+                </div>
                 <div class="Derecha">
-                      <asp:Button ID="BtnCerrar" runat="server" Text="Cerrar" Class="btnEliminar" />
-               </div>
+                    <asp:Button ID="BtnCerrar" runat="server" Text="Cerrar" Class="btnEliminar" />
+                </div>
             </div>
-        </div><!-- .bstt-form -->
-    </div><!-- #popup-form -->
+        </div>
+        <!-- .bstt-form -->
+    </div>
+    <!-- #popup-form -->
 
 
     <asp:UpdateProgress ID="uprData" runat="server">
         <ProgressTemplate>
             <div class="loader">
                 <div>
-                    <img alt="Cargando" src="../img/load.gif"/>
+                    <img alt="Cargando" src="../img/load.gif" />
                     <p>Cargando...</p>
                 </div>
             </div>
@@ -155,7 +159,7 @@
 
 </asp:Content>
 
-<asp:Content ID="c5" ContentPlaceHolderID="cpScripts" Runat="Server">
+<asp:Content ID="c5" ContentPlaceHolderID="cpScripts" runat="Server">
     <script>
         $(document).ready(function () {
             //$('.datagird').basictable();

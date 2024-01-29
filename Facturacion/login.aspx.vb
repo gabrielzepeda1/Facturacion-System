@@ -1,12 +1,10 @@
-﻿Imports System.Data.OleDb
+﻿Imports System.Data
+Imports System.Data.OleDb
 Imports System.IO
 Imports System.Security.Cryptography
-Imports FACTURACION_CLASS
-Imports Microsoft.ReportingServices.DataProcessing
 Imports AlertifyClass
-Imports System.Data
+Imports FACTURACION_CLASS
 Imports CommandType = System.Data.CommandType
-Imports SM.Data
 Partial Class Login
     Inherits Page
     Dim _conn As New seguridad
@@ -42,7 +40,6 @@ Partial Class Login
         End Try
     End Function
 
-#Region "INICIAR SESIÓN"
     Private Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
         UserLogin()
     End Sub
@@ -120,9 +117,20 @@ Partial Class Login
                             Session("Password") = dr.Item("Password")
                             Session("CodigoRol") = dr.Item("CodigoRol")
                             Session("Status") = dr.Item("Status")
+
+                            'Esta variable toma un pais, empresa y puesto POR DEFECTO asignado al usuario en la tabla "sys_usuario" 
                             Session("CodigoPais") = dr.Item("CodigoPais")
-                            Session("CodigoEmpresa") = dr.Item("CodigoEmpresa")
-                            Session("CodigoPuesto") = dr.Item("CodigoPuesto")
+                            'Session("CodigoEmpresa") = dr.Item("CodigoEmpresa")
+                            'Session("CodigoPuesto") = dr.Item("CodigoPuesto")
+
+                            Dim cookie As New HttpCookie("CKSMFACTURA")
+                            cookie.Values("Username") = Session("Username")
+                            cookie.Values("CodigoUser") = Session("CodigoUser")
+                            cookie.Values("CodigoPais") = Session("CodigoPais")
+                            cookie.Values("CodigoEmpresa") = Session("CodigoEmpresa")
+                            cookie.Values("CodigoPuesto") = Session("CodigoPuesto")
+                            cookie.Expires = Now.AddDays(1)
+                            Response.Cookies.Add(cookie)
 
                             Select Case Session("CodigoRol") 'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
                                 Case 1, 2, 3, 4
@@ -158,53 +166,6 @@ Partial Class Login
         'Ex: Session("CodigoPais") = [1, 2, 3, 4],  En SQL se utilizaria así: "WHERE IN (1, 2, 3, 4)
 
     End Sub
-
-    'Private Function GetCodigoPaisUser(CodigoUser As Integer) As Integer
-    '    Using dbCon As New OleDbConnection(_conn.conn)
-    '        dbCon.Open()
-
-    '        Dim sql = $"SELECT dbo.GetCod_PaisUsuario({CodigoUser})"
-    '        Dim CodigoPais = _database.GetScalar(sql)
-
-    '        If CodigoPais IsNot DBNull.Value Then
-    '            Return Convert.ToInt32(CodigoPais)
-    '        End If
-    '    End Using
-
-    '    Return Nothing
-    'End Function
-
-    'Private Function GetCodigoEmpresaUser(CodigoUser As Integer) As Integer
-    '    Using dbCon As New OleDbConnection(_conn.conn)
-    '        dbCon.Open()
-
-    '        Dim sql = $"SELECT dbo.GetCodigoEmpresaUsuario({CodigoUser})"
-    '        Dim CodigoEmpresa = _database.GetScalar(sql)
-
-    '        If CodigoEmpresa IsNot DBNull.Value Then
-    '            Return Convert.ToInt32(CodigoEmpresa)
-    '        End If
-    '    End Using
-
-    '    Return Nothing
-    'End Function
-
-    'Private Function GetCodigoPuestoUser(CodigoUser As Integer) As Integer
-    '    Using dbCon As New OleDbConnection(_conn.conn)
-    '        dbCon.Open()
-
-    '        Dim sql = $"SELECT dbo.GetCodigoPuestoUser({CodigoUser})"
-    '        Dim CodigoPais = _database.GetScalar(sql)
-
-    '        If CodigoPais IsNot DBNull.Value Then
-    '            Return Convert.ToInt32(CodigoPais)
-    '        End If
-    '    End Using
-
-    '    Return Nothing
-    'End Function
-
-#End Region
 
 #Region "PROCESO DE ENCRIPTACIÓN"
 

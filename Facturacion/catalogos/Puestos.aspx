@@ -16,7 +16,6 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
         <div id="main-form-content">
@@ -391,16 +390,16 @@
             alertify.success(msg);
 
             $("#<%=TextPuesto.ClientID%>").val("");
-              $("#<%=TextNoDebito.ClientID%>").val("");
-              $("#<%=TextNoCredito.ClientID%>").val("");
-              $("#<%=TextNoRecibo.ClientID%>").val("");
-              $("#<%=TextNoCredRetenc.ClientID%>").val("");
-              $("#<%=TextFormatoImp.ClientID%>").val("");
-              $("#<%=TextLineImpri.ClientID%>").val("");
-              $("#<%=TextCuotaPla.ClientID%>").val("");
-              $("#<%=CheckVeInv.ClientID%>").val("");
-              $("#<%=TextTelefono.ClientID%>").val("");
-              $("#<%=TextDescCorta.ClientID%>").val("");
+            $("#<%=TextNoDebito.ClientID%>").val("");
+            $("#<%=TextNoCredito.ClientID%>").val("");
+            $("#<%=TextNoRecibo.ClientID%>").val("");
+            $("#<%=TextNoCredRetenc.ClientID%>").val("");
+            $("#<%=TextFormatoImp.ClientID%>").val("");
+            $("#<%=TextLineImpri.ClientID%>").val("");
+            $("#<%=TextCuotaPla.ClientID%>").val("");
+            $("#<%=CheckVeInv.ClientID%>").val("");
+            $("#<%=TextTelefono.ClientID%>").val("");
+            $("#<%=TextDescCorta.ClientID%>").val("");
 
 
         }
