@@ -13,7 +13,6 @@
     <a href="origen.aspx">Catálogo de Familia</a>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
     <div id="main-form">
         <div id="main-form-content">
@@ -188,19 +187,19 @@
 
                 $("#<%=hdfCodigo.ClientID%>").val("");
 
-                 $("#<%=txtDescripcion.ClientID%>").val("");
-                 $("#<%=txtDescripcion.ClientID%>").prev().removeClass('visible');
+                $("#<%=txtDescripcion.ClientID%>").val("");
+                $("#<%=txtDescripcion.ClientID%>").prev().removeClass('visible');
 
-                 $("#popuptittle").text('Agregar Origen del Producto');
+                $("#popuptittle").text('Agregar Origen del Producto');
 
-                 open_popup();
+                open_popup();
 
-             });
+            });
 
-             $(".Close").click(function () {
-                 $('#popup-form').bPopup().close();
-             });
-         });
+            $(".Close").click(function () {
+                $('#popup-form').bPopup().close();
+            });
+        });
 
         function open_popup() {
             $('#popup-form').bPopup({

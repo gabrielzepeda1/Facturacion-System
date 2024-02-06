@@ -16,7 +16,6 @@
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
     <div id="main-form">
         <div id="main-form-content">
 
@@ -327,39 +326,39 @@
 
                 $("#<%=hdfCodigo.ClientID%>").val("");
 
-                 $("#<%=TextComision.ClientID%>").val("");
-                 $("#<%=TextComision.ClientID%>").prev().removeClass('visible');
+                $("#<%=TextComision.ClientID%>").val("");
+                $("#<%=TextComision.ClientID%>").prev().removeClass('visible');
 
 
-                 $("#<%=CheckActivo.ClientID%>").val("");
-                 $("#<%=CheckActivo.ClientID%>").prev().removeClass('visible');
+                $("#<%=CheckActivo.ClientID%>").val("");
+                $("#<%=CheckActivo.ClientID%>").prev().removeClass('visible');
 
-                 $("#<%=ddlVendedor.ClientID%>").val("");
-                 $("#<%=ddlVendedor.ClientID%>").prev().removeClass('visible');
+                $("#<%=ddlVendedor.ClientID%>").val("");
+                $("#<%=ddlVendedor.ClientID%>").prev().removeClass('visible');
 
-                 $("#<%=ddlPais.ClientID%>").val("");
-                 $("#<%=ddlPais.ClientID%>").prev().removeClass('visible');
+                $("#<%=ddlPais.ClientID%>").val("");
+                $("#<%=ddlPais.ClientID%>").prev().removeClass('visible');
 
-                 $("#<%=ddlEmpresa.ClientID%>").val("");
-                 $("#<%=ddlEmpresa.ClientID%>").prev().removeClass('visible');
+                $("#<%=ddlEmpresa.ClientID%>").val("");
+                $("#<%=ddlEmpresa.ClientID%>").prev().removeClass('visible');
 
-                 $("#<%=ddlPuesto.ClientID%>").val("");
-                 $("#<%=ddlPuesto.ClientID%>").prev().removeClass('visible');
+                $("#<%=ddlPuesto.ClientID%>").val("");
+                $("#<%=ddlPuesto.ClientID%>").prev().removeClass('visible');
 
-                 $("#<%=ddlFamilia.ClientID%>").val("");
-                 $("#<%=ddlFamilia.ClientID%>").prev().removeClass('visible');
+                $("#<%=ddlFamilia.ClientID%>").val("");
+                $("#<%=ddlFamilia.ClientID%>").prev().removeClass('visible');
 
-                 $("#popuptittle").text('Agregar comision a los vendedores');
+                $("#popuptittle").text('Agregar comision a los vendedores');
 
 
-                 open_popup();
+                open_popup();
 
-             });
+            });
 
-             $(".Close").click(function () {
-                 $('#popup-form').bPopup().close();
-             });
-         });
+            $(".Close").click(function () {
+                $('#popup-form').bPopup().close();
+            });
+        });
 
         function open_popup() {
             $('#popup-form').bPopup({
@@ -390,12 +389,12 @@
             alertify.success(msg);
 
             $("#<%=TextComision.ClientID%>").val("");
-             $("#<%=CheckActivo.ClientID%>").val("");
-             $("#<%=ddlVendedor.ClientID%>").val("");
-             $("#<%=ddlPais.ClientID%>").val("");
-             $("#<%=ddlEmpresa.ClientID%>").val("");
-             $("#<%=ddlPuesto.ClientID%>").val("");
-             $("#<%=ddlFamilia.ClientID%>").val("");
+            $("#<%=CheckActivo.ClientID%>").val("");
+            $("#<%=ddlVendedor.ClientID%>").val("");
+            $("#<%=ddlPais.ClientID%>").val("");
+            $("#<%=ddlEmpresa.ClientID%>").val("");
+            $("#<%=ddlPuesto.ClientID%>").val("");
+            $("#<%=ddlFamilia.ClientID%>").val("");
 
         }
     </script>

@@ -52,7 +52,11 @@ Partial Class Catalogos_Siglas
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        AddHandler ucButtons.Exportar_Click, AddressOf btnExportar_Click
+        AddHandler ucButtons.Buscar_TextChanged, AddressOf Search
         LoadDataGridView()
+
         If Not Page.IsPostBack Then
             Puesto_Name = "Industrial Comercial San Martin"
             txtDescripcion.Attributes.Add("placeholder", "Nuevas Siglas..")
@@ -65,7 +69,7 @@ Partial Class Catalogos_Siglas
     Private Sub LoadDataGridView()
         Try
             Dim sql As String = "SELECT cod_sigla, sigla FROM dbo.Siglas"
-            If Not String.IsNullOrEmpty(txtSearch.Text.Trim()) Then
+            If Not String.IsNullOrEmpty(ucButtons.txtSearchText) Then
                 sql &= " WHERE sigla LIKE '%' + @SearchTerm + '%'"
                 sql &= " ORDER BY sigla ASC"
             End If
@@ -74,7 +78,7 @@ Partial Class Catalogos_Siglas
                 dbCon.Open()
 
                 Using cmd As New SqlCommand(sql, dbCon)
-                    cmd.Parameters.AddWithValue("@SearchTerm", txtSearch.Text.Trim())
+                    cmd.Parameters.AddWithValue("@SearchTerm", ucButtons.txtSearchText)
                     Using sda As New SqlDataAdapter(cmd)
                         Dim dt As New DataTable()
                         sda.Fill(dt)
@@ -291,7 +295,7 @@ Partial Class Catalogos_Siglas
     'End Sub
 
 #Region "EXPORTAR DATOS A EXCELL"
-    Protected Sub btnExportar_Click(sender As Object, e As EventArgs) Handles btnExportar.Click
+    Protected Sub btnExportar_Click(sender As Object, e As EventArgs)
         Try
             Response.Clear()
             Response.Buffer = True

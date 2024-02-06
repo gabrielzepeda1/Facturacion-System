@@ -11,7 +11,6 @@
     <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
     <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
     <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
-    <%--<link href="~/css/sesion.css" rel="stylesheet" />--%>
     <link href="<%= ResolveClientUrl("../css/principal.css")%>" rel="stylesheet" />
     <link href="<%= ResolveClientUrl("../css/newStyles.css")%>" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
@@ -20,7 +19,6 @@
 </head>
 <body class="bg-black">
     <form id="form1" runat="server">
-        <asp:ScriptManager ID="ToolkitScriptManager1" runat="server"></asp:ScriptManager>
 
         <div class="d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
             <div class="container-md bg-dark rounded p-3" style="max-width: 500px">
@@ -185,7 +183,7 @@
                 'Está seguro que desea cerrar sesión?',
                 function () {
                     __doPostBack("<%=btnCerrar.UniqueID%>", '');
-                    
+
                 },
                 function () {
                     alertify.error('Cancelado');

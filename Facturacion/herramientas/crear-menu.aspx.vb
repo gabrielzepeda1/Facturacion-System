@@ -1,11 +1,11 @@
 ﻿Imports System.Data
-Imports System.Globalization
-Imports System.Threading
+Imports System.Data.OleDb
+Imports FACTURACION_CLASS
 
 Partial Class admin_crear_menu
-    Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
-    Dim DataBase As New FACTURACION_CLASS.database
+    Inherits Page
+    Dim conn As New seguridad
+    Dim DataBase As New database
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -36,12 +36,13 @@ Partial Class admin_crear_menu
             _Name = value
         End Set
     End Property
+
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
             Form.DefaultButton = Me.btnGuardar.UniqueID
-            GetMenu()
+            GetTreeview()
 
             Attributes_Text()
 
@@ -72,70 +73,97 @@ Partial Class admin_crear_menu
     End Sub
 
 #Region "CARGAR DATOS EXISTENTES DEL MENÚ"
-    Private Sub GetMenu()
-        'Try
-        trvMenu.Nodes.Clear()
 
-        Dim sql As String = String.Empty
-        sql = "EXEC sp_Menu_web_admin " & _
-              "@cod_menu = NULL," & _
-              "@cod_Padre = NULL," & _
-              "@Posicion = NULL," & _
-              "@Etiqueta = NULL," & _
-              "@Ruta = NULL," & _
-              "@Pagina = NULL," & _
-              "@icono = NULL," & _
-              "@Activo = NULL," & _
-              "@Ocultar_Menu = NULL," & _
-              "@Tipo = 'FULL'"
+    Private Sub GetTreeview()
+        Try
+            trvMenu.Nodes.Clear()
 
-        Dim ds As DataSet = DataBase.GetDataSet(sql)
+            Dim dtParent = DataBase.GetDataTable($"EXEC sp_crear_menu_web @Tipo = PADRE, @cod_padre = NULL")
 
-        Dim tnode As TreeNode
+            Dim html As New StringBuilder()
+            Dim tnode As TreeNode
 
-        For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-            If ds.Tables(0).Rows(i).Item("cod_Padre").ToString = String.Empty Then
-                'Verifico si el usuario tiene asignado el menu
-                tnode = New TreeNode
-                tnode.Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString
-                tnode.Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString
-                trvMenu.Nodes.Add(tnode)
-                'hacemos un llamado al metodo recursivo encargado de generar el árbol del menú.
-                AddMenuItem(tnode, ds)
-            End If
-        Next i
+            For i As Integer = 0 To dtParent.Rows.Count - 1
 
-        ds.Dispose()
+                Dim cod_padre = dtParent.Rows(i).Item("cod_menu").ToString()
+                Dim dtChild As DataTable = DataBase.GetDataTable($"EXEC sp_menu_permisos_rol @CodigoRol = {Session("CodigoRol")}, @cod_menu = {cod_padre}, @Tipo = HIJOS")
 
-        Me.trvMenu.ExpandAll()
+                If dtChild.Rows.Count > 0 Then
+                    html.AppendLine("<li class=""nav-item"">")
+                    html.AppendLine($"<a class=""nav-link"" href=""#"">")
+                    html.AppendLine($"<i class=""{dtParent.Rows(i).Item("icono").ToString().Trim()}""></i>")
+                    html.AppendLine(dtParent.Rows(i).Item("etiqueta").ToString.Trim())
+                    html.AppendLine("</a>")
 
-        'Catch ex As Exception
-        '    Me.ltMensaje.Text &= conn.pmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+                    html.AppendLine("<ul class=""nav-treeview"">")
+                    html.AppendLine($"<li>{GetTreeViewDetalle(dtChild, cod_padre)}</li>")
+                    html.AppendLine("</ul>")
+                    html.AppendLine("</li>")
 
-        'End Try
+                End If
+            Next i
+
+            ltTreeview.Text = html.ToString()
+
+            trvMenu.ExpandAll()
+
+        Catch ex As Exception
+            Me.ltMensaje.Text &= conn.PmsgBox("Ocurrio un error al intentar crear el arbol de nodos. " & ex.Message, "error")
+
+        End Try
     End Sub
 
+    Private Function GetTreeViewDetalle(dtChild As DataTable, cod_padre As String) As String
+
+        Try
+
+            Dim html As New StringBuilder()
+            Dim ruta As String
+            Dim clase As String
+            Dim label As String
+
+            For i As Integer = 0 To dtChild.Rows.Count - 1
+
+                If dtChild.Rows(i).Item("cod_padre").ToString().Trim() = cod_padre Then
+
+                    ruta = dtChild.Rows(i).Item("ruta").ToString().Trim()
+                    clase = dtChild.Rows(i).Item("icono").ToString().Trim()
+                    label = dtChild.Rows(i).Item("etiqueta").ToString().Trim()
+
+                    html.AppendLine($"<a class=""nav-link text-decoration-none"" href=""""><i class=""{clase}""></i> {label}</a>")
+
+                End If
+            Next i
+
+            Return html.ToString()
+
+        Catch ex As Exception
+
+        End Try
+
+    End Function
+
     ''' <summary>
-    ''' UTILIZA EL DATASET CARGADO EN EL PROCESO GetMenu PARA CREAR LOS NODOS HIJOS
+    ''' UTILIZA EL DATASET CARGADO EN EL PROCESO GetTreeview PARA CREAR LOS NODOS HIJOS
     ''' </summary>
     ''' <param name="tnode"></param>
     ''' <param name="ds"></param>
     ''' <remarks></remarks>
-    Private Sub AddMenuItem(ByRef tnode As TreeNode, ByVal ds As DataSet)
+    Private Sub AddMenuItem(ByRef tnode As TreeNode, ByVal dt As DataTable)
         'Try
         '' '' ''Recorremos cada elemento del datatable para poder determinar cuales son elementos hijos
         '' '' ''del menuitem dado pasado como parametro ByRef.
 
-        For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-            If ds.Tables(0).Rows(i).Item("cod_Padre").ToString = tnode.Value AndAlso Not ds.Tables(0).Rows(i).Item("cod_menu").ToString = ds.Tables(0).Rows(i).Item("cod_Padre").ToString Then
+        For i As Integer = 0 To dt.Rows.Count - 1
+            If dt.Rows(i).Item("cod_Padre").ToString = tnode.Value AndAlso Not dt.Rows(i).Item("cod_menu").ToString = dt.Rows(i).Item("cod_Padre").ToString Then
                 Dim newnode As New TreeNode
-                newnode.Value = ds.Tables(0).Rows(i).Item("cod_menu").ToString
-                newnode.Text = ds.Tables(0).Rows(i).Item("Etiqueta").ToString
+                newnode.Value = dt.Rows(i).Item("cod_menu").ToString
+                newnode.Text = dt.Rows(i).Item("Etiqueta").ToString
 
                 tnode.ChildNodes.Add(newnode)
 
                 'llamada recursiva para ver si el nuevo menú ítem aun tiene elementos hijos.
-                AddMenuItem(newnode, ds)
+                AddMenuItem(newnode, dt)
             End If
         Next i
         'Catch ex As Exception
@@ -147,7 +175,7 @@ Partial Class admin_crear_menu
 
 #Region "MOSTRAR LOS DATOS DEL NODO SELECCIONADO EN EL FORMULARIO"
     Protected Sub trvMenu_SelectedNodeChanged(sender As Object, e As EventArgs) Handles trvMenu.SelectedNodeChanged
-        Me.hdfCodigo.Value = Me.trvMenu.SelectedValue
+        hdfCodigo.Value = trvMenu.SelectedValue
         GetRegMenu()
     End Sub
 
@@ -156,21 +184,21 @@ Partial Class admin_crear_menu
             Me.ltMensaje.Text = String.Empty
 
             Dim SQL As String = String.Empty
-            SQL = "EXEC sp_Menu_web_admin " & _
-                  "@cod_menu = " & Me.hdfCodigo.Value.Trim & "," & _
-                  "@cod_Padre = NULL," & _
-                  "@Posicion = NULL," & _
-                  "@Etiqueta = NULL," & _
-                  "@Ruta = NULL," & _
-                  "@Pagina = NULL," & _
-                  "@icono = NULL," & _
-                  "@Activo = NULL," & _
-                  "@Ocultar_Menu = NULL," & _
+            SQL = "EXEC sp_Menu_web_admin " &
+                  "@cod_menu = " & Me.hdfCodigo.Value.Trim & "," &
+                  "@cod_Padre = NULL," &
+                  "@Posicion = NULL," &
+                  "@Etiqueta = NULL," &
+                  "@Ruta = NULL," &
+                  "@Pagina = NULL," &
+                  "@icono = NULL," &
+                  "@Activo = NULL," &
+                  "@Ocultar_Menu = NULL," &
                   "@Tipo = 'READER'"
 
             Dim dr As System.Data.OleDb.OleDbDataReader = DataBase.GetDataReader(SQL)
             If dr.Read() Then
-                Me.txtCodigo.Text = dr.Item("cod_menu").ToString()
+                txtCodigo.Text = dr.Item("cod_menu").ToString()
                 Me.ccddNodoPadre.SelectedValue = dr.Item("cod_Padre").ToString()
                 Me.txtPosicion.Text = dr.Item("Posicion").ToString()
                 Me.txtEtiqueta.Text = dr.Item("Etiqueta").ToString()
@@ -204,16 +232,16 @@ Partial Class admin_crear_menu
         Me.ltMensaje.Text = String.Empty
 
         Dim sql As String = String.Empty
-        sql = " EXEC sp_Menu_web_admin " & _
-              "@cod_menu = " & IIf(Me.txtCodigo.Text.Trim = String.Empty, "NULL", Me.txtCodigo.Text.Trim) & "," & _
-              "@cod_Padre = " & IIf(Me.ddlNodoPadre.Text = String.Empty, "NULL", Me.ddlNodoPadre.SelectedValue) & "," & _
-              "@Posicion = " & Me.txtPosicion.Text.Trim & "," & _
-              "@Etiqueta = " & IIf(Me.txtEtiqueta.Text.Trim = String.Empty, "NULL", "'" & Me.txtEtiqueta.Text.Trim & "'") & "," & _
-              "@Ruta = " & IIf(Me.txtRutaPage.Text.Trim = String.Empty, "NULL", "'" & Me.txtRutaPage.Text.Trim & "'") & "," & _
-              "@Pagina = " & IIf(Me.txtNombrePagina.Text.Trim = String.Empty, "NULL", "'" & Me.txtNombrePagina.Text.Trim & "'") & "," & _
-              "@icono = " & IIf(Me.txtIconos.Text.Trim = String.Empty, "NULL", "'" & Me.txtIconos.Text.Trim & "'") & "," & _
-              "@Activo = 1," & _
-              "@Ocultar_Menu = " & IIf(Me.chkOcultarMenu.Checked = True, 1, 0) & "," & _
+        sql = " EXEC sp_Menu_web_admin " &
+              "@cod_menu = " & IIf(Me.txtCodigo.Text.Trim = String.Empty, "NULL", Me.txtCodigo.Text.Trim) & "," &
+              "@cod_Padre = " & IIf(Me.ddlNodoPadre.Text = String.Empty, "NULL", Me.ddlNodoPadre.SelectedValue) & "," &
+              "@Posicion = " & Me.txtPosicion.Text.Trim & "," &
+              "@Etiqueta = " & IIf(Me.txtEtiqueta.Text.Trim = String.Empty, "NULL", "'" & Me.txtEtiqueta.Text.Trim & "'") & "," &
+              "@Ruta = " & IIf(Me.txtRutaPage.Text.Trim = String.Empty, "NULL", "'" & Me.txtRutaPage.Text.Trim & "'") & "," &
+              "@Pagina = " & IIf(Me.txtNombrePagina.Text.Trim = String.Empty, "NULL", "'" & Me.txtNombrePagina.Text.Trim & "'") & "," &
+              "@icono = " & IIf(Me.txtIconos.Text.Trim = String.Empty, "NULL", "'" & Me.txtIconos.Text.Trim & "'") & "," &
+              "@Activo = 1," &
+              "@Ocultar_Menu = " & IIf(Me.chkOcultarMenu.Checked = True, 1, 0) & "," &
               "@Tipo = 'INSERTAR'"
 
         If Me.txtCodigo.Text.Trim = String.Empty Then
@@ -260,7 +288,7 @@ Partial Class admin_crear_menu
     ''' <param name="ErrorMsg">MENSAJE DE ERROR QUE SERA VISUALIZADO POR EL VISITANTE.</param>
     ''' <remarks></remarks>
     Private Sub Guardar(sql As String, Query As String, ExitoMsg As String, ErrorMsg As String)
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -271,7 +299,7 @@ Partial Class admin_crear_menu
 
             Me.ltMensaje.Text = conn.PmsgBox(ExitoMsg, "exito")
 
-            GetMenu()
+            GetTreeview()
 
         Catch ex As Exception
             Me.ltMensaje.Text = conn.PmsgBox(ErrorMsg & " " & ex.Message, "error")

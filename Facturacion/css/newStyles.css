@@ -1,42 +1,46 @@
-﻿
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
+﻿@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 /*Estilos generales*/
 
-h1 { 
+h1 {
     font-size: 24px !important;
 }
 
 body {
-    background-color: #fefefe  !important; 
-
+    background-color: #fefefe !important;
 }
 
 .btn {
-   /* max-width: 350px;*/
+    /* max-width: 350px;*/
     transition: 0.3s ease !important;
 }
 
-    .btn:hover, .btn:focus{
-        transform: scale(1.125) !important;
+    .btn:hover, .btn:focus {
+        transform: scale(1.112) !important;
     }
 
-/*NAVBAR*/
+#wrapper #content-wrapper {
+    /*background-color: #f8f9fc !important;*/
+    width: 100% !important;
+    overflow-x: hidden !important;
+}
 
 /*IMG LOGO*/
 
-.img-logo { 
-    transition: transform 0.3s ease; 
+.img-logo {
+    transition: transform 0.3s ease;
 }
 
-.img-logo:hover  { 
-    transform: scale(1.15); 
-    cursor: pointer; 
-}
+    .img-logo:hover {
+        transform: scale(1.15);
+        cursor: pointer;
+    }
 
 /*INFINITE SCROLL BTN USER*/
 
@@ -44,10 +48,10 @@ body {
     position: relative;
     width: 100%;
     height: auto;
-    overflow-x:clip;
+    overflow-x: clip;
     overflow-y: visible;
 }
-    
+
 .affiliation {
     display: flex;
     width: inherit;
@@ -58,7 +62,7 @@ body {
     animation: first 30s linear infinite;
 }
 
-    .affiliation > * { 
+    .affiliation > * {
         color: white;
     }
 
@@ -107,37 +111,69 @@ body {
 
 /*A TAG*/
 
-.a-default { 
-    text-decoration: none !important; 
+.a-default {
+    text-decoration: none !important;
     color: #000f !important;
     transition: 0.2s ease !important;
-    
-  
 }
 
     .a-default:hover {
         background-color: #fefefe;
-        color: darkblue !important;
-        font-weight: bold !important;
-        border-radius:5px;
-        transform: scale(1.05) !important;
+        color: rgb(0,183,255) !important;
+        font-weight: 500 !important;
+        border-radius: 5px;
         box-shadow: 0 0 0 0.05rem;
         transition: box-shadow ease-in 0.2s !important;
-        
     }
-        
 
-.col-4 label { 
-    font-weight: bold;
-    margin-bottom: 2px;
+
+/* */
+
+/*.link-effect {
+    color: rgba(255, 255, 255, 0.75) !important;
+    display: block !important;
+    width: 14rem !important;
+    padding: 1rem !important;
+    position: relative !important;
+    transition: 0.4s all !important;
 }
+
+    .link-effect:hover {
+        color: #fff !important;
+        border-radius: 5px !important;
+    }*/
+
+
+/*CARET ICONS*/
+/*    .link-effect::after {
+        width: 1rem !important;
+        text-align: center !important;
+        float: right !important;
+        vertical-align: 0 !important;
+        border: 0 !important;
+        font-weight: 900 !important;
+        content: '\F231';
+        font-family: 'bootstrap-icons';
+    }
+
+    .link-effect[aria-expanded="true"]::after {
+        width: 1rem !important;
+        text-align: center !important;
+        float: right !important;
+        vertical-align: 0 !important;
+        border: 0 !important;
+        font-weight: 900 !important;
+        content: '\F229';
+        font-family: 'bootstrap-icons';
+    }
+*/
+
+
 
 /*DROPDOWN ANIMACIONES*/
 
-
 .dropdown-toggle {
     transition: 0.3s ease !important;
-  
 }
 
     .dropdown-toggle:hover,
@@ -145,8 +181,8 @@ body {
         transform: scale(1.125) !important;
     }
 
-.dropdown-menu { 
-    max-height: 500px; 
+.dropdown-menu {
+    max-height: 500px;
     overflow-y: auto
 }
 
@@ -212,7 +248,7 @@ body {
 .accordion-button[aria-expanded="true"] {
     font-weight: bold;
     background-color: #86b7fe !important;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
 .accordion-button {
@@ -235,33 +271,45 @@ body {
     transition: height 0.3s ease !important;
     overflow: hidden !important;
 }
-.accordion-collapse[aria-expanded="true"] > .accordion-body {
-   /* background-color: #fefefe !important;
+
+    .accordion-collapse[aria-expanded="true"] > .accordion-body {
+        /* background-color: #fefefe !important;
     box-shadow: 0 0 0 0.05rem;
     transition: box-shadow ease-in 0.3s !important;*/
-    /*border-radius: 5px;*/ 
-}
+        /*border-radius: 5px;*/
+    }
 
 
 /*Tables (GRID) */
 
-table th a { 
+table th a {
     color: #FFFFFF !important;
     text-decoration: none !important;
     text-align: center !important;
 }
 
-table th { 
+table th {
     color: #FFFFFF !important;
     text-align: center !important;
 }
 
 
 
+/*Footer */
 
- /* Media Queries */
+/*footer.sticky-bottom {
+    padding: 2rem 0;
+    flex-shrink: 0;
+}
 
- @media screen and  (max-width: 700px) { 
+    footer.sticky-bottom .copyright {
+        line-height: 1;
+        font-size: 0.8rem !important
+    }*/
 
 
- }
+
+/* Media Queries */
+
+@media screen and (max-width: 700px) {
+}

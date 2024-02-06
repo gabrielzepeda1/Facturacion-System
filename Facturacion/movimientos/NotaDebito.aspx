@@ -95,7 +95,6 @@
                                 <asp:Button runat="server" ID="btnGuardar" Text="Guardar" CssClass="btn btn-success" />
                                 <asp:Button runat="server" ID="btnClear" Text="Limpiar" CssClass="btn btn-secondary" />
                             </div>
-
                         </div>
 
                     </div>

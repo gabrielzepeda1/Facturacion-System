@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Clientes] (
+    [CodigoCliente]        INT             NOT NULL,
+    [Nombres]              VARCHAR (100)   NULL,
+    [Apellidos]            VARCHAR (50)    NULL,
+    [NumeroIdentificacion] VARCHAR (30)    NULL,
+    [RazonSocial]          VARCHAR (50)    NULL,
+    [Direccion]            VARCHAR (50)    NOT NULL,
+    [Telefono]             VARCHAR (15)    NOT NULL,
+    [CorreoElectronico]    VARCHAR (30)    NOT NULL,
+    [CuentaContable]       VARCHAR (25)    NOT NULL,
+    [LimiteCredito]        NUMERIC (12, 2) NULL,
+    [DiasCredito]          INT             NULL,
+    [ExcentoImpuestos]     BIT             NOT NULL,
+    [Activo]               BIT             NOT NULL,
+    [Distribuidor]         BIT             NOT NULL,
+    [PersonaJuridica]      BIT             NULL,
+    [Externo]              BIT             NOT NULL,
+    [CodigoPais]           INT             NOT NULL,
+    [CodigoEmpresa]        INT             NOT NULL,
+    [CodigoSectorMercado]  INT             NOT NULL,
+    [CodigoVendedor]       INT             NOT NULL,
+    [CodigoUser]           INT             NOT NULL,
+    [CodigoUserUlt]        INT             NOT NULL,
+    CONSTRAINT [PK_Clientes2] PRIMARY KEY CLUSTERED ([CodigoPais] ASC, [CodigoCliente] ASC, [Externo] ASC, [CodigoEmpresa] ASC)
+);
+

@@ -40,6 +40,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facturacion(2)", "Facturaci
 		SlnRelativePath = "Facturacion\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,12 @@ Global
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

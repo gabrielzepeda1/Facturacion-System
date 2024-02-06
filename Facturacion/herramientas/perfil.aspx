@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Actualizar Mi Información | Facturación" EnableEventValidation="false" Language="VB" MasterPageFile="~/master/principal.master" AutoEventWireup="false" CodeFile="usuario_editar.aspx.vb" Inherits="herramientas_usuario_editar" %>
+﻿<%@ Page Title="Actualizar Mi Información | Facturación" EnableEventValidation="false" Language="VB" MasterPageFile="~/master/principal.master" AutoEventWireup="false" CodeFile="perfil.aspx.vb" Inherits="herramientas_usuario_editar" %>
 
 <%@ Register Src="~/usercontrol/menu_tools.ascx" TagPrefix="uc1" TagName="menu_tools" %>
 
@@ -11,7 +11,7 @@
 <asp:Content ID="c4" ContentPlaceHolderID="cpUbicacion" runat="Server">
     <a href="../Default.aspx">Escritorio</a>
     <label>&gt;</label>
-    <a href="usuario_editar.aspx">Actualizar Mi Información</a>
+    <a href="perfil.aspx">Actualizar Mi Información</a>
 </asp:Content>
 
 <asp:Content ID="c5" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
@@ -31,7 +31,7 @@
 
             <div class="col-6">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-primary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Mis Datos</h6>
                     </div>
                     <div class="card-body">
@@ -89,7 +89,7 @@
 
             <div class="col-3">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-primary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Cambiar Contraseña</h6>
                     </div>
                     <div class="card-body">

@@ -17,40 +17,57 @@
 <asp:Content ID="C4" ContentPlaceHolderID="MainContentPlaceHolder" runat="Server">
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-3 bg-dark py-3 mx-2 vh-100">
-                <div class="mt-1 d-flex justify-content-start" role="group" aria-label="Control Buttons">
-                    <button id="btnNuevo" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#crearRol">Nuevo</button>
-                    <asp:LinkButton Visible="False" CssClass="btn btn-danger" ID="btnDelete" Text="Eliminar" runat="server"></asp:LinkButton>
-                </div>
-                <div class="mt-3 d-flex flex-column justify-content-center">
-                    <label id="card-label" class="px-1 fs-6 text-white">Seleccione rol a modificar: </label>
-                    <asp:DropDownList ID="ddlRol" CssClass="form-select my-1" runat="server" AutoPostBack="true" />
-                </div>
+        <div class="row mt-2">
 
-            </div>
-
-            <div class="col-5 py-3">
-                <div class="card">
-                    <div class="card-header bg-dark">
-                        <h3 class="card-title fs-5 text-white"></h3>
+            <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 bg-dark">
+                        <h6 class="m-0 font-weight-bold text-white">Permisos del Rol:</h6>
                     </div>
-                    <div class="card-body py-1 bg-secondary-subtle">
-                        <asp:UpdatePanel ID="upMenuPermisos" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <asp:TreeView ID="trvMenu" runat="server" ImageSet="Arrows" NodeIndent="15" ShowCheckBoxes="All">
-                                    <HoverNodeStyle ForeColor="#6666AA" />
-                                    <NodeStyle Font-Names="Verdana" Font-Size="12pt" ForeColor="Black" HorizontalPadding="4px" NodeSpacing="0px" VerticalPadding="2px" />
-                                    <ParentNodeStyle CssClass="fw-bold" />
-                                    <SelectedNodeStyle BackColor="#B5B5B5" Font-Underline="False" HorizontalPadding="0px" VerticalPadding="0px" />
-                                </asp:TreeView>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3 mb-md-0">
+                                <button id="btnNuevo" class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#crearRol">Nuevo</button>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3 mb-md-0">
+                                <asp:LinkButton Visible="False" CssClass="btn btn-danger w-100" ID="btnDelete" Text="Eliminar" runat="server"></asp:LinkButton>
+                            </div>
+                        </div>
 
-                                <asp:HiddenField ID="hdfCodigo" runat="server" />
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="ddlRol" EventName="SelectedIndexChanged" />
-                            </Triggers>
-                        </asp:UpdatePanel>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <asp:DropDownList ID="ddlRol" CssClass="form-select" runat="server" AutoPostBack="true" />
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col">
+                                <asp:UpdatePanel ID="upMenuPermisos" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:TreeView ID="trvMenu" runat="server" ImageSet="Arrows" NodeIndent="15" ShowCheckBoxes="Leaf">
+                                            <HoverNodeStyle ForeColor="#6666AA" />
+                                            <NodeStyle Font-Names="Verdana" Font-Size="12pt" ForeColor="Black" HorizontalPadding="4px" NodeSpacing="0px" VerticalPadding="2px" />
+                                            <ParentNodeStyle CssClass="fw-bold" />
+                                            <SelectedNodeStyle BackColor="#B5B5B5" Font-Underline="False" HorizontalPadding="0px" VerticalPadding="0px" />
+                                        </asp:TreeView>
+
+                                        <asp:HiddenField ID="hdfCodigo" runat="server" />
+                                        <asp:HiddenField ID="hdfSelectedNodes" runat="server" />
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="ddlRol" EventName="SelectedIndexChanged" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row d-grid m-1 col-3">
+                            <asp:Button ID="btnGuardarCambios" runat="server" CssClass="btn btn-success" Text="Guardar Cambios" />
+                        </div>
                     </div>
                 </div>
             </div>

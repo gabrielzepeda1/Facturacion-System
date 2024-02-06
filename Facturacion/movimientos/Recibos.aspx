@@ -24,7 +24,7 @@
             <!-- Detalles del Vendedor y Cliente-->
             <div class="col-6">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-primary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Datos del Vendedor</h6>
                     </div>
                     <div class="card-body">
@@ -32,7 +32,7 @@
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text">Vendedor</span>
-                                    <asp:DropDownList ID="ddlVendedor" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlVendedor" runat="server" CssClass="form-select" AutoPostBack="true"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -47,14 +47,14 @@
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text">Cliente</span>
-                                    <asp:DropDownList ID="ddlCliente" runat="server" CssClass="form-select form-select-sm"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlCliente" runat="server" CssClass="form-select "></asp:DropDownList>
                                 </div>
                             </div>
 
                             <div class="col-6">
                                 <div class="input-group">
                                     <span class="input-group-text">Tipo Cliente</span>
-                                    <asp:DropDownList ID="ddlTipoCliente" runat="server" CssClass="form-select form-select-sm"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTipoCliente" runat="server" CssClass="form-select"></asp:DropDownList>
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@
             <%-- Datos del Recibo --%>
             <div class="col-4">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-primary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Datos del Recibo</h6>
                     </div>
                     <div class="card-body">
@@ -81,19 +81,19 @@
                             <div class="col mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">Pendiente</span>
-                                    <asp:TextBox ID="txtPendiente" runat="server" ReadOnly="true" CssClass="form-control form-control-sm" Enabled="false"></asp:TextBox>
+                                    <asp:TextBox ID="txtPendiente" runat="server" ReadOnly="true" CssClass="form-control" Enabled="false"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="col mb-3">
                                 <div class="input-group">
                                     <span class="input-group-text">Aplicado</span>
-                                    <asp:TextBox ID="txtAplicado" runat="server" ReadOnly="true" CssClass="form-control form-control-sm" Enabled="false"></asp:TextBox>
+                                    <asp:TextBox ID="txtAplicado" runat="server" ReadOnly="true" CssClass="form-control" Enabled="false"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="input-group">
                                     <span class="input-group-text">Saldo</span>
-                                    <asp:TextBox ID="txtSaldo" runat="server" ReadOnly="true" CssClass="form-control form-control-sm" Enabled="false"></asp:TextBox>
+                                    <asp:TextBox ID="txtSaldo" runat="server" ReadOnly="true" CssClass="form-control" Enabled="false"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
             <%-- Datos del Pago --%>
             <div class="col-8">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-primary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Datos del Pago</h6>
                     </div>
                     <div class="card-body">
@@ -192,20 +192,20 @@
                             <div class="col">
                                 <div class="input-group">
                                     <span class="input-group-text">Forma de Pago</span>
-                                    <asp:DropDownList ID="ddlFormaPago" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlFormaPago" runat="server" CssClass="form-select" AutoPostBack="true"></asp:DropDownList>
                                 </div>
                             </div>
 
                             <div class="col">
                                 <div class="input-group">
                                     <span class="input-group-text">Moneda</span>
-                                    <asp:DropDownList ID="ddlMoneda" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlMoneda" runat="server" CssClass="form-select" AutoPostBack="true"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="input-group">
                                     <span class="input-group-text">Valor $</span>
-                                    <asp:TextBox ID="txtValor" runat="server" CssClass="form-control form-control-sm" AutoPostBack="true"></asp:TextBox>
+                                    <asp:TextBox ID="txtValor" runat="server" CssClass="form-control" AutoPostBack="true"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -216,19 +216,19 @@
                                     <div class="col">
                                         <div class="input-group">
                                             <span class="input-group-text">Banco</span>
-                                            <asp:DropDownList ID="ddlBanco" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true" />
+                                            <asp:DropDownList ID="ddlBanco" runat="server" CssClass="form-select" AutoPostBack="true" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="input-group">
                                             <span class="input-group-text">Cuenta</span>
-                                            <asp:DropDownList ID="ddlCuenta" runat="server" CssClass="form-select form-select-sm" />
+                                            <asp:DropDownList ID="ddlCuenta" runat="server" CssClass="form-select" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="input-group">
                                             <span class="input-group-text">No. Cheque</span>
-                                            <asp:TextBox ID="txtCheque" runat="server" CssClass="form-control form-control-sm" AutoPostBack="true" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox ID="txtCheque" runat="server" CssClass="form-control" AutoPostBack="true" Enabled="false"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +247,7 @@
             <%-- Btn Group --%>
             <div class="col-3">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-6 bg-secondary">
+                    <div class="card-header py-6 bg-dark">
                         <h6 class="m-0 font-weight-bold text-white">Opciones</h6>
                     </div>
                     <div class="card-body">

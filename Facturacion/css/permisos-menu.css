@@ -5,24 +5,22 @@
 }
 
 body {
-
-    
 }
 
 .card {
-    height: 700px !important;
-    max-height: 850px;
-    max-width: 350px;
+    height: auto !important;
+    min-height: 650px;
+    max-height: 750px;
+    /*max-width: 350px;*/
     overflow-y: scroll;
 }
 
 /* Custom styles for the TreeView */
 
-td { 
-    
+td {
 }
 
-.treeview-bootstrap .nav-link {
+/*.treeview-bootstrap .nav-link {
     display: block;
     padding: 2px 4px;
     font-size: 12pt;
@@ -44,5 +42,4 @@ td {
     text-decoration: none;
     padding: 0;
     margin: 0;
-}
-
+}*/
