@@ -14,11 +14,11 @@ Imports AjaxControlToolkit
 Partial Class Utilitarios_AccesosUsuarios
     Inherits System.Web.UI.Page
 
-    Dim conn As New FACTURACION_CLASS.Seguridad
+    Dim conn As New FACTURACION_CLASS.seguridad
     Dim DataBase As New FACTURACION_CLASS.database
     Dim BUSQUEDAD As String
 
-   #Region "PROPIEDADES DEL FORMULARIO"
+#Region "PROPIEDADES DEL FORMULARIO"
 
     Private Property dtTabla() As DataTable
         Get
@@ -62,9 +62,9 @@ Partial Class Utilitarios_AccesosUsuarios
     End Sub
 
 #Region "PROCESOS Y EVENTOS DEL GRIDVIEW"
-    Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
+    Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
 
-        BUSQUEDAD = txtBuscar.Text.ToString().Trim()
+        BUSQUEDAD = txtSearch.Text.ToString().Trim()
         Load_GridView()
 
     End Sub
@@ -79,8 +79,7 @@ Partial Class Utilitarios_AccesosUsuarios
                    "@creaMov = NULL  ," &
                    "@BUSQUEDAD = '" & BUSQUEDAD & "' "
 
-            Dim ds As DataSet
-            ds = DataBase.GetDataSet(sql)
+            Dim ds As DataSet = DataBase.GetDataSet(sql)
 
             dtTabla = ds.Tables(0)
 
@@ -100,7 +99,7 @@ Partial Class Utilitarios_AccesosUsuarios
                 Dim pageLabel As Label = CType(pagerRow.Cells(0).FindControl("CurrentPageLabel"), Label)
                 If Not pageLabel Is Nothing Then
                     Dim currentPage As Integer = GridViewOne.PageIndex + 1
-                    pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() & _
+                    pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() &
                         " de " & GridViewOne.PageCount.ToString()
                 End If
             End If
@@ -367,10 +366,10 @@ Partial Class Utilitarios_AccesosUsuarios
 
 #Region "ENVIAR INFORMACIÓN HACIA LA BASE DE DATOS"
 
-    Private Sub txtBuscar_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBuscar.TextChanged
-        BUSQUEDAD = "%" & UCase(Trim(txtBuscar.Text)) & "%"
-        If txtBuscar.Text <> "" Then
-            BUSQUEDAD = IIf(Me.txtBuscar.Text.Trim = String.Empty, "0", "" & Me.txtBuscar.Text.Trim & "")
+    Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
+        BUSQUEDAD = "%" & UCase(Trim(txtSearch.Text)) & "%"
+        If txtSearch.Text <> "" Then
+            BUSQUEDAD = IIf(Me.txtSearch.Text.Trim = String.Empty, "0", "" & Me.txtSearch.Text.Trim & "")
             Load_GridView()
         Else
             BUSQUEDAD = "0"
@@ -426,7 +425,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Guardar()
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
 
         Try
             If dbCon.State = ConnectionState.Closed Then
@@ -467,7 +466,7 @@ Partial Class Utilitarios_AccesosUsuarios
     Private Function IfExists() As Boolean
 
 
-        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
         Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
         sql &= "EXEC AccesosUsuarios @opcion=4, " &
                "@codusuario =  " & ddlUsuario.SelectedValue & " ," &
@@ -509,7 +508,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Eliminar()
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
@@ -546,18 +545,18 @@ Partial Class Utilitarios_AccesosUsuarios
 
     Private Sub Actualizar(Codigo As String, Descripcio As String, Numero As Integer, Sigla As String, origen As Integer, calidad As Integer, presentacion As Integer, familia As Integer, prodSm As Integer)
         Dim messegeText As String
-        Dim dbCon As New OleDb.OleDbConnection(conn.Conn)
+        Dim dbCon As New OleDb.OleDbConnection(conn.conn)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
             End If
 
             Dim sql As String = "SET DATEFORMAT DMY " & vbCrLf
-            sql &= "EXEC AccesosUsuarios @opcion=1," & _
-                    "@codusuario =  " & Me.ddlUsuario.SelectedValue & " ," & _
-                    "@codPais =  " & Me.ddlPais.SelectedValue & " ," & _
-                    "@codEmpresa =  '" & Me.ddlEmpresa.SelectedValue & "' ," & _
-                    "@codPuesto =  " & Me.ddlPuesto.SelectedValue & " ," & _
+            sql &= "EXEC AccesosUsuarios @opcion=1," &
+                    "@codusuario =  " & Me.ddlUsuario.SelectedValue & " ," &
+                    "@codPais =  " & Me.ddlPais.SelectedValue & " ," &
+                    "@codEmpresa =  '" & Me.ddlEmpresa.SelectedValue & "' ," &
+                    "@codPuesto =  " & Me.ddlPuesto.SelectedValue & " ," &
                     "@BUSQUEDAD = '0'  "
 
             Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
@@ -623,26 +622,26 @@ Partial Class Utilitarios_AccesosUsuarios
             MyHTML &= "<h2>Catalogo_Usuarios/Pais/Empresa/Puestos <br/> al dia " & Date.Now.Day & "/" & Date.Now.Month & "/" & Date.Now.Year & "</h2>"
 
             If Not dtTabla Is Nothing Then
-                MyHTML &= "<table cellspacing=""0"" cellpadding=""0"">" & _
-                          "<tbody>" & _
-                          "<tr>" & _
-                          "<th></th>" & _
-                          "<th>Usuario</th>" & _
-                          "<th>Pais</th>" & _
-                          "<th>Empresa</th>" & _
-                          "<th>Puesto</th>" & _
+                MyHTML &= "<table cellspacing=""0"" cellpadding=""0"">" &
+                          "<tbody>" &
+                          "<tr>" &
+                          "<th></th>" &
+                          "<th>Usuario</th>" &
+                          "<th>Pais</th>" &
+                          "<th>Empresa</th>" &
+                          "<th>Puesto</th>" &
                           "</tr>"
 
                 Dim clase As String = String.Empty
 
                 For i As Integer = 0 To dtTabla.Rows.Count - 1
-                    MyHTML &= "<tr" & clase & ">" & _
-                              "<td class=""first"">" & i + 1 & "</td>" & _
-                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Nombre").ToString.Trim & "</td>" & _
-                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Pais").ToString.Trim & "</td>" & _
-                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Empresa").ToString.Trim & "</td>" & _
-                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Puesto").ToString.Trim & "</td>" & _
-                              "<td></td>" & _
+                    MyHTML &= "<tr" & clase & ">" &
+                              "<td class=""first"">" & i + 1 & "</td>" &
+                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Nombre").ToString.Trim & "</td>" &
+                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Pais").ToString.Trim & "</td>" &
+                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Empresa").ToString.Trim & "</td>" &
+                              "<td class=""ml"">" & dtTabla.Rows(i).Item("Puesto").ToString.Trim & "</td>" &
+                              "<td></td>" &
                               "</tr>"
 
                     If clase = String.Empty Then
@@ -653,7 +652,7 @@ Partial Class Utilitarios_AccesosUsuarios
 
                 Next i
 
-                MyHTML &= "</tbody>" & _
+                MyHTML &= "</tbody>" &
                           "<table>"
             End If
 

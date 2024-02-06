@@ -1,23 +1,15 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
-Imports System.Globalization
-Imports System.Threading
-Imports System.Net
 Imports System.IO
-Imports System.Text
 Imports System.Security.Cryptography
-Imports IpPublicKnowledge
-Imports System.Data.SqlClient
-Imports SM.Data
 
 Partial Class herramientas_usuarios
-    Inherits System.Web.UI.Page
-    Dim conn As New FACTURACION_CLASS.Seguridad
+    Inherits Page
+    Dim conn As New FACTURACION_CLASS.seguridad
     Dim DataBase As New FACTURACION_CLASS.database
 
     Private codigoUsuario As String
     Private nombreUsuario As String
-
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -51,14 +43,13 @@ Partial Class herramientas_usuarios
 #End Region
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        If Not Page.IsPostBack Then
-            'Form.DefaultButton = Me.btnBuscarGrid.FindControl("btnGuardar").UniqueID
-
+        If Not IsPostBack Then
             Load_GridView()
             Attributes_Text()
-            'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "deleteValidation", "deleteValidation(e)", True)
         End If
 
+        'Form.DefaultButton = Me.btnBuscarGrid.FindControl("btnGuardar").UniqueID
+        'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "deleteValidation", "deleteValidation(e)", True)
     End Sub
 
     Private Sub Attributes_Text()
@@ -79,37 +70,85 @@ Partial Class herramientas_usuarios
         Try
             ''Thread.CurrentThread.CurrentCulture = New Globalization.CultureInfo("es-NI")
 
-            Using dbCon As New OleDbConnection(conn.Conn)
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
 
-                Dim sql As String = "EXEC sp_usuario " &
-                       "@consecutivo_usuario = null," &
-                       "@cuenta = null," &
-                       "@contrasenia = NULL," &
-                       "@cedula = NULL," &
-                       "@nombre = NULL," &
-                       "@apellido = NULL," &
-                       "@telefono = NULL," &
-                       "@correo = NULL," &
-                       "@direccion = NULL," &
-                       "@cod_rol = NULL," &
-                       "@tipo = 'CONSULTA'"
+                Dim sql = $"EXEC sp_usuario 
+                            @consecutivo_usuario = null,
+                            @cuenta = null,
+                            @contrasenia = NULL,
+                            @cedula = NULL,
+                            @nombre = NULL,
+                            @apellido = NULL,
+                            @telefono = NULL,
+                            @correo = NULL,
+                            @direccion = NULL,
+                            @cod_rol = NULL,
+                            @tipo = 'CONSULTA'"
 
-
-                Dim ds As DataSet
-                ds = DataBase.GetDataSet(sql)
+                Dim ds As DataSet = DataBase.GetDataSet(sql)
 
                 dtTabla = ds.Tables(0)
 
-                Me.GridViewOne.DataSource = dtTabla.DefaultView
-                Me.GridViewOne.DataBind()
+                GridViewOne.DataSource = dtTabla.DefaultView
+                GridViewOne.DataBind()
 
                 ds.Dispose()
-
             End Using
 
         Catch ex As Exception
-            Me.ltMensajeGrid.Text = conn.PmsgBox("Ocurrio un error al intentar cargar la lista de usuarios. " & ex.Message, "error")
+            ltMensajeGrid.Text = conn.PmsgBox("Ocurrio un error al intentar cargar la lista de usuarios. " & ex.Message, "error")
+        End Try
+    End Sub
+
+    Protected Sub Add(ByVal sender As Object, ByVal e As EventArgs)
+
+        txtNombreUsuario.ReadOnly = False
+        txtNombreUsuario.Text = String.Empty
+        txtPassword.Text = String.Empty
+        txtConfirmarPassword.Text = String.Empty
+        txtCedula.Text = String.Empty
+        txtNombre.Text = String.Empty
+        txtApellido.Text = String.Empty
+        txtCorreo.Text = String.Empty
+        txtTelefono.Text = String.Empty
+        txtDireccion.Text = String.Empty
+        ddlRol.SelectedIndex = 0
+
+    End Sub
+
+    Protected Sub Edit(ByVal sender As Object, ByVal e As EventArgs)
+        Dim row As GridViewRow = CType(CType(sender, LinkButton).Parent.Parent, GridViewRow)
+
+
+
+
+    End Sub
+
+    Protected Sub GridViewOne_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.SelectedIndexChanged
+
+        'Este evento se dispara cuando seleccionamos el boton editar del gridview, antes de editar un usuario para mostrar el popup con la información del usuario.
+
+        Try
+
+            GridViewOne.SelectedRowStyle.CssClass = "table-success"
+
+            hdfCodigo.Value = GridViewOne.SelectedRow.Cells(0).Text.Trim()
+            hdfUsuario.Value = GridViewOne.SelectedRow.Cells(1).Text.Trim()
+
+            codigoUsuario = hdfCodigo.Value
+            nombreUsuario = hdfUsuario.Value
+
+            'hdfUsuario.Value = HttpUtility.HtmlDecode(Replace(Me.GridViewOne.SelectedRow.Cells(1).Text.Trim, "&nbsp;", String.Empty))
+
+            If hdfCodigo.Value <> Nothing And hdfUsuario.Value <> Nothing Then
+                GridViewOne.SelectedRowStyle.CssClass = "table-success"
+            End If
+
+
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
 
         End Try
     End Sub
@@ -119,15 +158,16 @@ Partial Class herramientas_usuarios
             If GridViewOne.Rows.Count > 0 Then
                 Dim pagerRow As GridViewRow = GridViewOne.BottomPagerRow
                 Dim pageLabel As Label = CType(pagerRow.Cells(0).FindControl("CurrentPageLabel"), Label)
-                If Not pageLabel Is Nothing Then
+
+                If pageLabel IsNot Nothing Then
                     Dim currentPage As Integer = GridViewOne.PageIndex + 1
                     pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() &
                         " de " & GridViewOne.PageCount.ToString()
                 End If
+
             End If
         Catch ex As Exception
             Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
-
         End Try
     End Sub
     Protected Sub GridViewOne_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.PageIndexChanged
@@ -174,33 +214,6 @@ Partial Class herramientas_usuarios
 
         End Try
     End Sub
-
-    Protected Sub GridViewOne_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.SelectedIndexChanged
-        Try
-
-            GridViewOne.SelectedRowStyle.CssClass = "table-success"
-
-            hdfCodigo.Value = GridViewOne.SelectedRow.Cells(0).Text.Trim()
-            hdfUsuario.Value = GridViewOne.SelectedRow.Cells(1).Text.Trim()
-
-            codigoUsuario = hdfCodigo.Value
-            nombreUsuario = hdfUsuario.Value
-
-            'hdfUsuario.Value = HttpUtility.HtmlDecode(Replace(Me.GridViewOne.SelectedRow.Cells(1).Text.Trim, "&nbsp;", String.Empty))
-
-            If hdfCodigo.Value <> Nothing And hdfUsuario.Value <> Nothing Then
-                GridViewOne.SelectedRowStyle.CssClass = "table-success"
-            Else
-
-            End If
-
-
-
-        Catch ex As Exception
-            Me.ltMensajeGrid.Text &= conn.PmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
-
-        End Try
-    End Sub
 #End Region
 
 #Region "PROCESO DE ENCRIPTACIÓN"
@@ -244,8 +257,8 @@ Partial Class herramientas_usuarios
         Dim cipherBytes As Byte() = Convert.FromBase64String(cipherText)
 
         Using encryptor As Aes = Aes.Create()
-            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D, _
-             &H65, &H64, &H76, &H65, &H64, &H65, _
+            Dim pdb As New Rfc2898DeriveBytes(EncryptionKey, New Byte() {&H49, &H76, &H61, &H6E, &H20, &H4D,
+             &H65, &H64, &H76, &H65, &H64, &H65,
              &H76})
 
             encryptor.Key = pdb.GetBytes(32)
@@ -311,8 +324,6 @@ Partial Class herramientas_usuarios
 
         Guardar()
         Load_GridView()
-
-
     End Sub
 
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -324,7 +335,6 @@ Partial Class herramientas_usuarios
             Eliminar()
             Load_GridView()
         End If
-
     End Sub
 
     Private Sub Guardar()
@@ -334,7 +344,7 @@ Partial Class herramientas_usuarios
 
         Try
 
-            Using dbCon As New OleDbConnection(conn.Conn)
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
 
                 Using cmd As New OleDbCommand("sp_Usuario", dbCon)
@@ -389,7 +399,7 @@ Partial Class herramientas_usuarios
     Private Sub Eliminar()
         Dim messageText As String
         Try
-            Using dbCon As New OleDbConnection(conn.Conn)
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
                 Using cmd As New OleDbCommand("sp_Usuario", dbCon)
                     cmd.Parameters.AddWithValue("@consecutivo_usuario", Me.hdfCodigo.Value.Trim())

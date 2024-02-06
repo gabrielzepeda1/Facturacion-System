@@ -13,11 +13,11 @@ Namespace FACTURACION_CLASS
 
                 Dim sql = $"SELECT CodigoCliente, TRIM(Nombres) + ' ' +TRIM(Apellidos) AS NombreCompleto
                     FROM Clientes WHERE Externo = {1}"
-                If HttpContext.Current.Session("CodigoPais") <> 0 Then
-                    sql &= $" AND CodigoPais = {HttpContext.Current.Session("CodigoPais")}"
+                If HttpContext.Current.Request.Cookies("CodigoPais") IsNot Nothing Then
+                    sql &= $" AND CodigoPais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
                 End If
-                If HttpContext.Current.Session("CodigoEmpresa") <> 0 Then
-                    sql &= $" AND CodigoEmpresa = {HttpContext.Current.Session("CodigoEmpresa")}"
+                If HttpContext.Current.Request.Cookies("CodigoEmpresa").Value IsNot Nothing Then
+                    sql &= $" AND CodigoEmpresa = {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}"
                 End If
                 sql &= $" ORDER BY TRIM(Nombres)"
 
@@ -40,14 +40,14 @@ Namespace FACTURACION_CLASS
             Try
                 Dim sql = $"SELECT cod_vendedor AS CodigoVendedor, TRIM(nombres) + ' ' +TRIM(apellidos) AS NombreCompleto
                     FROM Vendedores"
-                If HttpContext.Current.Session("CodigoPais") <> 0 Then
-                    sql &= $" WHERE cod_pais= {HttpContext.Current.Session("CodigoPais")}"
+                If HttpContext.Current.Request.Cookies("CodigoPais") IsNot Nothing Then
+                    sql &= $" WHERE cod_pais= {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
                 End If
-                If HttpContext.Current.Session("CodigoEmpresa") <> 0 Then
-                    sql &= $" AND cod_pais= {HttpContext.Current.Session("CodigoEmpresa")}"
+                If HttpContext.Current.Request.Cookies("CodigoEmpresa") IsNot Nothing Then
+                    sql &= $" AND cod_pais= {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}"
                 End If
-                If HttpContext.Current.Session("CodigoPuesto") <> 0 Then
-                    sql &= $" AND cod_empresa= {HttpContext.Current.Session("CodigoPuesto")} "
+                If HttpContext.Current.Request.Cookies("CodigoPuesto") IsNot Nothing Then
+                    sql &= $" AND cod_empresa= {HttpContext.Current.Request.Cookies("CodigoPuesto").Value} "
                 End If
                 sql &= $" ORDER BY TRIM(Nombres)"
 
@@ -70,9 +70,9 @@ Namespace FACTURACION_CLASS
             Try
                 Dim sql = $"SELECT cod_FormaPago as CodigoFormaPago,
                     TRIM(descripcion) as Descripcion FROM Forma_Pago
-                    WHERE cod_pais= {HttpContext.Current.Session("CodigoPais")}
-                    AND cod_empresa= {HttpContext.Current.Session("CodigoEmpresa")}
-                    AND cod_puesto= {HttpContext.Current.Session("CodigoPuesto")}
+                    WHERE cod_pais= {HttpContext.Current.Request.Cookies("CodigoPais").Value}
+                    AND cod_empresa= {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}
+                    AND cod_puesto= {HttpContext.Current.Request.Cookies("CodigoPuesto").Value}
                     ORDER BY TRIM(Descripcion)"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
@@ -93,7 +93,7 @@ Namespace FACTURACION_CLASS
         Public Shared Sub BindDropDownListMoneda(ddl As DropDownList)
             Try
                 Dim sql = $"SELECT cod_moneda AS CodigoMoneda, descripcion
-                        FROM Monedas WHERE cod_pais = {HttpContext.Current.Session("CodigoPais")}"
+                        FROM Monedas WHERE cod_pais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
 
@@ -108,14 +108,12 @@ Namespace FACTURACION_CLASS
             Catch ex As Exception
                 Throw ex
             End Try
-
-
         End Sub
 
         Public Shared Sub BindDropDownListBanco(ddl As DropDownList)
             Try
                 Dim sql = $"SELECT cod_banco AS CodigoBanco, descripcion
-                        FROM Bancos WHERE cod_pais = {HttpContext.Current.Session("CodigoPais")}"
+                        FROM Bancos WHERE cod_pais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
 
@@ -137,9 +135,9 @@ Namespace FACTURACION_CLASS
                 Dim sql = $"SELECT cod_banco_cta AS CodigoCuentaBanco, descripcion
                         FROM Bancos_cuenta
                         WHERE cod_banco = {selectedValue}
-                        AND cod_pais = {HttpContext.Current.Session("CodigoPais")}
-                        AND cod_empresa= {HttpContext.Current.Session("CodigoEmpresa")}
-                        AND cod_puesto= {HttpContext.Current.Session("CodigoPuesto")}"
+                        AND cod_pais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}
+                        AND cod_empresa= {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}
+                        AND cod_puesto= {HttpContext.Current.Request.Cookies("CodigoPuesto").Value}"
 
                 Dim ds As DataSet = _database.GetDataSet(sql)
 
@@ -154,26 +152,6 @@ Namespace FACTURACION_CLASS
             Catch ex As Exception
                 Throw ex
             End Try
-        End Sub
-
-        Public Shared Sub BindDropDownListRol(ddl As DropDownList)
-            Try
-                Dim sql = $"EXEC CombosProductos @opcion = 24, @codigo = NULL"
-                Dim dt As DataTable = _database.GetDataTable(sql)
-
-                If dt.Rows.Count > 0 Then
-                    ddl.DataSource = dt
-                    ddl.DataTextField = "Rol"
-                    ddl.DataValueField = "CodigoRol"
-                    ddl.DataBind()
-                    ddl.Items.Insert(0, New ListItem("", "0"))
-                End If
-
-            Catch ex As Exception
-                Throw ex
-            End Try
-
-
         End Sub
 
         Public Shared Sub BindDropDownList(ddl As DropDownList, sqlQuery As String, valueField As String, textField As String, defaultText As String)

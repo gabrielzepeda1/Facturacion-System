@@ -229,33 +229,37 @@ Public Class WSCatProductos
 
         End Try
     End Function
+
     <WebMethod()>
     Public Function GetPaises(knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
 
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
-        Try
 
+        Try
             Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
 
-                Dim vUser As String = Session("CodigoUser")
+                Dim vUser As String = Context.Request.Cookies("CKSM")("CodigoUser")
 
-                Dim cmd As New OleDbCommand("CombosProductos", dbCon)
-                cmd.Parameters.AddWithValue("opcion", 6)
-                cmd.Parameters.AddWithValue("codigo", vUser)
-                cmd.CommandType = CommandType.StoredProcedure
+                Using cmd As New OleDbCommand("CombosProductos", dbCon)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("opcion", 6)
+                    cmd.Parameters.AddWithValue("codigo", vUser)
 
-                Using dr As OleDbDataReader = cmd.ExecuteReader()
-                    Do While dr.Read
-                        Dim CategoryName = dr("Pais").ToString()
-                        Dim CategoryValue = dr("CodigoPais").ToString()
-                        SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
-                    Loop
+                    Using dr As OleDbDataReader = cmd.ExecuteReader()
+                        Do While dr.Read
+                            Dim CategoryName = dr("Descripcion").ToString()
+                            Dim CategoryValue = dr("CodigoPais").ToString()
+                            SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
+                        Loop
+
+                        Return SampleSource.ToArray()
+
+                    End Using
                 End Using
             End Using
 
-            Return SampleSource.ToArray()
         Catch ex As Exception
             Throw ex
         End Try
@@ -266,106 +270,70 @@ Public Class WSCatProductos
     ''' <returns>CascadingDropDownNameValue</returns>
     ''' <remarks></remarks>
     <WebMethod()>
-    Public Function GetEmpresa(knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
+    Public Function GetEmpresas(ByVal knownCategoryValues As String, category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
+        Dim vPais As String = IIf(String.IsNullOrEmpty(Param("CategoryPais")), Context.Request.Cookies("CSKM")("CodigoPais"), Param("CategoryPais"))
 
         Try
-            If dbCon.State = ConnectionState.Closed Then
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
-            End If
 
-            Dim vPais As String = String.Empty
-            Dim vUser As String = Session("CodigoUser")
+                Using cmd As New OleDbCommand("CombosProductos", dbCon)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("opcion", 8)
+                    cmd.Parameters.AddWithValue("codigo", vPais)
 
-            If Param("CategoryPais") = String.Empty Then
-                vPais = Context.Request.Cookies("CKSMFACTURA")("CodigoPais")
-            Else
-                vPais = Param("CategoryPais")
-            End If
+                    Using dr As OleDbDataReader = cmd.ExecuteReader()
+                        Do While dr.Read
+                            Dim CategoryName = dr("Empresa").ToString()
+                            Dim CategoryValue = dr("CodigoEmpresa").ToString()
+                            SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
+                        Loop
+                        Return SampleSource.ToArray()
 
-            Dim sql = " SELECT distinct e.cod_empresa as codEmpresa, RTRIM(LTRIM(e.descripcion_corta)) AS Empresa " &
-                  " FROM empresas AS e " &
-                  " INNER JOIN accesos_usuarios AS a ON a.cod_empresa = e.cod_empresa " &
-                  " WHERE a.consecutivo_usuario = " & vUser &
-                  " AND a.cod_pais = " & vPais & " "
-
-            Dim cmd As New OleDbCommand(sql, dbCon)
-            Dim Reader As OleDbDataReader = cmd.ExecuteReader()
-
-            Do While Reader.Read
-                Dim CategoryName = Reader("Empresa").ToString()
-                Dim CategoryValue = Reader("codEmpresa").ToString()
-                SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
-            Loop
-
-            Return SampleSource.ToArray()
+                    End Using
+                End Using
+            End Using
 
         Catch ex As Exception
             Throw ex
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
         End Try
     End Function
 
     <WebMethod()>
-    Public Function GetPuesto(ByVal knownCategoryValues As String,
-                              ByVal category As String) As CascadingDropDownNameValue()
+    Public Function GetPuestos(ByVal knownCategoryValues As String, ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Dim Param As StringDictionary = CascadingDropDown.ParseKnownCategoryValuesString(knownCategoryValues)
+        Dim vUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser")
+        Dim vPais As String = IIf(String.IsNullOrEmpty(Param("CategoryPais")), Context.Request.Cookies("CSKM")("CodigoPais"), Param("CategoryPais"))
+        Dim vEmpresa As String = IIf(String.IsNullOrEmpty(Param("CategoryEmpresa")), Context.Request.Cookies("CSKM")("CodigoEmpresa"), Param("CategoryEmpresa"))
+
         Try
-            If dbCon.State = ConnectionState.Closed Then
+            Using dbCon As New OleDbConnection(conn.conn)
                 dbCon.Open()
-            End If
 
-            Dim vUser As String = Context.Request.Cookies("CKSMFACTURA")("CodigoUser")
-            Dim vPais As String
-            Dim vEmpresa As String
+                Dim sql As String = $"SELECT cod_puesto AS codPuesto, TRIM(p.descripcion) AS Descripcion
+                      FROM Puestos pu  
+                      WHERE a.cod_pais = {vPais} 
+                      AND a.cod_empresa = {vEmpresa}"
 
-            If Param("CategoryPais") = String.Empty Then
-                vPais = Context.Request.Cookies("CKSMFACTURA")("CodigoPais")
-            Else
-                vPais = Param("CategoryPais")
-            End If
+                Dim cmd As New OleDbCommand(sql, dbCon)
+                Dim Reader As OleDbDataReader = cmd.ExecuteReader
 
-            If Param("CategoryEmpresa") = String.Empty Then
-                vEmpresa = Context.Request.Cookies("CKSMFACTURA")("CodigoEmpresa")
-            Else
-                vEmpresa = Param("CategoryEmpresa")
-            End If
+                Do While Reader.Read
+                    Dim CategoryName = Reader("Descripcion").ToString()
+                    Dim CategoryValue = Reader("CodigoPuesto").ToString()
+                    SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
+                Loop
 
-            Dim sql As String = "SELECT a.cod_puesto AS codPuesto, RTRIM(LTRIM(p.descripcion)) AS Puesto" &
-                                " FROM Accesos_Usuarios AS a " &
-                                " INNER JOIN Puestos AS p on p.cod_puesto = a.cod_puesto " &
-                                " WHERE a.consecutivo_usuario = " & vUser &
-                                " AND a.cod_pais = " & vPais &
-                                " AND a.cod_empresa = " & vEmpresa & " "
-
-            Dim cmd As New OleDbCommand(sql, dbCon)
-            Dim Reader As OleDbDataReader = cmd.ExecuteReader
-
-            Do While Reader.Read
-                Dim CategoryName = Reader("Puesto").ToString()
-                Dim CategoryValue = Reader("codPuesto").ToString()
-                SampleSource.Add(New CascadingDropDownNameValue(CategoryName, CategoryValue))
-            Loop
-
-            Return SampleSource.ToArray()
+                Return SampleSource.ToArray()
+            End Using
 
         Catch ex As Exception
             Throw ex
-        Finally
-            If dbCon.State = ConnectionState.Open Then
-                dbCon.Close()
-            End If
-
         End Try
     End Function
 
@@ -373,20 +341,19 @@ Public Class WSCatProductos
     Public Function GetUsuario(ByVal knownCategoryValues As String,
                               ByVal category As String) As CascadingDropDownNameValue()
 
-        Dim dbCon As New System.Data.OleDb.OleDbConnection(conn.conn)
+        Dim dbCon As New OleDbConnection(conn.conn)
         Dim SampleSource As New List(Of CascadingDropDownNameValue)
         Try
             If dbCon.State = ConnectionState.Closed Then
                 dbCon.Open()
             End If
 
-            Dim sql As String = String.Empty
-            sql = " EXEC CombosProductos " &
-                  "@opcion = 7," &
-                  "@codigo = null "
+            Dim sql As String = " EXEC CombosProductos " &
+                                "@opcion = 7," &
+                                "@codigo = null "
 
-            Dim cmd As New OleDb.OleDbCommand(sql, dbCon)
-            Dim Reader As OleDb.OleDbDataReader = cmd.ExecuteReader()
+            Dim cmd As New OleDbCommand(sql, dbCon)
+            Dim Reader As OleDbDataReader = cmd.ExecuteReader()
 
             Do While Reader.Read()
                 Dim CategoryName = Reader("Usuario").ToString()

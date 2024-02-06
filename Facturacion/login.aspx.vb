@@ -111,33 +111,63 @@ Partial Class Login
 
                     If dr.Read() Then
                         If dr.Item("Status") = "SESION INICIADA" Then
-                            Session("CodigoSesion") = dr.Item("CodigoSesion")
-                            Session("CodigoUser") = dr.Item("CodigoUser")
-                            Session("Username") = dr.Item("Username")
-                            Session("Password") = dr.Item("Password")
-                            Session("CodigoRol") = dr.Item("CodigoRol")
-                            Session("Status") = dr.Item("Status")
 
-                            'Esta variable toma un pais, empresa y puesto POR DEFECTO asignado al usuario en la tabla "sys_usuario" 
-                            Session("CodigoPais") = dr.Item("CodigoPais")
+                            Session("CodigoSesion") = Convert.ToInt32(dr.Item("CodigoSesion"))
+                            Session("CodigoUser") = Convert.ToInt32(dr.Item("CodigoUser"))
+                            Session("Username") = dr.Item("Username").ToString()
+                            Session("Password") = dr.Item("Password").ToString()
+                            Session("CodigoRol") = Convert.ToInt32(dr.Item("CodigoRol"))
+
+                            'Esta variable toma un pais, empresa y puesto POR DEFECTO asignado al usuario en la tabla "sys_usuario"
+                            Session("CodigoPais") = Convert.ToInt32(dr.Item("CodigoPais"))
+
                             'Session("CodigoEmpresa") = dr.Item("CodigoEmpresa")
                             'Session("CodigoPuesto") = dr.Item("CodigoPuesto")
 
-                            Dim cookie As New HttpCookie("CKSMFACTURA")
-                            cookie.Values("Username") = Session("Username")
-                            cookie.Values("CodigoUser") = Session("CodigoUser")
-                            cookie.Values("CodigoPais") = Session("CodigoPais")
-                            cookie.Values("CodigoEmpresa") = Session("CodigoEmpresa")
-                            cookie.Values("CodigoPuesto") = Session("CodigoPuesto")
-                            cookie.Expires = Now.AddDays(1)
-                            Response.Cookies.Add(cookie)
+                            ' Set CodigoSesion value into its own cookie
+                            Dim cookieCodigoSesion As New HttpCookie("CodigoSesion") With {
+                                .Value = dr.Item("CodigoSesion").ToString(),
+                                .Expires = DateTime.Now.AddDays(1)
+                            }
+                            Response.Cookies.Add(cookieCodigoSesion)
 
-                            Select Case Session("CodigoRol") 'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
-                                Case 1, 2, 3, 4
-                                    FormsAuthentication.RedirectFromLoginPage(Session("Username"), False)
-                                Case Else
-                                    Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
-                            End Select
+                            ' Set CodigoUser value into its own cookie
+                            Dim cookieCodigoUser As New HttpCookie("CodigoUser") With {
+                                .Value = dr.Item("CodigoUser").ToString(),
+                                .Expires = DateTime.Now.AddDays(1)
+                            }
+                            Response.Cookies.Add(cookieCodigoUser)
+
+                            ' Set Username value into its own cookie
+                            Dim cookieUsername As New HttpCookie("Username") With {
+                                .Value = dr.Item("Username").ToString(),
+                                .Expires = DateTime.Now.AddDays(1)
+                            }
+                            Response.Cookies.Add(cookieUsername)
+
+                            ' Set CodigoRol value into its own cookie
+                            Dim cookieCodigoRol As New HttpCookie("CodigoRol") With {
+                                .Value = dr.Item("CodigoRol").ToString(),
+                                .Expires = DateTime.Now.AddDays(1)
+                            }
+                            Response.Cookies.Add(cookieCodigoRol)
+
+                            ' Set CodigoPais value into its own cookie
+                            Dim cookieCodigoPais As New HttpCookie("CodigoPais") With {
+                                .Value = dr.Item("CodigoPais").ToString(),
+                                .Expires = DateTime.Now.AddDays(1)
+                            }
+                            Response.Cookies.Add(cookieCodigoPais)
+
+                            FormsAuthentication.RedirectFromLoginPage(cookieUsername.Value, False)
+
+                            'Select Case Session("CodigoRol") 'Rol SuperAdmin, AdminPais, AdminEmpresa, AdminPuesto
+                            '    Case 1, 2, 3, 4
+                            '        FormsAuthentication.RedirectFromLoginPage(cookie("Username"), False)
+
+                            '    Case Else
+                            '        Response.Redirect("~/Utilitarios/PaisEmpresaPuesto.aspx")
+                            'End Select
                         Else
                             AlertifyAlertMessage(Me, dr("Status"))
                         End If

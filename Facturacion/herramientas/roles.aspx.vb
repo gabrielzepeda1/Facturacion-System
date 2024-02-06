@@ -1,12 +1,14 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
-Imports AlertifyClass 'Importar la clase AlertifyClass para poder utilizar los metodos de la clase.
-Imports FACTURACION_CLASS.DropdownsClass
+Imports AlertifyClass
+Imports FACTURACION_CLASS
 
 Partial Class herramientas_roles
     Inherits Page
-    Dim _conn As New FACTURACION_CLASS.seguridad
-    Dim _dataBase As New FACTURACION_CLASS.database
+
+    Dim _conn As New seguridad
+    Dim _dataBase As New database
+    Private WithEvents DropdownsClass As New DropdownsClass()
 
 #Region "PROPIEDADES DEL FORMULARIO"
     ''' <summary>
@@ -41,101 +43,144 @@ Partial Class herramientas_roles
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-        'Agregamos el evento onclick al control trvMenu para que se ejecute el metodo checkBoxPostBack() cuando se haga click en el control.
-        trvMenu.Attributes.Add("onclick", "checkBoxPostBack()")
-
         If Not Page.IsPostBack Then
-            BindDropDownListRol(ddlRol)
-            ddlRol.Focus()
+            LoadDdlRol()
         End If
+
+        'Agregamos el evento onclick al control trvMenu para que se ejecute el metodo checkBoxPostBack() cuando se haga click en el control.
+        'trvMenu.Attributes.Add("onclick", "checkBoxPostBack()")
+
     End Sub
 
-    Protected Sub ddlRol_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRol.SelectedIndexChanged
-
-        hdfCodigo.Value = ddlRol.SelectedValue.ToString()
-
-        trvMenu.Nodes.Clear()
-
-        'Obtener un DataTable con los nodos padre desde la tabla sys_menu_web_parent. 
-        Dim dt As DataTable = _dataBase.GetDataTable("SELECT cod_menu, etiqueta FROM sys_menu_web_parent")
-
-        'Llenar los nodos padres con los elementos del menu en el siguiente procedimiento: 
-        LoadTreeView(dt, 0, Nothing)
-
-        trvMenu.CollapseAll()
-    End Sub
     Private Sub trvMenu_TreeNodeCheckChanged(sender As Object, e As TreeNodeEventArgs) Handles trvMenu.TreeNodeCheckChanged
 
-        Dim isNodeChecked = trvMenu.CheckedNodes.Contains(e.Node)
-
-        If hdfCodigo.Value.Trim() = String.Empty Then
+        If ddlRol.SelectedValue = String.Empty Then
             AlertifyErrorMessage(Page, "Debe seleccionar un rol.")
             Exit Sub
         End If
 
-        If hdfCodigo.Value.Trim() <> String.Empty Then
-            If isNodeChecked Then
-                Dim sql = "SET DATEFORMAT DMY " & vbCrLf
-                sql &= "EXEC sp_Menu_Permisos_Rol " &
-                       "@cod_menu = " & e.Node.Value & "," &
-                       "@cod_rol = " & hdfCodigo.Value & "," &
-                       "@Tipo = 'INSERTAR'"
+        Dim isNodeChecked As Boolean = trvMenu.CheckedNodes.Contains(e.Node)
 
-                If SaveDelete(sql) = True Then
-                    AlertifySuccessMessage(Page, "Permisos actualizados correctamente.")
-                End If
-
-            ElseIf isNodeChecked = False Then
-                Dim sql = "SET DATEFORMAT DMY " & vbCrLf
-                sql &= "EXEC sp_Menu_Permisos_Rol " &
-                       "@cod_menu = " & e.Node.Value & "," &
-                       "@cod_rol = " & hdfCodigo.Value & "," &
-                       "@Tipo = 'ELIMINAR'"
-
-                If SaveDelete(sql) = True Then
-                    AlertifySuccessMessage(Page, "Permisos actualizados correctamente.")
-                End If
-            End If
-
+        'Si el nodo tiene un checkbox checked, se actualiza sys_menu_permisos_roles con el valor INSERTAR
+        If isNodeChecked Then
+            UpdateMenuPermissions(e.Node.Value, "INSERTAR")
+        Else
+            UpdateMenuPermissions(e.Node.Value, "ELIMINAR")
         End If
+    End Sub
+
+    Private Sub UpdateMenuPermissions(ByVal cod_menu As String, ByVal tipo As String)
+
+        Dim sql As String = $"SET DATEFORMAT DMY
+                         EXEC sp_Menu_Permisos_Rol
+                         @cod_menu = {cod_menu},
+                         @CodigoRol = {hdfCodigo.Value},
+                         @Tipo = '{tipo}'"
+
+        If _dataBase.SaveToDatabase(sql) Then
+            AlertifySuccessMessage(Page, "Permisos actualizados correctamente.")
+        End If
+    End Sub
+
+    Private Sub btnGuardarCambios_Click(sender As Object, e As EventArgs) Handles btnGuardarCambios.Click
 
     End Sub
 
-#Region "CARGAR DATOS DEL MENÚ"
-    Private Sub LoadTreeView(dtParent As DataTable, parentId As Integer, treeNode As TreeNode)
+    Protected Sub ddlRol_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlRol.SelectedIndexChanged
 
-        For Each row As DataRow In dtParent.Rows
+        hdfCodigo.Value = ddlRol.SelectedItem.Value
 
-            Dim child As New TreeNode With {
-                    .Text = row("etiqueta").ToString(),
-                    .Value = row("cod_menu").ToString()
-                    }
-            If parentId = 0 Then
-                trvMenu.Nodes.Add(child)
-                Dim dtChild As DataTable = _dataBase.GetDataTable("SELECT cod_menu, cod_padre, etiqueta, posicion FROM sys_menu_web WHERE cod_padre = " & child.Value)
-                LoadTreeView(dtChild, Integer.Parse(child.Value), child)
-            Else
-                treeNode.ChildNodes.Add(child)
-                GetCheckedNode(child)
+        trvMenu.Nodes.Clear()
 
-            End If
-        Next
+        'Obtener un DataTable con los nodos padre desde la tabla sys_menu_web_parent. 
+        'y Llenar los nodos padres con los elementos del menu en el siguiente procedimiento
 
-        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "checkParentCheckBoxOnLoad", "checkParentCheckBoxOnLoad()", True)
+        LoadTreeView()
+
+        'For i As Integer = 0 To dt.Rows.Count - 1
+        'Convert.ToInt32(dt.Rows(i).Item("cod_menu"))
+        'Next
+        trvMenu.CollapseAll()
+    End Sub
+    Private Sub LoadDdlRol()
+        DropdownsClass.BindDropDownList(ddlRol, $"EXEC CombosProductos @opcion = 24, @codigo = {Session("CodigoRol")}", "CodigoRol", "Descripcion", "Seleccione Rol")
+    End Sub
+
+#Region "LOAD TREEVIEW"
+    Private Sub LoadTreeView()
+
+        Try
+            Dim dtParent = _dataBase.GetDataTable($"EXEC sp_crear_menu_web @Tipo = PADRE, @cod_padre = NULL")
+
+            'Recorrer la tabla de nodos padre 
+            For Each row As DataRow In dtParent.Rows
+
+                Dim node As New TreeNode With {
+                        .Text = row("etiqueta").ToString(),
+                        .Value = row("cod_menu").ToString()
+                        }
+
+                trvMenu.Nodes.Add(node)
+
+                'dtChild ya contiene los elementos del menu que son hijos del nodo padre actual.
+                Dim dtChild = _dataBase.GetDataTable($"EXEC sp_crear_menu_web @Tipo = HIJOS, @cod_padre = {node.Value}")
+
+                If dtChild.Rows.Count > 0 Then
+                    GetChildNodes(dtChild, Integer.Parse(node.Value), node)
+                End If
+
+            Next
+
+            'ScriptManager.RegisterStartupScript(Me, Me.GetType(), "checkParentCheckBoxOnLoad", "checkParentCheckBoxOnLoad()", True)
+
+        Catch ex As Exception
+            AlertifyAlertMessage(Me.Page, "Ocurrió un error al cargar los nodos padre del menú.")
+        End Try
+    End Sub
+
+    Private Sub GetChildNodes(dtChild As DataTable, parentId As Integer, parentNode As TreeNode)
+
+        Try
+
+            For Each row As DataRow In dtChild.Rows
+
+                Dim node As New TreeNode With {
+                        .Text = row("etiqueta").ToString(),
+                        .Value = row("cod_menu").ToString()
+                        }
+
+                parentNode.ChildNodes.Add(node)
+                GetCheckedNode(node)
+            Next
+
+        Catch ex As Exception
+            AlertifyAlertMessage(Me.Page, "Ocurrió un error al cargar los nodos hijos del menú.")
+        End Try
 
     End Sub
+
     Private Sub GetCheckedNode(child As TreeNode)
-        'Este metodo se encarga de activar el checkbox de los nodos hijos
-        'si el cod_menu existe en la tabla sys_menu_permisos_roles
 
-        Dim query = $"SELECT 1 FROM sys_menu_permisos_roles WHERE cod_rol = {hdfCodigo.Value} AND cod_menu = {child.Value}"
+        Try
+            'Este metodo se encarga de activar el checkbox de los nodos hijos
+            'si el nodo hijo existe en la tabla sys_menu_permisos_roles
 
-        Dim dt As DataTable = _dataBase.GetDataTable(query)
+            Dim sql = $"SELECT 1 FROM sys_menu_permisos_roles WHERE cod_rol = {hdfCodigo.Value} AND cod_menu = {child.Value}"
 
-        If dt.Rows.Count > 0 Then
-            child.Checked = True
-        End If
+            Dim dt As DataTable = _dataBase.GetDataTable(sql)
+
+            If dt.Rows.Count > 0 Then
+                child.Checked = True
+            End If
+        Catch ex As Exception
+            AlertifyAlertMessage(Me.Page, "Ocurrió un error al cargar los permisos del rol.")
+        End Try
+
+
     End Sub
+
+
+
     'Private Sub GetMenu()
     '    Try
     '        trvMenu.Nodes.Clear()
@@ -308,5 +353,4 @@ Partial Class herramientas_roles
     End Sub
 
 #End Region
-
 End Class

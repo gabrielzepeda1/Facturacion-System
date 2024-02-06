@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.Data.OleDb
+Imports System.Net
 Imports FACTURACION_CLASS
 
 Partial Class Mater_principal
@@ -13,123 +14,219 @@ Partial Class Mater_principal
 
     Public CompanyName As String = "Facturación Local - Industrial Comercial San Martín"
     Public MyUserName As String
-    Public Pais As String
-    Public Empresa As String
-    Public Puesto As String
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         Response.Cache.SetCacheability(HttpCacheability.NoCache)
-        MyUserName = IIf(Session("Username") IsNot Nothing, Session("Username"), String.Empty)
         Dim pageName As String = GetPageName()
 
-        SidebarEncabezados()
-        GridViewStyles()
+        If Request.Cookies("Username") IsNot Nothing Then
+            MyUserName = Server.HtmlEncode(Request.Cookies("Username").Value)
+        End If
 
+        'Pagina maestra se carga por primera vez.
         If Not Page.IsPostBack Then
+
             If Not Page.User.Identity.IsAuthenticated Then
                 FormsAuthentication.RedirectToLoginPage() 'Si no esta autenticado, redirecciona al login.aspx
             End If
 
-            'Si el usuario accede a cualquier página desde "Default.aspx" se valida si el usuario tiene permiso para acceder a la página.
-            If String.IsNullOrWhiteSpace(pageName) AndAlso pageName <> "Default.aspx" AndAlso HasPermission(pageName) = False Then
-                AlertifyClass.AlertifyAlertMessage(Me.Page, "No tiene permiso para acceder a esta página.")
-                Response.Redirect(ResolveClientUrl("~/Default.aspx"))
-                'Agarrar el return url y poner el script dentro de la alerta.
-            End If
+            'Si el usuario accede a una página desde "Default.aspx" se valida si el usuario tiene permiso para acceder a la página
+            'de la variable pageName.
+            If Not String.IsNullOrWhiteSpace(pageName) AndAlso pageName <> "Default.aspx" Then
+                If HasPermission(pageName) = True Then
 
-            If HasPermission(pageName) = True Then
-                If Session("CodigoPais") Is Nothing OrElse Session("CodigoEmpresa") Is Nothing OrElse Session("CodigoPuesto") Is Nothing Then
+                    If Request.Cookies("CodigoPais") Is Nothing Or Request.Cookies("CodigoEmpresa") Is Nothing Or Request.Cookies("CodigoPuesto") Is Nothing Then
+                        Response.Redirect(ResolveClientUrl("~/Default.aspx"))
+
+
+                        AlertifyClass.AlertifyAlertMessage(HttpContext.Current.CurrentHandler, "Debe seleccionar un País, Empresa y Puesto.")
+
+                    End If
+
+                ElseIf HasPermission(pageName) = False Then
+
                     Response.Redirect(ResolveClientUrl("~/Default.aspx"))
+                    AlertifyClass.AlertifyAlertMessage(Me.Page, "No tiene permiso para acceder a esta página.")
+                    'Agarrar el return url y poner el script dentro de la alerta.
 
-                    'AlertifyClass.AlertifyAlertMessage(HttpContext.Current.CurrentHandler, "Debe seleccionar un País.")
                 End If
             End If
 
-            'Verificamos si existe la variable de sesion CodigoUser. 
-            If Session("CodigoUser") IsNot Nothing Then
-                DropdownsClass.BindDropDownList(ddlPais, $"SELECT * FROM GetPaisesAccesoUsuario({Session("CodigoUser")})", "CodigoPais", "Descripcion", "Seleccione País")
-                ddlEmpresa.Enabled = False
-                ddlPuesto.Enabled = False
-                ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
-                ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
+            'Cargar menu lateral, estilos del gridview y el ddlPais.
+            SidebarEncabezados()
+            GridViewStyles()
+            LoadDdlPais()
+
+            'En el primer page load, verificar si el usuario trae un pais por defecto seleccionado.
+            If Request.Cookies("CodigoPais") IsNot Nothing Then
+
+                'El pais seleccionado por defecto del ddlPais es el que trae el usuario en la session.
+                ddlPais.SelectedValue = Request.Cookies("CodigoPais").Value
+                ddlPais_SelectedIndexChanged(sender, EventArgs.Empty)
+
             End If
 
-            If pageName = "Default.aspx" Then
-
+            If Request.Cookies("CodigoEmpresa") IsNot Nothing Then
+                ddlEmpresa.SelectedValue = Request.Cookies("CodigoEmpresa").Value
+                ddlEmpresa_SelectedIndexChanged(sender, EventArgs.Empty)
             End If
 
-            'La variable de Sesion CodigoPais es el pais por defecto que está asignado a cada usuario. 
-            'El ddlPais.SelectedValue ya tiene por defecto seleccionado este valor. 
-            If Session("CodigoPais") IsNot Nothing Then
-                ddlPais.SelectedValue = Session("CodigoPais")
-                ddlPais_SelectedIndexChanged(ddlPais, EventArgs.Empty)
-            End If
-
-            If Session("CodigoEmpresa") IsNot Nothing Then
-                ddlEmpresa.SelectedValue = Session("CodigoEmpresa")
-                ddlEmpresa_SelectedIndexChanged(ddlEmpresa, EventArgs.Empty)
-            End If
-
-            If Session("CodigoPuesto") IsNot Nothing Then
-                ddlPuesto.SelectedValue = Session("CodigoPuesto")
-                ddlPuesto_SelectedIndexChanged(ddlPuesto, EventArgs.Empty)
+            If Request.Cookies("CodigoPuesto") IsNot Nothing Then
+                ddlPuesto.SelectedValue = Request.Cookies("CodigoPuesto").Value
+                ddlPuesto_SelectedIndexChanged(sender, EventArgs.Empty)
             End If
 
         End If
     End Sub
 
     Protected Sub ddlPais_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlPais.SelectedIndexChanged
-        ddlEmpresa.Enabled = False
-        ddlPuesto.Enabled = False
-        ddlEmpresa.Items.Clear()
-        Session("CodigoEmpresa") = Nothing
-        ddlPuesto.Items.Clear()
-        Session("CodigoPuesto") = Nothing
-        ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
-        ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
+        Try
+            'Inhabilitar los ddlEmpresa y ddlPuesto
+            ddlEmpresa.Enabled = False
+            ddlEmpresa.Items.Clear()
+            ddlEmpresa.Items.Insert(0, New ListItem("Seleccione Empresa", 0))
 
-        Dim CodigoPais As Integer = Convert.ToInt32(ddlPais.SelectedItem.Value)
+            If Request.Cookies("CodigoEmpresa") IsNot Nothing Then
+                ClearCookie("CodigoEmpresa")
+            End If
 
-        If CodigoPais > 0 Then
-            Session("CodigoPais") = CodigoPais
-            Pais = $"Pais: {ddlPais.SelectedItem.Text}"
+            ddlPuesto.Enabled = False
+            ddlPuesto.Items.Clear()
+            ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
 
-            DropdownsClass.BindDropDownList(ddlEmpresa, $"SELECT * FROM GetEmpresasAccesoUsuario({Session("CodigoUser")}, {CodigoPais})", "CodigoEmpresa", "Descripcion", "Seleccione Empresa")
-            ddlEmpresa.Enabled = True
+            If Request.Cookies("CodigoPuesto") IsNot Nothing Then
+                ClearCookie("CodigoPuesto")
+            End If
 
-            AlertifyClass.AlertifySuccessMessage(Me.Page, "Pais seleccionado correctamente.")
+            ''El nuevo valor seleccionado de ddlPais.
+            Dim CodigoPais As Integer = Integer.Parse(ddlPais.SelectedItem.Value)
 
-        End If
+            If CodigoPais > 0 Then
+
+                'Comprobar que la cookie existe y crear una nueva cookie con el valor seleccionado de ddlPais.
+                Dim cookie = Request.Cookies("CodigoPais")
+
+                If cookie Is Nothing Then
+                    cookie = New HttpCookie("CodigoPais") With {
+                    .Value = CodigoPais.ToString()
+                    }
+                Else
+                    cookie.Value = CodigoPais.ToString()
+                End If
+
+                cookie.Expires = Now.AddDays(1)
+                Response.Cookies.Add(cookie)
+
+                AlertifyClass.AlertifySuccessMessage(Me.Page, "Pais Seleccionado Correctamente.")
+                LoadDdlEmpresa()
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        End Try
     End Sub
 
     Protected Sub ddlEmpresa_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlEmpresa.SelectedIndexChanged
-        ddlPuesto.Enabled = False
-        ddlPuesto.Items.Clear()
-        Session("CodigoPuesto") = Nothing
-        ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
+        Try
+            ddlPuesto.Enabled = False
+            ddlPuesto.Items.Clear()
+            ddlPuesto.Items.Insert(0, New ListItem("Seleccione Puesto", 0))
 
-        Dim CodigoEmpresa As Integer = Integer.Parse(ddlEmpresa.SelectedItem.Value)
+            If Request.Cookies("CodigoPuesto") IsNot Nothing Then
+                ClearCookie("CodigoPuesto")
+            End If
 
-        If CodigoEmpresa > 0 Then
-            Session("CodigoEmpresa") = CodigoEmpresa
-            Empresa = $"Empresa: {ddlEmpresa.SelectedItem.Text}"
+            Dim CodigoEmpresa As Integer = Integer.Parse(ddlEmpresa.SelectedItem.Value)
 
-            DropdownsClass.BindDropDownList(ddlPuesto, $"SELECT * FROM GetPuestosAccesoUsuario({Session("CodigoUser")}, {ddlEmpresa.SelectedItem.Value})", "CodigoPuesto", "Descripcion", "Seleccione Puesto")
-            ddlPuesto.Enabled = True
-        End If
+            If CodigoEmpresa > 0 Then
 
+                Dim cookie = Request.Cookies("CodigoEmpresa")
+
+                If cookie Is Nothing Then
+
+                    cookie = New HttpCookie("CodigoEmpresa") With {
+                        .Value = CodigoEmpresa.ToString()
+                    }
+                Else
+                    cookie.Value = CodigoEmpresa.ToString()
+                End If
+
+                cookie.Expires = Now.AddDays(1)
+                Response.Cookies.Add(cookie)
+
+                AlertifyClass.AlertifySuccessMessage(Me.Page, "Empresa Seleccionada Correctamente.")
+
+                'Load ddlPuesto
+                LoadDdlPuesto()
+
+            End If
+        Catch ex As Exception
+            Throw ex
+        End Try
     End Sub
 
     Private Sub ddlPuesto_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlPuesto.SelectedIndexChanged
+        Try
+            Dim CodigoPuesto As Integer = Integer.Parse(ddlPuesto.SelectedItem.Value)
 
-        Dim CodigoPuesto As Integer = Integer.Parse(ddlPuesto.SelectedItem.Value)
+            If CodigoPuesto > 0 Then
 
-        If CodigoPuesto > 0 Then
-            Session("CodigoPuesto") = CodigoPuesto
-            Puesto = $"Puesto: {ddlPuesto.SelectedItem.Text}"
-        End If
+                Dim cookie = Request.Cookies("CodigoPuesto")
+
+                If cookie Is Nothing Then
+
+                    cookie = New HttpCookie("CodigoPuesto") With {
+                    .Value = CodigoPuesto.ToString()
+                    }
+
+                Else
+                    cookie.Value = CodigoPuesto.ToString()
+                End If
+
+                cookie.Expires = Now.AddDays(1)
+                Response.Cookies.Add(cookie)
+
+                AlertifyClass.AlertifySuccessMessage(Me.Page, "Puesto Seleccionado Correctamente.")
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        End Try
     End Sub
+
+    Protected Sub LoadDdlPais()
+        Dim sql = $"SELECT * FROM GetPaisesAccesoUsuario({Request.Cookies("CodigoUser").Value})"
+
+        DropdownsClass.BindDropDownList(ddlPais, sql, "CodigoPais", "Descripcion", "Seleccione País")
+    End Sub
+
+    Protected Sub LoadDdlEmpresa()
+
+        Dim sql = $"SELECT * FROM GetEmpresasAccesoUsuario({Request.Cookies("CodigoUser").Value}, {Request.Cookies("CodigoPais").Value})"
+
+        DropdownsClass.BindDropDownList(ddlEmpresa, sql, "CodigoEmpresa", "Descripcion", "Seleccione Empresa")
+        ddlEmpresa.Enabled = True
+    End Sub
+
+    Private Sub LoadDdlPuesto()
+
+        Dim sql = $"SELECT * FROM GetPuestosAccesoUsuario({Request.Cookies("CodigoUser").Value}, {Request.Cookies("CodigoEmpresa").Value})"
+
+        DropdownsClass.BindDropDownList(ddlPuesto, sql, "CodigoPuesto", "Descripcion", "Seleccione Puesto")
+        ddlPuesto.Enabled = True
+    End Sub
+
+    Protected Sub ClearCookie(cookieName As String)
+
+        Dim cookie As New HttpCookie(cookieName) With {
+            .Expires = DateTime.Now.AddDays(-1) ' Set expiration date in the past
+            }
+        Response.Cookies.Add(cookie)
+    End Sub
+
+
+
 
     ‘'' <summary> ‘’’ Verifica los permisos del usuario para entrar a la pagina actual.
     ‘’’ El sistema crea opciones en el menu para cada usuario.
@@ -267,56 +364,68 @@ Partial Class Mater_principal
 
         If gridView IsNot Nothing Then
             gridView.CssClass = "table table-light table-sm table-striped table-hover table-bordered"
+
+            gridView.UseAccessibleHeader = True
+            gridView.HeaderRow.TableSection = TableRowSection.TableHeader
         End If
     End Sub
 #End Region
 
 #Region "SIDEBAR"
-    Private Sub SidebarEncabezados()
+    Protected Sub SidebarEncabezados()
         Try
-            Dim sql = $"EXEC sp_menu_accesos @cod_usuario = {Session("CodigoUser")}, @cod_padre = NULL"
+            Dim sql = $"EXEC sp_crear_menu_web @Tipo = PADRE, @cod_padre = NULL"
 
-            Using ds As DataSet = _database.GetDataSet(sql)
+            Dim dtParent As DataTable = _database.GetDataTable(sql)
 
-                Dim html As New StringBuilder()
+            Dim html As New StringBuilder()
 
-                For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
+            For i As Integer = 0 To dtParent.Rows.Count - 1
 
-                    If String.IsNullOrWhiteSpace(ds.Tables(0).Rows(i).Item("cod_padre").ToString) Then
+                Dim cod_padre = dtParent.Rows(i).Item("cod_menu").ToString()
+                Dim dtChild As DataTable = _database.GetDataTable($"EXEC sp_menu_permisos_rol @CodigoRol = {Request.Cookies("CodigoRol").Value.ToString()}, @cod_menu = {cod_padre}, @Tipo = HIJOS")
 
-                        html.AppendLine("<li class=""nav-item"">")
-                        html.AppendLine("<a class=""nav-link link-effect align-middle px-0 text-white"" href=""collapse"" type=""button"" data-bs-toggle=""collapse"" data-bs-target=""#collapse" & i & """ aria-controls=""collapse" & i & """>")
-                        'html.AppendLine($"<i class=""{ds.Tables(0).Rows(i).Item("icono").ToString().Trim()}""><i/>")
-                        html.AppendLine(ds.Tables(0).Rows(i).Item("etiqueta").ToString.Trim())
-                        html.AppendLine("</a>")
+                'Verificar si el encabezado contiene detalles (elementos del menu)
+                'Si NO contiene detalles, entonces no hay necesidad de mostrarlo en el menu.
+                If dtChild.Rows.Count > 0 Then
 
-                        html.AppendLine("<ul id=""collapse" & i & """ class=""collapse nav flex-column bg-white rounded-1 ms-1"" data-bs-parent=""#menu"" >")
-                        html.AppendLine("<li class=""w-100 "">") ''nav item
-                        html.AppendLine(GetSidebarItems(ds.Tables(0).Rows(i).Item("cod_menu").ToString.Trim, ds))
-                        html.AppendLine("</li>") ''nav item
-                        html.AppendLine("</ul>") ''collapse
-                        html.AppendLine("</li>") ''nav item
-                    End If
-                Next i
+                    html.AppendLine("<li class=""nav-item"">")
+                    html.AppendLine("<a class=""nav-link link-effect align-middle px-0 text-white"" href=""collapse"" type=""button"" data-bs-toggle=""collapse"" data-bs-target=""#collapse" & i & """ aria-controls=""collapse" & i & """>")
+                    html.AppendLine($"<i class=""{dtParent.Rows(i).Item("icono").ToString().Trim()}""></i>")
+                    html.AppendLine(dtParent.Rows(i).Item("etiqueta").ToString.Trim())
+                    html.AppendLine("</a>")
 
-                ltSidebar.Text = html.ToString()
-            End Using
+                    html.AppendLine("<ul id=""collapse" & i & """ class=""collapse nav flex-column bg-white rounded-1 ms-1"" data-bs-parent=""#menu"" >")
+                    html.AppendLine("<li class=""w-100 "">") ''nav item
+                    html.AppendLine(SidebarDetalles(dtChild, cod_padre))
+                    html.AppendLine("</li>") ''nav item
+                    html.AppendLine("</ul>") ''collapse
+                    html.AppendLine("</li>") ''nav item
+                End If
+            Next i
+
+            'Asignar el html del menu al ltSidebar al final del loop.
+            ltSidebar.Text = html.ToString()
+
         Catch ex As Exception
             ltSidebar.Text = "<ul><li>" & ex.Message & "</li></ul>"
         End Try
     End Sub
 
-    Function GetSidebarItems(codPadre As String, ds As DataSet) As String
+    Protected Function SidebarDetalles(dtChild As DataTable, cod_padre As String) As String
         Try
             Dim html As New StringBuilder()
             Dim ruta As String
             Dim clase As String
             Dim label As String
-            For i As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                If ds.Tables(0).Rows(i).Item("cod_padre").ToString.Trim = codPadre Then
-                    ruta = ds.Tables(0).Rows(i).Item("ruta").ToString.Trim
-                    clase = ds.Tables(0).Rows(i).Item("Icono").ToString.Trim
-                    label = ds.Tables(0).Rows(i).Item("etiqueta").ToString.Trim
+
+            For i As Integer = 0 To dtChild.Rows.Count - 1
+
+                If dtChild.Rows(i).Item("cod_padre").ToString().Trim() = cod_padre Then
+
+                    ruta = dtChild.Rows(i).Item("ruta").ToString().Trim()
+                    clase = dtChild.Rows(i).Item("icono").ToString().Trim()
+                    label = dtChild.Rows(i).Item("etiqueta").ToString().Trim()
 
                     html.AppendLine($"<a class=""nav-link a-default text-decoration-none text-black"" href=""{ResolveClientUrl(ruta)}""><i class=""{clase}""></i> {label}</a>")
                 End If
@@ -346,8 +455,14 @@ Partial Class Mater_principal
                 cmd.Parameters.AddWithValue("@estado", "CERRAR")
                 cmd.ExecuteNonQuery()
 
-                Dim cookie As HttpCookie = Request.Cookies.Get("CKSMFACTURA")
-                cookie.Expires = Now.AddDays(-1)
+
+                Dim cookies As HttpCookieCollection = Request.Cookies
+                For Each cookieKey As String In cookies.AllKeys
+                    Dim cookie As HttpCookie = cookies(cookieKey)
+                    cookie.Expires = DateTime.Now.AddDays(-1)
+                    Response.Cookies.Add(cookie)
+                Next
+
                 Request.Cookies.Clear()
                 Session.Abandon()
                 FormsAuthentication.SignOut()

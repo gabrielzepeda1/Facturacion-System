@@ -9,41 +9,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
 
-    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
+    <%-- Custom CSS --%>
     <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
     <link href="<%= ResolveClientUrl("../css/principal.css")%>" rel="stylesheet" />
     <link href="<%= ResolveClientUrl("~/css/newStyles.css")%>" rel="stylesheet" />
     <link href="<%= ResolveClientUrl("~/css/select2Custom.css")%>" rel="stylesheet" />
 
+    <%-- FONTAWESOME --%>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
+
     <%-- Bootstrap 5 --%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <%-- jQuery 3.7.1 --%>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <%-- ADMIN LTE 4 --%>
+    <%-- <script
+        src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-alpha2/dist/js/adminlte.min.js"
+        integrity="sha256-5SPy1/00NR75iVOk7p0Ci0nwAAM8Ab7j31wyie+DKYw="
+        crossorigin="anonymous"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-alpha2/dist/css/adminlte.min.css"
+        integrity="sha256-c66Dhf3TzKZoXxk8aNaf2lu580xGnKke4mjUtbpMqYg="
+        crossorigin="anonymous" />--%>
+
+    <%-- ADMINLTE 3 --%>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" />
 
     <%--Alertify 1.13.1--%>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" integrity="sha256-yXe5CFTKO0Rj8tiAHQf9O6d68th79HCS5RsdMXSBIZk=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" integrity="sha256-WIcJjf4DF+5g6G6ChFG2dZcUxdZ6EDmGca5c/sd9VN0=" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <%-- Select 2 --%>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-    <%--Jquery puglins--%>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basictable@2.0.5/dist/css/basictable.min.css" integrity="sha256-PrnWbbBf9jtiK8BP9Iw3nMEaD/o8p45nfUCB7wYsilQ=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
-
-
-    <script src="
-https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js
-"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <%-- jQuery 3.7.1 --%>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/basictable@2.0.5/dist/js/jquery.basictable.min.js" integrity="sha256-4Qk/O1/5vBwQF3qWpwRXSCdlzCjIrCGGJ2Ern7En89o=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-    <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
 
+    <%-- Custom Scripts --%>
+    <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
     <script src="<%= ResolveClientUrl("~/js/settings/alertifySettings.js") %>"></script>
 
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
@@ -55,102 +66,118 @@ https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js
         <asp:Button ID="btnHidden" runat="server" Visible="false" />
         <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
 
-        <%-- SIDEBAR --%>
-        <div id="wrapper" class="container-fluid d-flex flex-column bg-light">
-            <div class="row flex-nowrap">
+        <div class="wrapper container-fluid d-flex flex-column bg-light">
 
-                <div class="col-auto col-xl-2 px-sm-2 px-0 bg-dark shadow">
+            <div class="preloader">
+                <img class="animation__shake" src="/docs/3.2/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" style="display: none;" />
+            </div>
 
-                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <div class="row">
 
-                        <ul id="menu" class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
+                <nav class="main-header navbar navbar-expand navbar-white navbar-light bg-white shadow mb-2 ml-0">
+                    <div class="container-fluid">
+
+                        <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a id="homeButton" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="../Default.aspx">
-                                    <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
-                                <hr />
+                                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav gap-2 ml-auto">
+
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">País</label>
+                                    <asp:DropDownList ID="ddlPais" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">Empresa</label>
+                                    <asp:DropDownList ID="ddlEmpresa" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">Puesto</label>
+                                    <asp:DropDownList ID="ddlPuesto" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
                             </li>
 
-                            <asp:Literal ID="ltSidebar" runat="server"></asp:Literal>
-
                         </ul>
-                        <hr />
 
-                        <%-- USER DROPDOWN --%>
-                        <div class="dropup dropup-center pb-5">
-                            <a class="btn btn-primary dropdown-toggle align-middle" data-bs-toggle="dropdown" role="button">
-                                <i class="fas fa-user"></i>&nbsp;<%= MyUserName%>
-                            </a>
-                            <ul class="dropdown-menu shadow animate">
-                                <li>
-                                    <a class="dropdown-item rounded text-decoration-none a-default fs-6" href="<%= ResolveClientUrl("../herramientas/usuario_editar.aspx")%>">
-                                        <i class="fas fa-user"></i>&nbsp;Perfil
-                                    </a>
-                                </li>
-                                <li>
-                                    <asp:LinkButton ID="btnCerrar" CssClass="dropdown-item rounded text-decoration-none a-default fs-6" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <%-- USER DROPDOWN END --%>
                     </div>
-                </div>
+                </nav>
 
-                <div id="content-wrapper" class="col bg-light p-0 d-flex flex-column">
+                <%-- SIDEBAR --%>
+                <aside class="main-sidebar sidebar-dark-primary elevation-4 ">
+                    <a id="homeButton" class="brand-image img-circle elevation-3" href="../Default.aspx">
+                        <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
 
-                    <header id="topbar">
-                        <div class="navbar navbar-expand-lg navbar-light bg-white shadow mb-4">
-                            <div class="container-fluid">
-                                <%--<a class="navbar-brand" href="#">Your Brand</a>--%>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarNav">
-                                    <ul class="navbar-nav ms-auto gap-2 mb-2 mb-lg-0">
-                                        <li class="nav-item">
-                                            <label class="form-label">País</label>
-                                            <asp:DropDownList ID="ddlPais" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                    <div class="sidebar min-vh-100">
+
+                        <%-- SIDEBAR MENU --%>
+                        <nav class="mt-2">
+                            <ul id="menu" class="nav nav-pills nav-sidebar flex-column" role="menu">
+
+                                <li class="btn btn-primary nav-item rounded-1 list-unstyled mt-2 mb-3">
+                                    <a class="nav-link link-effect align-middle p-1 text-white" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUser">
+                                        <i class="fa-solid fa-user"></i>&nbsp;&nbsp;<%= MyUserName%>
+                                    </a>
+
+                                    <ul id="collapseUser" class="collapse nav flex-column bg-white rounded-2 ms-1" data-bs-parent="#menu">
+                                        <li class="w-100">
+                                            <a class="nav-link a-default text-decoration-none text-start text-black" href="<%= ResolveClientUrl("../herramientas/perfil.aspx")%>"><i class="fa-solid fa-address-card"></i>&nbsp;Perfil</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <label class="form-label">Empresa</label>
-                                            <asp:DropDownList ID="ddlEmpresa" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+
+                                        <li class="w-100">
+                                            <asp:LinkButton ID="btnCerrar" CssClass="nav-link a-default text-decoration-none text-start text-black" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
                                         </li>
-                                        <li class="nav-item">
-                                            <label class="form-label">Puesto</label>
-                                            <asp:DropDownList ID="ddlPuesto" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
-                                        </li>
+
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
+                                </li>
 
-                    <section id="navigation">
-                        <div class="container-fluid bg-dark">
-                            <div class="row flex-nowrap align-items-start px-2">
-                                <div id="titulo" class="d-flex col-4 text-black align-items-center justify-content-start">
-                                    <asp:ContentPlaceHolder ID="cpTitulo" runat="server"></asp:ContentPlaceHolder>
-                                </div>
-                                <div id="ubicacion" class="d-flex gap-2 col-8 align-items-center justify-content-end">
-                                    <asp:ContentPlaceHolder ID="cpUbicacion" runat="server"></asp:ContentPlaceHolder>
-                                </div>
+
+                                <asp:Literal ID="ltSidebar" runat="server"></asp:Literal>
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
+
+                <section id="navigation" class="d-none">
+                    <div class="container-fluid bg-dark">
+                        <div class="row flex-nowrap align-items-start px-2">
+                            <div id="titulo" class="d-flex col-4 text-black align-items-center justify-content-start">
+                                <asp:ContentPlaceHolder ID="cpTitulo" runat="server"></asp:ContentPlaceHolder>
+                            </div>
+                            <div id="ubicacion" class="d-flex gap-2 col-8 align-items-center justify-content-end">
+                                <asp:ContentPlaceHolder ID="cpUbicacion" runat="server"></asp:ContentPlaceHolder>
                             </div>
                         </div>
-                    </section>
+                    </div>
+                </section>
+
+
+                <div class="content-wrapper col bg-light p-0 d-flex flex-column">
 
                     <%--MAIN ASPX CONTENT--%>
-                    <section id="form-content" class="container">
+                    <section id="form-content" class="container-fluid">
                         <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
                     </section>
                     <%--  --%>
-
-                    <footer class="row bg-white shadow">
-                        <div class="col text-center">
-                            <div class="copyright fs-6">Copyright © Industrial Comercial San Martin 2024</div>
-                        </div>
-                    </footer>
                 </div>
             </div>
+            <footer class="main-footer">
+                <div class="col text-center">
+                    <div class="copyright fs-6">Copyright 2024 © Industrial Comercial San Martin </div>
+                </div>
+            </footer>
         </div>
+
+        <asp:HiddenField ID="hdfPais" runat="server" />
+        <asp:HiddenField ID="hdfEmpresa" runat="server" />
+        <asp:HiddenField ID="hdfPuesto" runat="server" />
+
     </form>
 
     <script type="text/javascript">

@@ -1,6 +1,6 @@
 ﻿<%@ Application Language="VB" %>
 
-<script runat="server">
+<script RunAt="server">
 
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Code that runs on application startup
@@ -24,7 +24,9 @@
         ' Note: The Session_End event is raised only when the sessionstate mode
         ' is set to InProc in the Web.config file. If session mode is set to StateServer
         ' or SQLServer, the event is not raised.
-    End Sub
+
+
+End Sub
 
     'Sub Application_AuthenticateRequest(ByVal sender As Object, ByVal e As EventArgs)
     '    If HttpContext.Current.User IsNot Nothing Then

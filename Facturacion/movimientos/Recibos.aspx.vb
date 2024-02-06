@@ -55,12 +55,63 @@ Partial Class movimientos_Recibos
             'txtNoRecibo.Text = "-SELECCIONE VENDEDOR-"
             txtNoRecibo.BackColor = Drawing.Color.WhiteSmoke
 
-            BindDropDownListClientes(ddlCliente)
-            BindDropDownListVendedor(ddlVendedor)
-            BindDropDownListFormaPago(ddlFormaPago)
-            BindDropDownListMoneda(ddlMoneda)
-            BindDropDownListBanco(ddlBanco)
         End If
+
+        LoadDdlCliente()
+        LoadDdlVendedor()
+        LoadDdlFormaPago()
+        LoadDdlMoneda()
+        LoadDdlBanco()
+    End Sub
+
+    Private Sub LoadDdlCliente()
+
+        Dim sql = $"SELECT CodigoCliente, TRIM(Nombres) + ' ' +TRIM(Apellidos) AS NombreCompleto
+                    FROM Clientes WHERE Externo = {1} AND CodigoPais = {HttpContext.Current.Request.Cookies("CodigoPais").Value} AND CodigoEmpresa = {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}"
+
+        BindDropDownList(ddlCliente, sql, "CodigoCliente", "NombreCompleto", "Seleccione Cliente")
+
+    End Sub
+
+    Private Sub LoadDdlVendedor()
+
+        Dim sql = $"SELECT cod_vendedor AS CodigoVendedor, TRIM(nombres) + ' ' +TRIM(apellidos) AS NombreCompleto
+                    FROM Vendedores WHERE cod_pais= {HttpContext.Current.Request.Cookies("CodigoPais").Value} AND cod_pais= {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value} AND cod_empresa= {HttpContext.Current.Request.Cookies("CodigoPuesto").Value}"
+
+        BindDropDownList(ddlVendedor, sql, "NombreCompleto", "CodigoVendedor", "Seleccione Vendedor")
+
+    End Sub
+
+    Private Sub LoadDdlFormaPago()
+
+        Dim sql = $"SELECT cod_FormaPago as CodigoFormaPago,
+                    TRIM(descripcion) as Descripcion FROM Forma_Pago
+                    WHERE cod_pais= {HttpContext.Current.Request.Cookies("CodigoPais").Value}
+                    AND cod_empresa= {HttpContext.Current.Request.Cookies("CodigoEmpresa").Value}
+                    AND cod_puesto= {HttpContext.Current.Request.Cookies("CodigoPuesto").Value}
+                    ORDER BY TRIM(Descripcion)"
+
+        BindDropDownList(ddlFormaPago, sql, "Descripcion", "CodigoFormaPago", "Seleccione Forma Pago")
+
+    End Sub
+
+    Private Sub LoadDdlMoneda()
+
+        Dim sql = $"SELECT cod_moneda AS CodigoMoneda, descripcion
+                        FROM Monedas WHERE cod_pais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
+
+
+        BindDropDownList(ddlMoneda, sql, "Descripcion", "CodigoMoneda", "Seleccione Moneda")
+
+    End Sub
+
+    Private Sub LoadDdlBanco()
+
+        Dim sql = $"SELECT cod_banco AS CodigoBanco, descripcion
+                        FROM Bancos WHERE cod_pais = {HttpContext.Current.Request.Cookies("CodigoPais").Value}"
+
+
+        BindDropDownList(ddlBanco, sql, "Descripcion", "CodigoBanco", "Seleccione Banco")
 
     End Sub
 

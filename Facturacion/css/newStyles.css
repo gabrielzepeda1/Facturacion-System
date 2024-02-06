@@ -22,7 +22,7 @@ body {
 }
 
     .btn:hover, .btn:focus {
-        transform: scale(1.125) !important;
+        transform: scale(1.112) !important;
     }
 
 #wrapper #content-wrapper {
@@ -297,7 +297,7 @@ table th {
 
 /*Footer */
 
-footer.sticky-bottom {
+/*footer.sticky-bottom {
     padding: 2rem 0;
     flex-shrink: 0;
 }
@@ -305,7 +305,7 @@ footer.sticky-bottom {
     footer.sticky-bottom .copyright {
         line-height: 1;
         font-size: 0.8rem !important
-    }
+    }*/
 
 
 
