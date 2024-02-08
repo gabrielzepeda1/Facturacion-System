@@ -1,0 +1,30 @@
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="reportview.aspx.vb" Inherits="reportes_reportview" %>
+
+<%@ Register Assembly="CrystalDecisions.Web, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>FACTURACIÓN | REPORT</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+
+        <CR:CrystalReportViewer 
+            ID="rptReporte" 
+            AutoDataBind="True" 
+            runat="server" 
+            EnableDatabaseLogonPrompt="False"
+            HasSearchButton="False" 
+            HasToggleGroupTreeButton="False" 
+            ToolPanelWidth="200" 
+            DisplayToolbar="False"
+            PrintMode="ActiveX" 
+            AsyncRendering="false"
+            Width="1200" />
+    </form>
+</body>
+</html>

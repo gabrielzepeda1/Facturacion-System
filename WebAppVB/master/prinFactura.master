@@ -1,0 +1,330 @@
+﻿<%@ Master Language="VB" Inherits="Mater_principal" Codebehind="principal.master.vb" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+
+    <%-- Custom CSS --%>
+    <link href="<%= ResolveClientUrl("../img/favicon.png")%>" rel="shortcut icon" type="image/x-icon" />
+    <link href="<%= ResolveClientUrl("../css/principal.css")%>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/css/newStyles.css")%>" rel="stylesheet" />
+    <link href="<%= ResolveClientUrl("~/css/select2Custom.css")%>" rel="stylesheet" />
+
+    <%-- FONTAWESOME --%>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet" />
+
+    <%-- Bootstrap 5 --%>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <%-- jQuery 3.7.1 --%>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <%-- ADMIN LTE 4 --%>
+    <%-- <script
+      src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-alpha2/dist/js/adminlte.min.js"
+      integrity="sha256-5SPy1/00NR75iVOk7p0Ci0nwAAM8Ab7j31wyie+DKYw="
+      crossorigin="anonymous"></script>
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-alpha2/dist/css/adminlte.min.css"
+      integrity="sha256-c66Dhf3TzKZoXxk8aNaf2lu580xGnKke4mjUtbpMqYg="
+      crossorigin="anonymous" />--%>
+
+    <%-- ADMINLTE 3 --%>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" />
+
+    <%--Alertify 1.13.1--%>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" integrity="sha256-yXe5CFTKO0Rj8tiAHQf9O6d68th79HCS5RsdMXSBIZk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" integrity="sha256-WIcJjf4DF+5g6G6ChFG2dZcUxdZ6EDmGca5c/sd9VN0=" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <%-- Select 2 --%>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+
+    <%-- Custom Scripts --%>
+    <script src="<%= ResolveClientUrl("../js/myscript.js")%>" type="text/javascript"></script>
+    <script src="<%= ResolveClientUrl("~/js/settings/alertifySettings.js") %>"></script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" enctype="multipart/form-data" method="post">
+        <asp:ScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+        <asp:Button ID="btnHidden" runat="server" Visible="false" />
+        <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
+
+        <div class="wrapper container-fluid d-flex flex-column bg-light">
+
+            <div class="preloader">
+                <img class="animation__shake" src="/docs/3.2/assets/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" style="display: none;" />
+            </div>
+
+            <div class="row">
+
+                <nav class="main-header navbar navbar-expand navbar-white navbar-light bg-white shadow mb-2 ml-0">
+                    <div class="container-fluid">
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav gap-2 ml-auto">
+
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">País</label>
+                                    <asp:DropDownList ID="ddlPais" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">Empresa</label>
+                                    <asp:DropDownList ID="ddlEmpresa" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="form-group">
+                                    <label class="form-label">Puesto</label>
+                                    <asp:DropDownList ID="ddlPuesto" runat="server" CssClass="form-select form-select-sm" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </nav>
+
+                <%-- SIDEBAR --%>
+                <aside class="main-sidebar sidebar-dark-primary elevation-4 ">
+                    <a id="homeButton" class="brand-image img-circle elevation-3" href="../Default.aspx">
+                        <img alt="<%= CompanyName%>" title="<%= CompanyName%>" class="img-fluid img-logo" width="85" src="<%= ResolveClientUrl("../img/logo.png")%>" /></a>
+
+                    <div class="sidebar min-vh-100">
+
+                        <%-- SIDEBAR MENU --%>
+                        <nav class="mt-2">
+                            <ul id="menu" class="nav nav-pills nav-sidebar flex-column" role="menu">
+
+                                <li class="btn btn-primary nav-item rounded-1 list-unstyled mt-2 mb-3">
+                                    <a class="nav-link link-effect align-middle p-1 text-white" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUser">
+                                        <i class="fa-solid fa-user"></i>&nbsp;&nbsp;<%= MyUserName%>
+                                    </a>
+
+                                    <ul id="collapseUser" class="collapse nav flex-column bg-white rounded-2 ms-1" data-bs-parent="#menu">
+                                        <li class="w-100">
+                                            <a class="nav-link a-default text-decoration-none text-start text-black" href="<%= ResolveClientUrl("../herramientas/perfil.aspx")%>"><i class="fa-solid fa-address-card"></i>&nbsp;Perfil</a>
+                                        </li>
+
+                                        <li class="w-100">
+                                            <asp:LinkButton ID="btnCerrar" CssClass="nav-link a-default text-decoration-none text-start text-black" Text='<span class="fas fa-sign-out-alt"></span> Cerrar Sesión' runat="server"></asp:LinkButton>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                                <asp:Literal ID="ltSidebar" runat="server"></asp:Literal>
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
+
+                <section id="navigation" class="d-none">
+                    <div class="container-fluid bg-dark">
+                        <div class="row flex-nowrap align-items-start px-2">
+                            <div id="titulo" class="d-flex col-4 text-black align-items-center justify-content-start">
+                                <asp:ContentPlaceHolder ID="cpTitulo" runat="server"></asp:ContentPlaceHolder>
+                            </div>
+                            <div id="ubicacion" class="d-flex gap-2 col-8 align-items-center justify-content-end">
+                                <asp:ContentPlaceHolder ID="cpUbicacion" runat="server"></asp:ContentPlaceHolder>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <div class="content-wrapper col bg-light p-0 d-flex flex-column">
+
+                    <%--MAIN ASPX CONTENT--%>
+                    <section id="form-content" class="container-fluid">
+                        <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server"></asp:ContentPlaceHolder>
+                    </section>
+                    <%--  --%>
+                </div>
+            </div>
+            <footer class="main-footer">
+                <div class="col text-center">
+                    <div class="copyright fs-6">Copyright 2024 © Industrial Comercial San Martin </div>
+                </div>
+            </footer>
+        </div>
+
+        <asp:HiddenField ID="hdfPais" runat="server" />
+        <asp:HiddenField ID="hdfEmpresa" runat="server" />
+        <asp:HiddenField ID="hdfPuesto" runat="server" />
+
+    </form>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("This is running");
+            ubicacionStyles();
+            tituloStyles();
+            btnNewStyles();
+            btnExportarStyles();
+            btnGridStyles();
+            removeElements();
+            preventBack();
+            setFloatingLabel();
+            //tableActive();
+
+            $(function () {
+                $("select").select2({
+                    theme: "bootstrap-5",
+
+                });
+            });
+
+            if (isMobile() == true) {
+                $('body').swipe({
+                    //Deslizamientos hacia la izquieda
+                    swipeLeft: function () {
+                        $.sidr('close', 'sidr');
+                    },
+                    swipeRight: function () {
+                        $.sidr('open', 'sidr');
+                    },
+                    //Default is 75px, set to 0 for demo so any distance triggers swipe
+                    threshold: 90
+                });
+
+            }
+        });
+
+        const setFloatingLabel = () => {
+            document.querySelectorAll(".form-label").forEach((item) => {
+                if (item.innerHTML == "Buscar" && item.parentElement && item.parentElement.tagName == "DIV") {
+                    item.parentElement.classList.add("form-floating")
+                }
+            })
+        }
+
+        function preventBack() {
+            let homeButton = document.getElementById("homeButton");
+            let url = window.location.href;
+            console.log(url);
+            if (url.includes("Default")) {
+                homeButton.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default behavior (e.g., postback)
+                    console.log("Postback prevented. Estas en la pagina principal.");
+                });
+            }
+        }
+
+        function removeElements() {
+            // Get the ContentPlaceHolder element by its ID
+            var divUbicacion = document.getElementById("ubicacion");
+
+            if (divUbicacion) {
+                // Get all the anchor and label elements within the ContentPlaceHolder
+                var elementsToRemove = divUbicacion.querySelectorAll("a, label");
+
+                // Remove each of the found elements
+                for (var i = 0; i < elementsToRemove.length; i++) {
+                    var element = elementsToRemove[i];
+                    element.parentNode.removeChild(element);
+                }
+            }
+        }
+
+        function tituloStyles() {
+
+            console.log("ubicacionStyles() Running..")
+
+            let element = document.getElementById("titulo");
+
+            if (element) {
+
+                let childrenElements = element.children
+
+                if (childrenElements.length >= 1) {
+
+                    childrenElements[0].classList.add("text-white", "fs-5", "text-uppercase", "py-2", "mb-0")
+
+                    console.log("Completed!")
+                }
+            }
+
+        }
+
+        function ubicacionStyles() {
+            console.log("ubicacionStyles() Running..")
+            let ubicacionElement = document.getElementById("ubicacion");
+
+            if (ubicacionElement) {
+                let childrenElements = ubicacionElement.children
+
+                if (childrenElements.length >= 3) {
+                    childrenElements[0].classList.add("text-white", "fs-6", "text-decoration-none", "fw-semibold")
+                    childrenElements[2].classList.add("text-white", "fs-6", "text-decoration-none", "fw-semibold")
+                    console.log("Completed!")
+                }
+            }
+        }
+
+        function btnNewStyles() {
+
+            let element = document.getElementById("btnNew")
+            if (element) {
+                element.classList.remove("new")
+                element.classList.add("btn", "btn-primary", "btn-lg", "text-white")
+                console.log("Completed!")
+
+            }
+        }
+
+        function btnExportarStyles() {
+            let element = document.getElementById("btnExportar")
+            if (element) {
+                element.classList.remove("print")
+                element.classList.add("btn", "btn-success", "btn-lg", "text-white")
+                console.log("Completed!")
+            }
+        }
+
+        function btnGridStyles() {
+            let btnEditar = document.getElementById("btnEditar");
+            let btnEliminar = document.getElementById("btnEliminar");
+
+            if (btnEditar && btnEliminar) {
+                btnEditar.className = "btn btn-success"; // Set the class directly
+                btnEliminar.className = "btn btn-warning"; // Set the class directly
+            }
+        }
+
+        function isMobile() {
+            try {
+                document.createEvent("TouchEvent");
+                return true;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+    </script>
+    <asp:ContentPlaceHolder ID="cpScripts" runat="server"></asp:ContentPlaceHolder>
+</body>
+</html>

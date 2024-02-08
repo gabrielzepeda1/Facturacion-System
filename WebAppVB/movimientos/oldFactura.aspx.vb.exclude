@@ -1,0 +1,456 @@
+﻿Imports System.Data
+Imports System.Globalization
+Imports System.Threading
+
+Imports System.Collections.Generic
+Imports System.Linq
+Imports System.Web
+Imports System.Web.UI
+Imports System.Web.UI.WebControls
+Imports System.Data.SqlClient
+Imports System.Configuration
+Partial Class movimientos_Factura
+    Inherits System.Web.UI.Page
+
+    Dim conn As New FACTURACION_CLASS.seguridad
+    Dim DataBase As New FACTURACION_CLASS.database
+    Dim BUSQUEDAD As String
+
+#Region "PROPIEDADES DEL FORMULARIO"
+    ''' <summary>
+    ''' UTILIZADO PARA LLENAR EL CONTROL DATAGridViewOne
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Property dtTabla() As DataTable
+        Get
+            Return ViewState("dtTabla")
+        End Get
+        Set(ByVal value As DataTable)
+            ViewState("dtTabla") = value
+        End Set
+    End Property
+
+    Dim _Name As String = String.Empty
+    Private Property Name() As String
+        Get
+            Dim arrPath() As String = HttpContext.Current.Request.RawUrl.Split("/")
+
+            _Name = arrPath(arrPath.GetUpperBound(0))
+
+            Return _Name
+        End Get
+        Set(ByVal value As String)
+            _Name = value
+        End Set
+    End Property
+
+    Dim _Puesto_Name As String = String.Empty
+    Private Property Puesto_Name() As String
+        Get
+
+            Return _Puesto_Name
+        End Get
+        Set(ByVal value As String)
+            _Puesto_Name = value
+        End Set
+    End Property
+#End Region
+
+    Protected Sub btnCboCLi_Click(sender As Object, e As EventArgs) Handles btnCboCLi.Click
+
+    End Sub
+
+
+    Protected Sub btnNomCli_Click(sender As Object, e As EventArgs) Handles btnNomCli.Click
+        Try
+            
+            'If Me.ddlCliente.Text = String.Empty And Me.TextNomClien.Text = String.Empty Then
+            If rdbContado.Checked = True And Me.ddlCliente.Text = String.Empty Then
+
+                'Me.ddlCliente.Items.Insert(0, New ListItem("Cliente Eventual...", String.Empty))
+                ddlCliente.SelectedValue = "0"
+                'Me.ddlCliente.SelectedValue = ""
+                TextId.Enabled = True
+            End If
+
+            If rdbCredito.Checked = True Then
+                TextNomClien.Text = String.Empty
+                TextId.Enabled = False
+                If Me.ddlCliente.Text = String.Empty Then
+                    ddlCliente.Focus()
+                End If
+
+
+            End If
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text = conn.pmsgBox("Ocurrió un error en signacion de cliente eventual, combo  del cliente." & ex.Message, "error")
+        End Try
+    End Sub
+
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+
+            CboCliente()
+            System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("es-ES")
+            Form.DefaultButton = Me.btnVeriInvent.UniqueID
+            ddlCliente.Attributes.Add("onblur", Me.Page.ClientScript.GetPostBackEventReference(Me.btnNomCli, ""))
+            TextNomClien.Attributes.Add("onblur", Me.Page.ClientScript.GetPostBackEventReference(Me.btnNomCli, ""))
+            NoFactura()
+
+
+            'Load_GridView()
+
+        End If
+    End Sub
+
+    Private Sub NoFactura()
+        Dim vCcod_usuario As String = Context.Request.Cookies("CKSMFACTURA")("cod_usuario")
+
+
+        Dim sql As String
+        sql = " SET DATEFORMAT DMY " + "SELECT no_factura+1 as NoFactura,verificar_inventario AS INV FROM puestos WHERE cod_pais= " & Session("cod_pais") & "  " & _
+              " and cod_empresa= " & Session("cod_empresa") & " " & _
+             " and cod_puesto= " & Session("cod_puesto") & " "
+        
+
+        '" and consecutivo_usuario= " & vCcod_usuario & " "
+        Dim fr As System.Data.OleDb.OleDbDataReader = DataBase.GetDataReader(sql)
+
+        If fr.Read() Then
+            txtNoFac.Text = fr.Item("NoFactura").ToString()
+            rdbContado.Checked = True
+            rdbCredito.Checked = False
+            Session("INV") = fr.Item("INV").ToString()
+            ddlCliente.Focus()
+        End If
+    End Sub
+    'Private Sub CboEmpresa()
+    '    Try
+    '        Dim dataSet As New DataSet
+    '        dataSet = DataBase.GetDataSet(" EXEC Factura " & _
+    '                                      "@opcion = 1," & _
+    '                                      "@codigoPais = " & Request.Cookies("CKSMFACTURA")("codPais") & " ," & _
+    '                                      "@codigoEmpresa = " & Request.Cookies("CKSMFACTURA")("CodEmpresa") & " ," & _
+    '                                      "@codigoPuesto = " & Request.Cookies("CKSMFACTURA")("codPuesto") & " ")
+
+
+    '        If dataSet.Tables(0).Rows.Count > 0 Then
+    '            ddlCliente.DataSource = dataSet.Tables(0)
+    '            ddlCliente.DataTextField = "cliente"
+    '            ddlCliente.DataValueField = "codcliente"
+    '            ddlCliente.DataBind()
+    '        End If
+
+    '        dataSet.Dispose()
+
+    '    Catch ex As Exception
+    '        Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+
+    '    End Try
+    'End Sub
+    Private Sub CboCliente()
+        Try
+            Dim dataSet As New DataSet
+            dataSet = DataBase.GetDataSet(" EXEC CombosProductos " & _
+                                          "@opcion = 16," & _
+                                          "@codigo = " & Request.Cookies("CKSMFACTURA")("codPais") & " ")
+
+            If dataSet.Tables(0).Rows.Count > 0 Then
+                ddlCliente.DataSource = dataSet.Tables(0)
+                ddlCliente.DataTextField = "cliente"
+                ddlCliente.DataValueField = "codcliente"
+                ddlCliente.DataBind()
+            End If
+
+            dataSet.Dispose()
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+            'Messaging()
+
+        End Try
+    End Sub
+#Region "PROCESOS Y EVENTOS DEL GRIDVIEW"
+    Private Sub Load_GridView()
+        Try
+            Dim SQL As String = String.Empty
+            SQL &= "EXEC Cat_OrigenesProductos @opcion=3," & _
+                  "@codigo =  NULL  ," & _
+                  "@descripcion =  NULL  ," & _
+                  "@codusuario =  NULL ," & _
+                  "@codusuarioUlt =  NULL  ," & _
+                  "@BUSQUEDAD = '" & BUSQUEDAD & "' "
+
+
+            Dim ds As DataSet
+            ds = DataBase.GetDataSet(SQL)
+
+            dtTabla = ds.Tables(0)
+
+            Me.GridViewOne.DataSource = dtTabla.DefaultView
+            Me.GridViewOne.DataBind()
+            ds.Dispose()
+
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al intentar cargar el listado de rubros en la tabla." & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.DataBound
+        Try
+            If GridViewOne.Rows.Count > 0 Then
+                Dim pagerRow As GridViewRow = GridViewOne.BottomPagerRow
+                Dim pageLabel As Label = CType(pagerRow.Cells(0).FindControl("CurrentPageLabel"), Label)
+                If Not pageLabel Is Nothing Then
+                    Dim currentPage As Integer = GridViewOne.PageIndex + 1
+                    pageLabel.Text = "&nbsp;&nbsp; Pagina " & currentPage.ToString() & _
+                        " de " & GridViewOne.PageCount.ToString()
+                End If
+            End If
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento DataBound. " & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridViewOne.PageIndexChanged
+        Try
+
+            Me.GridViewOne.SelectedIndex = -1
+            'Me.hdfCodigo.Value = String.Empty
+
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanged." & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridViewOne.PageIndexChanging
+        Try
+            Me.GridViewOne.PageIndex = e.NewPageIndex
+
+            'Para usar la de caché guardada en la variable de sesion
+            If (IsPostBack) AndAlso (Not dtTabla Is Nothing) Then
+                If Not dtTabla Is Nothing AndAlso dtTabla.Rows.Count > 0 Then
+                    If dtTabla.Rows.Count > 0 Then
+                        Me.GridViewOne.DataSource = dtTabla
+                        Me.GridViewOne.DataBind()
+                    End If
+                End If
+            End If
+
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento PageIndexChanging." & ex.Message, "error")
+
+        End Try
+
+    End Sub
+
+    Protected Sub GridViewOne_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridViewOne.RowDataBound
+        Try
+            ''carga el campo llave es el 2dopaso DataKeyName
+            'If e.Row.RowType = DataControlRowType.DataRow Then
+            '    'e.Row.Attributes.Add("OnMouseOver", "On(this);")
+            '    'e.Row.Attributes.Add("OnMouseOut", "Off(this);")
+            '    e.Row.Attributes.Add("OnClick", "" & Page.ClientScript.GetPostBackClientHyperlink(Me.GridViewOne, "Select$" + e.Row.RowIndex.ToString) & ";")
+            'End If
+
+            'GridViewRow row = e.Row;
+            'If (row.RowIndex > -1) Then
+            'for (int i = 0; i < row.Cells.Count; i += 1)
+            '    row.Cells[i].Visible = false;
+            '    Next i
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento RowDataBound. " & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles GridViewOne.RowDeleting
+        Try
+            'pasar la información del Gridview hacia otro control, en este caso el control HiddenField,
+            'Me.hdfCodigo.Value = Me.GridViewOne.DataKeys(e.RowIndex).Value
+
+            'Eliminar()
+
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", "responsive_grid();", True)
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_RowCancelingEdit(sender As Object, e As GridViewCancelEditEventArgs) Handles GridViewOne.RowCancelingEdit
+        Me.GridViewOne.EditIndex = -1
+        Load_GridView()
+    End Sub
+
+    Protected Sub GridViewOne_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles GridViewOne.RowEditing
+        Try
+            Me.GridViewOne.EditIndex = e.NewEditIndex
+            Load_GridView()
+
+        Catch ex As Exception
+            Me.ltMensajeGrid.Text &= conn.pmsgBox("Ocurrió un error al disparar el evento SelectedIndexChanged. " & ex.Message, "error")
+
+        End Try
+    End Sub
+
+    Protected Sub GridViewOne_RowUpdating(sender As Object, e As GridViewUpdateEventArgs) Handles GridViewOne.RowUpdating
+        'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "smf_Script", " alert(""Esto es un mensaje"");", True)
+
+        Dim Codigo As String = e.Keys("codigo").ToString
+        Dim Descripcion As String = e.NewValues("Descripcion").ToString
+
+        'Actualizar(Codigo, Descripcion)
+        Me.GridViewOne.EditIndex = -1
+        Load_GridView()
+    End Sub
+
+
+#End Region
+
+#Region "Proceso verificar inventario"
+
+    Private Sub VerifiInven()
+        Dim MessegeText As String = String.Empty
+        If Session("INV") = True Then
+            Dim SQL As String = String.Empty
+            SQL = "EXEC VerifiInventario @opcion=1," & _
+                  "@codigoPais =  " & Session("cod_pais") & "  ," & _
+                  "@codigoEmpresa =  " & Session("cod_empresa") & "  ," & _
+                  "@codigoPuesto =  " & Session("cod_puesto") & " "
+
+
+            Dim dt As DataTable
+            dt = DataBase.GetDataSet(SQL).Tables(0)
+            Dim v_producto As String = Me.ddlProducto.SelectedValue
+            Dim busca_Producto() As DataRow
+            Dim vcantida As String
+
+            If dt.Rows.Count > 1 Then
+                busca_Producto = dtTabla.Select("cod_producto='" & v_producto & "'")
+                If busca_Producto.Length > 0 Then
+                    vcantida = (CStr(busca_Producto(0).Item(1)))
+                    If vcantida < TextCantidad.Text Then
+                        Me.TextTotal.Text = 0
+
+
+                        MessegeText = "alertify.alert('Cantidad a vender es mayor que exitencia. Existencia=');" + vcantida
+                        ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+
+
+                        'Me.ltMensajeGrid.Text &= conn.pmsgBox("CANTIDAD A VENDER MAYOR QUE EXISTENCIA. EXISTENCIA=" & vcantida, "Sin Inventario")
+                        'MessegeText = "success_messege('CANTIDAD A VENDER MAYOR QUE EXISTENCIA. EXISTENCIA=');" + vcantida
+                        TextCantidad.Text = vcantida
+                        'Me.ltMensajeGrid.Text = String.Empty
+                    End If
+                End If
+            Else
+                TextCantidad.Text = 0
+
+                MessegeText = "alertify.alert('Producto no tiene existencia');"
+                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+
+                ddlProducto.Focus()
+                'Me.ltMensajeGrid.Text &= conn.pmsgBox("Producto no tiene existencia, por lo tanto no puede facturarse", "Sin Inventario")
+                'MessegeText = "success_messege('Producto no tiene existencia, por lo tanto no puede facturarse');"
+                'Me.ltMensajeGrid.Text = String.Empty
+
+            End If
+        End If
+        'ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+    End Sub
+    Protected Sub TextCantidad_TextChanged(sender As Object, e As EventArgs) Handles TextCantidad.TextChanged
+        VerifiInven()
+    End Sub
+
+    Private Sub btnVeriInvent_Click(sender As Object, e As EventArgs) Handles btnVeriInvent.Click
+        'VerifiInven()
+    End Sub
+
+#End Region
+    Protected Sub BtnAdicionar_Click(sender As Object, e As System.EventArgs) Handles BtnAdicionar.Click
+        Dim MessegeText As String = String.Empty
+
+        If Me.txtNoFac.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. no exite No.Factura.');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.rdbCredito.Checked = False And rdbContado.Checked = False Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe escojer si factura es de credito o de contado.');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.rdbCredito.Checked = True Then
+            If Me.ddlCliente.Text = "0" Then
+                MessegeText = "alertify.alert('El  proceso no puede continuar. debe escojer Nombre del cliente, factura es de credito');"
+                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+                Exit Sub
+                Me.ddlCliente.Focus()
+            End If
+        Else
+            If Me.TextNomClien.Text = String.Empty And Me.ddlCliente.Text = String.Empty Then
+                MessegeText = "alertify.alert('El  proceso no puede continuar. tiene que escojer al cliente o digitar el nombre');"
+                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+                Exit Sub
+            End If
+        End If
+        If Me.rdbContado.Checked = True Then
+            If Me.ddlCliente.Text = String.Empty And Me.TextNomClien.Text = String.Empty Then
+                MessegeText = "alertify.alert('El  proceso no puede continuar. debe escojer o digitar nombre del cliente');"
+                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+                Exit Sub
+            End If
+        End If
+        If Me.rdbContado.Checked = True Then
+            If Me.TextId.Text = String.Empty Then
+                MessegeText = "alertify.alert('El  proceso no puede continuar. debe de digitar Id de cliente');"
+                ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+                Exit Sub
+            End If
+        End If
+        If Me.ddlProducto.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe escojer Producto');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.TextCantidad.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe de digitar Cantidad');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.TextBultos.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe de digitar Bultos');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.TextPrecio.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe de digitar Precio');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+        If Me.TextTotal.Text = String.Empty Then
+            MessegeText = "alertify.alert('El  proceso no puede continuar. debe de establecer el total');"
+            ScriptManager.RegisterStartupScript(Me, Me.Page.GetType, "Messege", MessegeText, True)
+            Exit Sub
+        End If
+    End Sub
+
+    'Protected Sub TextPrecio_TextChanged(sender As Object, e As EventArgs) Handles TextPrecio.TextChanged
+    '    'TextTotal.Text =  CDbl(TextCantidad.Text)
+    '    TextTotal.Text = Val(TextCantidad.Text) + Val(TextPrecio.Text)
+    'End Sub
+End Class

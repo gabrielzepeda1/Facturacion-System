@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FACTURACION_CLASS", "Clases\FACTURACION_CLASS.vbproj", "{0145CCA0-A932-4DBB-93BF-F947969E36EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FACTURACION_CLASS", "Clases\FACTURACION_CLASS.csproj", "{B3614DCB-656A-024A-11E7-3339F409024E}"
 EndProject
 Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "Reporte Factura", "Reporte Factura\Reporte Factura.rptproj", "{6C9FCB0A-738F-4B26-86F6-5F09FDF6104E}"
 EndProject
@@ -17,11 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Business", "SM.Business\
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facturacion(2)", "Facturacion\", "{997C831A-6E7E-4E6E-BAC4-222D046A631A}"
 	ProjectSection(ProjectDependencies) = postProject
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE} = {0145CCA0-A932-4DBB-93BF-F947969E36EE}
+		{B3614DCB-656A-024A-11E7-3339F409024E} = {B3614DCB-656A-024A-11E7-3339F409024E}
 	EndProjectSection
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		ProjectReferences = "{09D1628A-F98D-453C-8DBE-2075AC02D6B1}|SM.Business.dll;{F2090524-F4D5-44EF-B5C0-18FE5536D6C2}|SM.Entity.dll;{04790E1D-7701-4D15-A409-69E645AABC69}|SM.Data.dll;{0145cca0-a932-4dbb-93bf-f947969e36ee}|FACTURACION_CLASS.dll;"
+		ProjectReferences = "{09D1628A-F98D-453C-8DBE-2075AC02D6B1}|SM.Business.dll;{F2090524-F4D5-44EF-B5C0-18FE5536D6C2}|SM.Entity.dll;{04790E1D-7701-4D15-A409-69E645AABC69}|SM.Data.dll;{B3614DCB-656A-024A-11E7-3339F409024E}|FACTURACION_CLASS.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_50659"
 		Debug.AspNetCompiler.PhysicalPath = "Facturacion\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50659\"
@@ -40,7 +40,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Facturacion(2)", "Facturaci
 		SlnRelativePath = "Facturacion\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WebAppVB", "WebAppVB\WebAppVB.vbproj", "{672511AB-A5D2-4234-ACF0-C3A596E36D8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,12 +49,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0145CCA0-A932-4DBB-93BF-F947969E36EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3614DCB-656A-024A-11E7-3339F409024E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C9FCB0A-738F-4B26-86F6-5F09FDF6104E}.Debug|Any CPU.ActiveCfg = Debug
 		{6C9FCB0A-738F-4B26-86F6-5F09FDF6104E}.Debug|Any CPU.Build.0 = Debug
 		{6C9FCB0A-738F-4B26-86F6-5F09FDF6104E}.Debug|Any CPU.Deploy.0 = Debug
@@ -95,12 +95,12 @@ Global
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{997C831A-6E7E-4E6E-BAC4-222D046A631A}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FD7D74A-3432-4AD1-87EF-74D4CD1D8239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672511AB-A5D2-4234-ACF0-C3A596E36D8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

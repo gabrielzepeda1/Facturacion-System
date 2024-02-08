@@ -1,0 +1,220 @@
+﻿
+Partial Class UserControl_Controles
+    Inherits System.Web.UI.UserControl
+#Region "PROPIEDADES DEL CONTROL DE USUARIO"
+    Public Property ocultar_btn_cliente() As Boolean
+        Get
+            Return Me.btnNew.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnNew.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleNuevo() As Boolean
+        Get
+            Return Me.btnNew.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnNew.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleGuardar() As Boolean
+        Get
+            Return Me.btnGuardar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnGuardar.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleEditar() As Boolean
+        Get
+            Return Me.btnEditar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnEditar.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleEliminar() As Boolean
+        Get
+            Return Me.btnEliminar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnEliminar.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleLimpiar() As Boolean
+        Get
+            Return Me.btnLimpiar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnLimpiar.Visible = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' SE OCULTARAN TODOS LOS ELEMENTOS DE IMPRESIÓN
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property VisibleImprimir() As Boolean
+        Get
+            Return Me.btnList.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnList.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleReporte() As Boolean
+        Get
+            Return Me.btnReporte.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnReporte.Visible = value
+        End Set
+    End Property
+
+    Public Property ReporteText() As String
+        Get
+            Return Me.btnReporte.Text
+        End Get
+        Set(ByVal value As String)
+            Me.btnReporte.Text = value
+        End Set
+    End Property
+
+    Public Property VisibleFormato() As Boolean
+        Get
+            Return Me.btnFormato.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnFormato.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleExcel() As Boolean
+        Get
+            Return Me.btnExcel.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnExcel.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleConfirmar() As Boolean
+        Get
+            Return Me.btnConfirmar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnConfirmar.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleActualizar() As Boolean
+        Get
+            Return Me.btnActualizar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnActualizar.Visible = value
+        End Set
+    End Property
+
+    Public Property TxtBuscar_Visible() As Boolean
+        Get
+            Return Me.txtBuscar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.txtBuscar.Visible = value
+        End Set
+    End Property
+
+    Public Property VisibleBuscar() As Boolean
+        Get
+            Return Me.btnBuscar.Visible
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnBuscar.Visible = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' DEVUELVE EL VALOR DEL TEXBOX BUSCAR QUE SE ENCUENTRA EN EL CONTROL DE USUARIO
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Text() As String
+        Get
+            Return Me.txtBuscar.Text.Trim
+        End Get
+        Set(ByVal value As String)
+            Me.txtBuscar.Text = value
+        End Set
+    End Property
+
+    Public Property EnableGuardar() As Boolean
+        Get
+            Return Me.btnGuardar.Enabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me.btnGuardar.Enabled = value
+        End Set
+    End Property
+#End Region
+
+    Public Event ClickNuevo(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnNuevo_Click(sender As Object, e As System.EventArgs) Handles btnNew.Click
+        RaiseEvent ClickNuevo(Me.btnNew, e)
+    End Sub
+
+    Public Event ClickGuardar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnGuardar_Click(sender As Object, e As System.EventArgs) Handles btnGuardar.Click
+        RaiseEvent ClickGuardar(Me.btnGuardar, e)
+    End Sub
+
+    Public Event ClickEditar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnEditar_Click(sender As Object, e As System.EventArgs) Handles btnEditar.Click
+        RaiseEvent ClickEditar(Me.btnEditar, e)
+    End Sub
+
+    Public Event ClickEliminar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnEliminar_Click(sender As Object, e As System.EventArgs) Handles btnEliminar.Click
+        RaiseEvent ClickEliminar(Me.btnEliminar, e)
+    End Sub
+
+    Public Event ClickImprimir(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnReporte_Click(sender As Object, e As System.EventArgs) Handles btnReporte.Click
+        RaiseEvent ClickImprimir(Me.btnReporte, e)
+    End Sub
+
+    Public Event ClickFormato(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnFormato_Click(sender As Object, e As System.EventArgs) Handles btnFormato.Click
+        RaiseEvent ClickFormato(Me.btnReporte, e)
+    End Sub
+
+    Public Event ClickToExcel(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnExcel_Click(sender As Object, e As System.EventArgs) Handles btnExcel.Click
+        RaiseEvent ClickToExcel(Me.btnExcel, e)
+    End Sub
+
+    Public Event ClickConfirmar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnConfirmar_Click(sender As Object, e As System.EventArgs) Handles btnConfirmar.Click
+        RaiseEvent ClickConfirmar(Me.btnConfirmar, e)
+    End Sub
+
+    Public Event ClickActualizar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnActualizar_Click(sender As Object, e As System.EventArgs) Handles btnActualizar.Click
+        RaiseEvent ClickActualizar(Me.btnActualizar, e)
+    End Sub
+
+    Public Event ClickBuscar(ByVal sender As Object, ByVal e As System.EventArgs)
+    Protected Sub btnBuscar_Click(sender As Object, e As System.EventArgs) Handles btnBuscar.Click
+        RaiseEvent ClickBuscar(Me.btnBuscar, e)
+    End Sub
+End Class

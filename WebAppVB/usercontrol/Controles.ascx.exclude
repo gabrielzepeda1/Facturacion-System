@@ -1,0 +1,31 @@
+﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="Controles.ascx.vb" Inherits="UserControl_Controles" %>
+
+<div id="buttons">
+    <menu>
+        <%--<li><asp:Button ID="btnNew" runat="server" Text="Añadir Nuevo" CssClass="Nuevo" OnClientClick="Show();"/></li>--%>
+        <%--<li><asp:Button ID="btnNew" runat="server" Text="Nuevo" CssClass="Nuevo"/></li>--%>
+        <li><asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="Guardar"/></li>
+        <li><asp:Button ID="btnEditar" runat="server" Text="Editar" CssClass="Editar"/></li>
+        <li><asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="Eliminar"/></li>
+        <li><asp:Button ID="btnLimpiar" runat="server" Text="Limpiar Formulario" CssClass="Limpiar"/></li>
+        <li>
+            <asp:Button ID="btnList" runat="server" Text="Imprimir" CssClass="Print"/>
+            <menu>
+                <li><asp:Button ID="btnReporte" runat="server" Text="Imprimir Factura" CssClass="Imprimir"/></li>
+                <li><asp:Button ID="btnFormato" runat="server" Text="Vista Previa" CssClass="Formato"/></li>
+                <li><asp:Button ID="btnExcel" runat="server" Text="Exportar a Excel" CssClass="ToExcel"/></li>
+            </menu>
+        </li>
+        <li><asp:Button ID="btnConfirmar" runat="server" Text="Confirmar" CssClass="Confirmar"/></li>
+        <li><asp:Button ID="btnActualizar" runat="server" Text="Actualizar" CssClass="Actualizar"/></li>
+        <li>
+            <asp:Panel ID="pnlBuscar" runat="server" class="buttons-buscar" DefaultButton="btnBuscar">
+                <asp:TextBox ID="txtBuscar" runat="server" CssClass="txtBuscar" MaxLength="100"></asp:TextBox>
+
+                <asp:Button ID="btnBuscar" runat="server" Text="" CssClass="Buscar"/>
+            </asp:Panel>
+        </li>
+    </menu>
+    <div class="clear"></div>
+
+</div><!-- #buttons -->
